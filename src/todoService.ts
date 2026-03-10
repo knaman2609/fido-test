@@ -1,13 +1,10 @@
 import type { Todo, TodoId, TodoService as ITodoService } from './types.js';
+import { isValidImageUrl } from './utils.js';
 
 // Storage: Uses localStorage with image compression (see imageService.ts).
 // Images are compressed to ~100-300KB each, allowing 15-25+ todos with images
 // within typical 5-10MB browser storage limits.
 const STORAGE_KEY = 'todos';
-
-export function isValidImageUrl(url: string): boolean {
-  return url.startsWith('data:image/');
-}
 
 function isValidTodo(item: unknown): item is Todo {
   if (typeof item !== 'object' || item === null) {
