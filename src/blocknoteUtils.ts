@@ -64,16 +64,18 @@ function blockToHtml(block: Block): string {
   switch (block.type) {
     case 'paragraph':
       return `<p>${content}</p>`;
-    case 'heading':
+    case 'heading': {
       const level = (block.props?.level as number) || 1;
       return `<h${level}>${content}</h${level}>`;
+    }
     case 'bulletListItem':
       return `<li style="list-style-type: disc; margin-left: 20px;">${content}</li>`;
     case 'numberedListItem':
       return `<li style="list-style-type: decimal; margin-left: 20px;">${content}</li>`;
-    case 'checkListItem':
+    case 'checkListItem': {
       const checked = block.props?.checked ? 'checked' : '';
       return `<div style="display: flex; align-items: center; gap: 8px; margin: 4px 0;"><input type="checkbox" disabled ${checked}><span>${content}</span></div>`;
+    }
     case 'codeBlock':
       return `<pre style="background: #f5f5f5; padding: 12px; border-radius: 4px; overflow-x: auto;"><code>${content}</code></pre>`;
     case 'blockquote':
