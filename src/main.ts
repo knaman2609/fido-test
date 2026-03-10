@@ -61,12 +61,11 @@ function init(): void {
 
   elements.todoList.addEventListener('click', (e: Event) => {
     const target = e.target as HTMLElement;
-    const id = parseInt(target.getAttribute('data-id') || '', 10);
     const action = target.getAttribute('data-action');
 
-    if (action === 'toggle') {
-      toggleTodo(id);
-    } else if (action === 'delete') {
+    if (action === 'delete') {
+      const id = parseInt(target.getAttribute('data-id') || '', 10);
+      if (isNaN(id)) return;
       deleteTodo(id);
     }
   });
@@ -75,6 +74,7 @@ function init(): void {
     const target = e.target as HTMLElement;
     if (target.getAttribute('data-action') === 'toggle') {
       const id = parseInt(target.getAttribute('data-id') || '', 10);
+      if (isNaN(id)) return;
       toggleTodo(id);
     }
   });
