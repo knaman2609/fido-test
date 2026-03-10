@@ -20,7 +20,7 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "@eslint/js": "https://registry.npmjs.org/@eslint/js/-/js-8.57.1.tgz",
+    "@eslint/js": "^8.57.1",
     "@typescript-eslint/eslint-plugin": "^8.57.0",
     "@typescript-eslint/parser": "^8.57.0",
     "eslint": "^8.57.1",
