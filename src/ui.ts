@@ -1,5 +1,9 @@
 import type { Todo, UIRenderer as IUIRenderer } from './types.js';
 
+function isValidImageUrl(url: string): boolean {
+  return url.startsWith('data:image/');
+}
+
 class UIRendererImpl implements IUIRenderer {
   private todoList: HTMLUListElement;
   private errorMessage: HTMLDivElement;
