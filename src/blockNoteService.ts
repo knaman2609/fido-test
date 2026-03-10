@@ -1,7 +1,16 @@
 import { BlockNoteEditor } from '@blocknote/core';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type Block = any;
+// Simplified Block type for our use case
+interface Block {
+  id?: string;
+  type: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  content?: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  props?: Record<string, any>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  children?: Block[];
+}
 
 class BlockNoteService {
   createEditor(
@@ -12,7 +21,7 @@ class BlockNoteService {
       initialContent: initialContent ?? [
         {
           type: 'paragraph',
-          content: [],
+          content: '',
         },
       ],
     });
@@ -36,7 +45,7 @@ class BlockNoteService {
     return [
       {
         type: 'paragraph',
-        content: [],
+        content: '',
       },
     ];
   }
@@ -80,7 +89,7 @@ class BlockNoteService {
     return [
       {
         type: 'paragraph',
-        content: [{ type: 'text', text }],
+        content: text,
       },
     ];
   }
