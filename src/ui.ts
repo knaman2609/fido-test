@@ -62,12 +62,16 @@ class UIRendererImpl implements IUIRenderer {
         img.role = 'button';
         img.tabIndex = 0;
         img.addEventListener('click', () => {
-          window.open(todo.image, '_blank');
+          if (todo.image && isValidImageUrl(todo.image)) {
+            window.open(todo.image, '_blank');
+          }
         });
         img.addEventListener('keydown', (e: KeyboardEvent) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
-            window.open(todo.image, '_blank');
+            if (todo.image && isValidImageUrl(todo.image)) {
+              window.open(todo.image, '_blank');
+            }
           }
         });
         imgContainer.appendChild(img);
