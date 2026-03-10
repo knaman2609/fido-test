@@ -1,13 +1,4 @@
-export interface BlockNoteDocument {
-  type: string;
-  props?: Record<string, unknown>;
-  content?: Array<{
-    type: string;
-    text?: string;
-    styles?: Record<string, boolean>;
-  }>;
-  children?: BlockNoteDocument[];
-}
+export type BlockNoteDocument = Record<string, unknown>;
 
 export interface Todo {
   id: number;
