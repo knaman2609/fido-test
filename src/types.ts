@@ -9,7 +9,7 @@ export type TodoId = number;
 
 export interface TodoService {
   getAll(): Todo[];
-  add(text: string): Todo;
+  add(text: string, image?: string): Todo;
   toggle(id: TodoId): Todo | undefined;
   delete(id: TodoId): boolean;
   load(): void;
