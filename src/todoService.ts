@@ -67,7 +67,6 @@ class TodoServiceImpl implements ITodoService {
       } catch (e) {
         console.error('Failed to parse todos from localStorage:', e);
         this.todos = [];
-        throw e;
       }
     }
   }
