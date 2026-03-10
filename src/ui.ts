@@ -1,5 +1,6 @@
 import type { Todo, UIRenderer as IUIRenderer } from './types.js';
 import { isValidImageUrl } from './utils.js';
+import { convertBlocksToHtml, extractPlainText } from './blocknoteService.js';
 
 class UIRendererImpl implements IUIRenderer {
   private todoList: HTMLUListElement;
@@ -9,6 +10,13 @@ class UIRendererImpl implements IUIRenderer {
   constructor(todoList: HTMLUListElement, errorMessage: HTMLDivElement) {
     this.todoList = todoList;
     this.errorMessage = errorMessage;
+  }
+
+  private getTodoDisplayText(todo: Todo): string {
+    if (todo.content) {
+      return extractPlainText(todo.content);
+    }
+    return todo.text || '';
   }
 
   render(todos: Todo[]): void {
@@ -31,23 +39,33 @@ class UIRendererImpl implements IUIRenderer {
       checkbox.type = 'checkbox';
       checkbox.className = 'todo-checkbox';
       checkbox.checked = todo.completed;
-      checkbox.setAttribute('aria-label', `Mark "${todo.text}" as ${todo.completed ? 'incomplete' : 'complete'}`);
+      const displayText = this.getTodoDisplayText(todo);
+      checkbox.setAttribute('aria-label', `Mark "${displayText}" as ${todo.completed ? 'incomplete' : 'complete'}`);
       checkbox.setAttribute('data-id', todo.id.toString());
       checkbox.setAttribute('data-action', 'toggle');
 
-      const span = document.createElement('span');
-      span.className = 'todo-text';
-      span.textContent = todo.text;
+      const contentDiv = document.createElement('div');
+      contentDiv.className = 'todo-content';
+
+      if (todo.content) {
+        const htmlContent = convertBlocksToHtml(todo.content);
+        contentDiv.innerHTML = htmlContent;
+      } else if (todo.text) {
+        const span = document.createElement('span');
+        span.className = 'todo-text';
+        span.textContent = todo.text;
+        contentDiv.appendChild(span);
+      }
 
       const deleteBtn = document.createElement('button');
       deleteBtn.className = 'delete-btn';
       deleteBtn.textContent = 'Delete';
-      deleteBtn.setAttribute('aria-label', `Delete "${todo.text}"`);
+      deleteBtn.setAttribute('aria-label', `Delete "${displayText}"`);
       deleteBtn.setAttribute('data-id', todo.id.toString());
       deleteBtn.setAttribute('data-action', 'delete');
 
       li.appendChild(checkbox);
-      li.appendChild(span);
+      li.appendChild(contentDiv);
 
       function openImage(): void {
         if (todo.image && isValidImageUrl(todo.image)) {
