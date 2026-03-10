@@ -1,5 +1,4 @@
-import type { Block } from '@blocknote/core';
-import type { Todo, TodoId, TodoService as ITodoService } from './types.js';
+import type { Todo, TodoId, TodoService as ITodoService, Block } from './types.js';
 import { isValidImageUrl } from './utils.js';
 import { blockNoteService } from './blockNoteService.js';
 
