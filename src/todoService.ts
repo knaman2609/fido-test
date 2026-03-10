@@ -1,10 +1,20 @@
-import type { Todo, TodoId, TodoService as ITodoService } from './types.js';
+import type { Todo, TodoId, TodoService as ITodoService, BlockNoteDocument } from './types.js';
 import { isValidImageUrl } from './utils.js';
+import { isEmptyContent } from './blocknoteUtils.js';
 
 // Storage: Uses localStorage with image compression (see imageService.ts).
 // Images are compressed to ~100-300KB each, allowing 15-25+ todos with images
 // within typical 5-10MB browser storage limits.
 const STORAGE_KEY = 'todos';
+
+function isValidBlockNoteDocument(doc: unknown): doc is BlockNoteDocument[] {
+  if (!Array.isArray(doc)) return false;
+  return doc.every(block => {
+    if (typeof block !== 'object' || block === null) return false;
+    const b = block as Record<string, unknown>;
+    return typeof b.type === 'string';
+  });
+}
 
 function isValidTodo(item: unknown): item is Todo {
   if (typeof item !== 'object' || item === null) {
@@ -12,9 +22,10 @@ function isValidTodo(item: unknown): item is Todo {
   }
   const todo = item as Record<string, unknown>;
   const hasValidImage = todo.image === undefined || (typeof todo.image === 'string' && isValidImageUrl(todo.image));
+  const hasValidContent = Array.isArray(todo.content) && isValidBlockNoteDocument(todo.content);
   return (
     typeof todo.id === 'number' &&
-    typeof todo.text === 'string' &&
+    hasValidContent &&
     typeof todo.completed === 'boolean' &&
     hasValidImage
   );
@@ -28,10 +39,10 @@ class TodoServiceImpl implements ITodoService {
     return [...this.todos];
   }
 
-  add(text: string, image?: string): Todo {
+  add(content: BlockNoteDocument[], image?: string): Todo {
     const todo: Todo = {
       id: this.idCounter++,
-      text: text,
+      content: content,
       completed: false,
       image: image
     };
