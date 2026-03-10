@@ -13,12 +13,45 @@ class ImageServiceImpl implements ImageService {
     return true;
   }
 
+  private compressImage(dataUrl: string, maxWidth: number = 800, quality: number = 0.7): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        let width = img.width;
+        let height = img.height;
+
+        if (width > maxWidth) {
+          height = Math.round((height * maxWidth) / width);
+          width = maxWidth;
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+          reject(new Error('Failed to get canvas context'));
+          return;
+        }
+        ctx.drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL('image/jpeg', quality));
+      };
+      img.onerror = () => reject(new Error('Failed to load image for compression'));
+      img.src = dataUrl;
+    });
+  }
+
   readFile(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      reader.onload = () => {
-        const result = reader.result as string;
-        resolve(result);
+      reader.onload = async () => {
+        try {
+          const result = reader.result as string;
+          const compressed = await this.compressImage(result);
+          resolve(compressed);
+        } catch (error) {
+          reject(error);
+        }
       };
       reader.onerror = () => {
         reject(new Error('Failed to read file'));
