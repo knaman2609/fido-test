@@ -1,19 +1,25 @@
 // @ts-check
-import tseslint from "typescript-eslint";
+import tseslintParser from "@typescript-eslint/parser";
+import tseslintPlugin from "@typescript-eslint/eslint-plugin";
 
-export default tseslint.config(
+export default [
   {
     ignores: ["dist/**", "node_modules/**", "*.js", "scripts/**"],
   },
-  ...tseslint.configs.recommended,
   {
+    files: ["src/**/*.ts"],
     languageOptions: {
+      parser: tseslintParser,
       parserOptions: {
         project: true,
         tsconfigRootDir: import.meta.dirname,
       },
     },
+    plugins: {
+      "@typescript-eslint": tseslintPlugin,
+    },
     rules: {
+      ...tseslintPlugin.configs.recommended.rules,
       "no-console": "warn",
       "no-debugger": "error",
       "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
@@ -38,4 +44,4 @@ export default tseslint.config(
       "@typescript-eslint/only-throw-error": "error",
     },
   }
-);
+];
