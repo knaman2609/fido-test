@@ -55,8 +55,16 @@ class UIRendererImpl implements IUIRenderer {
         img.className = 'todo-image';
         img.src = todo.image;
         img.alt = 'Todo attachment';
+        img.role = 'button';
+        img.tabIndex = 0;
         img.addEventListener('click', () => {
           window.open(todo.image, '_blank');
+        });
+        img.addEventListener('keydown', (e: KeyboardEvent) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            window.open(todo.image, '_blank');
+          }
         });
         imgContainer.appendChild(img);
         li.appendChild(imgContainer);
