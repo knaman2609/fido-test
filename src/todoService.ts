@@ -19,7 +19,7 @@ class TodoServiceImpl implements ITodoService {
   private idCounter: number = 1;
 
   getAll(): Todo[] {
-    return this.todos;
+    return [...this.todos];
   }
 
   add(text: string): Todo {
