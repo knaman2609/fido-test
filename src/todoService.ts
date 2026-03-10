@@ -1,23 +1,44 @@
+import type { Block } from '@blocknote/core';
 import type { Todo, TodoId, TodoService as ITodoService } from './types.js';
 import { isValidImageUrl } from './utils.js';
+import { blockNoteService } from './blockNoteService.js';
 
-// Storage: Uses localStorage with image compression (see imageService.ts).
-// Images are compressed to ~100-300KB each, allowing 15-25+ todos with images
-// within typical 5-10MB browser storage limits.
 const STORAGE_KEY = 'todos';
+
+interface LegacyTodo {
+  id: number;
+  text?: string;
+  content?: Block[];
+  completed: boolean;
+  image?: string;
+}
 
 function isValidTodo(item: unknown): item is Todo {
   if (typeof item !== 'object' || item === null) {
     return false;
   }
-  const todo = item as Record<string, unknown>;
+  const todo = item as LegacyTodo;
   const hasValidImage = todo.image === undefined || (typeof todo.image === 'string' && isValidImageUrl(todo.image));
+  const hasValidContent = Array.isArray(todo.content) || typeof todo.text === 'string';
   return (
     typeof todo.id === 'number' &&
-    typeof todo.text === 'string' &&
     typeof todo.completed === 'boolean' &&
+    hasValidContent &&
     hasValidImage
   );
+}
+
+function migrateLegacyTodo(todo: LegacyTodo): Todo {
+  if (todo.content && Array.isArray(todo.content)) {
+    return todo as Todo;
+  }
+  // Migrate legacy todo with 'text' field to new 'content' format
+  return {
+    id: todo.id,
+    content: blockNoteService.createSingleParagraphBlock(todo.text || ''),
+    completed: todo.completed,
+    image: todo.image,
+  };
 }
 
 class TodoServiceImpl implements ITodoService {
@@ -28,19 +49,19 @@ class TodoServiceImpl implements ITodoService {
     return [...this.todos];
   }
 
-  add(text: string, image?: string): Todo {
+  add(content: Block[], image?: string): Todo {
     const todo: Todo = {
       id: this.idCounter++,
-      text: text,
+      content: content,
       completed: false,
-      image: image
+      image: image,
     };
     this.todos.push(todo);
     return todo;
   }
 
   toggle(id: TodoId): Todo | undefined {
-    const todo = this.todos.find(t => t.id === id);
+    const todo = this.todos.find((t) => t.id === id);
     if (todo) {
       todo.completed = !todo.completed;
     }
@@ -49,7 +70,7 @@ class TodoServiceImpl implements ITodoService {
 
   delete(id: TodoId): boolean {
     const initialLength = this.todos.length;
-    this.todos = this.todos.filter(t => t.id !== id);
+    this.todos = this.todos.filter((t) => t.id !== id);
     return this.todos.length !== initialLength;
   }
 
@@ -60,7 +81,7 @@ class TodoServiceImpl implements ITodoService {
         const parsed: unknown = JSON.parse(stored);
         if (Array.isArray(parsed)) {
           const validTodos = parsed.filter(isValidTodo);
-          this.todos = validTodos;
+          this.todos = validTodos.map(migrateLegacyTodo);
           const maxId = this.todos.reduce((max, todo) => Math.max(max, todo.id), 0);
           this.idCounter = maxId + 1;
         }
