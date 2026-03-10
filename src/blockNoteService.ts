@@ -1,5 +1,4 @@
 import { BlockNoteEditor, type Block } from '@blocknote/core';
-import { BlockNoteView } from '@blocknote/mantine';
 
 class BlockNoteService {
   createEditor(
@@ -10,7 +9,7 @@ class BlockNoteService {
       initialContent: initialContent ?? [
         {
           type: 'paragraph',
-          content: '',
+          content: [],
         },
       ],
     });
@@ -34,7 +33,7 @@ class BlockNoteService {
     return [
       {
         type: 'paragraph',
-        content: '',
+        content: [],
       },
     ];
   }
@@ -48,12 +47,19 @@ class BlockNoteService {
   extractPlainText(blocks: Block[]): string {
     return blocks
       .map((block) => {
+        if (!block.content) return '';
         if (typeof block.content === 'string') {
           return block.content;
         }
         if (Array.isArray(block.content)) {
           return block.content
-            .map((c) => (typeof c === 'string' ? c : c.text || ''))
+            .map((c) => {
+              if (typeof c === 'string') return c;
+              if (c && typeof c === 'object' && 'text' in c) {
+                return String(c.text || '');
+              }
+              return '';
+            })
             .join('');
         }
         return '';
@@ -71,8 +77,8 @@ class BlockNoteService {
     return [
       {
         type: 'paragraph',
-        content: text,
-      },
+        content: [{ type: 'text', text }],
+      } as unknown as Block,
     ];
   }
 }
