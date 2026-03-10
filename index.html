@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Todo App</title>
+    <link rel="stylesheet" href="https://unpkg.com/@blocknote/mantine/style.css">
     <style>
         * {
             margin: 0;
@@ -19,7 +20,7 @@
         }
 
         .container {
-            max-width: 500px;
+            max-width: 600px;
             margin: 0 auto;
             background: white;
             border-radius: 8px;
@@ -37,19 +38,18 @@
             display: flex;
             gap: 8px;
             margin-bottom: 20px;
+            align-items: flex-start;
         }
 
-        #todoInput {
+        #editorContainer {
             flex: 1;
-            padding: 12px 16px;
+            min-height: 120px;
             border: 2px solid #e0e0e0;
             border-radius: 6px;
-            font-size: 16px;
-            outline: none;
-            transition: border-color 0.2s;
+            overflow: hidden;
         }
 
-        #todoInput:focus {
+        #editorContainer:focus-within {
             border-color: #4CAF50;
         }
 
@@ -62,6 +62,8 @@
             font-size: 16px;
             cursor: pointer;
             transition: background 0.2s;
+            align-self: flex-start;
+            margin-top: 4px;
         }
 
         #addBtn:hover {
@@ -74,7 +76,7 @@
 
         .todo-item {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             gap: 12px;
             padding: 12px;
             border-bottom: 1px solid #f0f0f0;
@@ -94,12 +96,32 @@
             height: 20px;
             cursor: pointer;
             accent-color: #4CAF50;
+            margin-top: 4px;
+            flex-shrink: 0;
         }
 
         .todo-text {
             flex: 1;
             font-size: 16px;
             color: #333;
+            line-height: 1.5;
+        }
+
+        .todo-text h1,
+        .todo-text h2,
+        .todo-text h3 {
+            font-size: 1.1em;
+            margin: 0.3em 0;
+        }
+
+        .todo-text ul,
+        .todo-text ol {
+            margin: 0.3em 0;
+            padding-left: 1.5em;
+        }
+
+        .todo-text p {
+            margin: 0.2em 0;
         }
 
         .todo-item.completed .todo-text {
@@ -117,6 +139,7 @@
             cursor: pointer;
             opacity: 1;
             transition: background 0.2s;
+            flex-shrink: 0;
         }
 
         .delete-btn:hover {
@@ -236,7 +259,7 @@
             <div id="imagePreview" class="image-preview"></div>
         </div>
         <div class="input-group">
-            <input type="text" id="todoInput" placeholder="Add a new todo..." aria-label="New todo text" maxlength="200">
+            <div id="editorContainer" aria-label="Todo content editor"></div>
             <button id="addBtn">Add</button>
         </div>
         <ul id="todoList"></ul>
