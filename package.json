@@ -4,17 +4,28 @@
   "description": "A simple TypeScript Todo App",
   "type": "module",
   "scripts": {
-    "build": "tsc",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "build": "npm run lint && tsc",
     "watch": "tsc --watch",
     "serve": "serve . -p 3000",
     "start": "npm run build && npm run serve",
     "clean": "node scripts/clean.js"
   },
-  "keywords": ["todo", "typescript", "app"],
+  "keywords": [
+    "todo",
+    "typescript",
+    "app"
+  ],
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@typescript-eslint/eslint-plugin": "^8.57.0",
+    "@typescript-eslint/parser": "^8.57.0",
+    "eslint": "^10.0.3",
+    "serve": "^14.0.0",
     "typescript": "^5.0.0",
-    "serve": "^14.0.0"
+    "typescript-eslint": "^8.57.0"
   }
 }
