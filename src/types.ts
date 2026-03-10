@@ -26,4 +26,12 @@ export interface DOMElements {
   addBtn: HTMLButtonElement;
   todoList: HTMLUListElement;
   errorMessage: HTMLDivElement;
+  imageInput: HTMLInputElement;
+  imagePreview: HTMLDivElement;
+  clearImageBtn: HTMLButtonElement;
+}
+
+export interface ImageService {
+  validateFile(file: File): boolean;
+  readFile(file: File): Promise<string>;
 }
