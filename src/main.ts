@@ -77,7 +77,7 @@ function init(): void {
       elements.clearImageBtn.style.display = 'block';
     } catch (error) {
       ui.showError('Failed to read image file');
-      clearImage();
+      elements.imageInput.value = '';
     }
   }
 
