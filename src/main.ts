@@ -43,7 +43,7 @@ function init(): void {
   function handleSave(errorMessage: string): void {
     try {
       todoService.save();
-    } catch (e) {
+    } catch (_e) {
       ui.showError(errorMessage);
     }
   }
@@ -78,8 +78,10 @@ function init(): void {
     const action = target.getAttribute('data-action');
 
     if (action === 'delete') {
-      const id = parseInt(target.getAttribute('data-id') || '', 10);
-      if (isNaN(id)) return;
+      const id = parseInt(target.getAttribute('data-id') ?? '', 10);
+      if (isNaN(id)) {
+        return;
+      }
       deleteTodo(id);
     }
   });
@@ -87,8 +89,10 @@ function init(): void {
   elements.todoList.addEventListener('change', (e: Event) => {
     const target = e.target as HTMLElement;
     if (target.getAttribute('data-action') === 'toggle') {
-      const id = parseInt(target.getAttribute('data-id') || '', 10);
-      if (isNaN(id)) return;
+      const id = parseInt(target.getAttribute('data-id') ?? '', 10);
+      if (isNaN(id)) {
+        return;
+      }
       toggleTodo(id);
     }
   });
