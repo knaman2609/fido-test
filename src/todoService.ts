@@ -1,10 +1,23 @@
-import type { Todo, TodoId, TodoService as ITodoService } from './types.js';
+import type { Todo, TodoId, TodoService as ITodoService, BlockNoteJSON } from './types.js';
 import { isValidImageUrl } from './utils.js';
+import { migrateTodoTextToContent, isEmptyContent } from './blocknoteService.js';
 
-// Storage: Uses localStorage with image compression (see imageService.ts).
-// Images are compressed to ~100-300KB each, allowing 15-25+ todos with images
-// within typical 5-10MB browser storage limits.
 const STORAGE_KEY = 'todos';
+
+function isValidBlockNoteBlock(item: unknown): boolean {
+  if (typeof item !== 'object' || item === null) {
+    return false;
+  }
+  const block = item as Record<string, unknown>;
+  return typeof block.type === 'string';
+}
+
+function isValidBlockNoteJSON(content: unknown): content is BlockNoteJSON {
+  if (!Array.isArray(content)) {
+    return false;
+  }
+  return content.every(isValidBlockNoteBlock);
+}
 
 function isValidTodo(item: unknown): item is Todo {
   if (typeof item !== 'object' || item === null) {
@@ -12,11 +25,16 @@ function isValidTodo(item: unknown): item is Todo {
   }
   const todo = item as Record<string, unknown>;
   const hasValidImage = todo.image === undefined || (typeof todo.image === 'string' && isValidImageUrl(todo.image));
+  const hasValidText = todo.text === undefined || typeof todo.text === 'string';
+  const hasValidContent = todo.content === undefined || isValidBlockNoteJSON(todo.content);
+
   return (
     typeof todo.id === 'number' &&
-    typeof todo.text === 'string' &&
     typeof todo.completed === 'boolean' &&
-    hasValidImage
+    hasValidImage &&
+    hasValidText &&
+    hasValidContent &&
+    (todo.text !== undefined || todo.content !== undefined)
   );
 }
 
@@ -28,10 +46,10 @@ class TodoServiceImpl implements ITodoService {
     return [...this.todos];
   }
 
-  add(text: string, image?: string): Todo {
+  add(content: BlockNoteJSON, image?: string): Todo {
     const todo: Todo = {
       id: this.idCounter++,
-      text: text,
+      content: content,
       completed: false,
       image: image
     };
@@ -60,7 +78,19 @@ class TodoServiceImpl implements ITodoService {
         const parsed: unknown = JSON.parse(stored);
         if (Array.isArray(parsed)) {
           const validTodos = parsed.filter(isValidTodo);
-          this.todos = validTodos;
+
+          const migratedTodos = validTodos.map(todo => {
+            if (todo.text && !todo.content) {
+              return {
+                ...todo,
+                content: migrateTodoTextToContent(todo.text),
+                text: undefined
+              };
+            }
+            return todo;
+          });
+
+          this.todos = migratedTodos;
           const maxId = this.todos.reduce((max, todo) => Math.max(max, todo.id), 0);
           this.idCounter = maxId + 1;
         }
