@@ -1,9 +1,22 @@
 import type { BlockNoteDocument } from './types.js';
 
+interface InlineContent {
+  type: string;
+  text?: string;
+  styles?: Record<string, unknown>;
+}
+
+interface Block {
+  type: string;
+  props?: Record<string, unknown>;
+  content?: InlineContent[];
+  children?: Block[];
+}
+
 export function isEmptyContent(content: BlockNoteDocument[]): boolean {
   if (content.length === 0) return true;
   if (content.length === 1) {
-    const block = content[0];
+    const block = content[0] as Block;
     if (block.type === 'paragraph' && (!block.content || block.content.length === 0)) {
       return true;
     }
@@ -14,7 +27,8 @@ export function isEmptyContent(content: BlockNoteDocument[]): boolean {
 export function getPlainTextPreview(content: BlockNoteDocument[]): string {
   const texts: string[] = [];
   
-  for (const block of content) {
+  for (const doc of content) {
+    const block = doc as Block;
     if (block.content) {
       for (const inline of block.content) {
         if (inline.text) {
@@ -30,8 +44,8 @@ export function getPlainTextPreview(content: BlockNoteDocument[]): string {
 export function convertToHtml(content: BlockNoteDocument[]): string {
   const blocks: string[] = [];
   
-  for (const block of content) {
-    const html = blockToHtml(block);
+  for (const doc of content) {
+    const html = blockToHtml(doc as Block);
     if (html) {
       blocks.push(html);
     }
@@ -40,7 +54,7 @@ export function convertToHtml(content: BlockNoteDocument[]): string {
   return blocks.join('');
 }
 
-function blockToHtml(block: BlockNoteDocument): string {
+function blockToHtml(block: Block): string {
   const content = inlineContentToHtml(block.content || []);
   
   switch (block.type) {
@@ -65,7 +79,7 @@ function blockToHtml(block: BlockNoteDocument): string {
   }
 }
 
-function inlineContentToHtml(content: Array<{ type: string; text?: string; styles?: Record<string, boolean> }>): string {
+function inlineContentToHtml(content: InlineContent[]): string {
   if (!content || content.length === 0) return '';
   
   return content.map(inline => {
