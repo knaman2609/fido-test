@@ -36,7 +36,7 @@ export function isEmptyContent(content: BlockNoteJSON | undefined): boolean {
       return true;
     }
     const text = block.content
-      .map(c => c.text || '')
+      .map(c => c.text ?? '')
       .join('')
       .trim();
     return text === '';
@@ -53,7 +53,7 @@ export function extractPlainText(content: BlockNoteJSON | undefined): string {
   function extractFromBlock(block: BlockNoteBlock): void {
     if (block.content) {
       const blockText = block.content
-        .map(c => c.text || '')
+        .map(c => c.text ?? '')
         .join('');
       if (blockText) {
         texts.push(blockText);
@@ -112,24 +112,27 @@ export function convertBlocksToHtml(content: BlockNoteJSON | undefined): string 
     switch (block.type) {
       case 'paragraph':
         return `<p>${contentText}${childrenHtml}</p>`;
-      case 'heading':
-        const level = (block.props?.level as number) || 1;
+      case 'heading': {
+        const level = (block.props?.level as number) ?? 1;
         return `<h${level}>${contentText}</h${level}>`;
+      }
       case 'bulletListItem':
         return `<li>${contentText}${childrenHtml}</li>`;
       case 'numberedListItem':
         return `<li>${contentText}${childrenHtml}</li>`;
-      case 'checkListItem':
+      case 'checkListItem': {
         const checked = block.props?.checked ? 'checked' : '';
         return `<div class="check-item"><input type="checkbox" ${checked} disabled> ${contentText}</div>`;
+      }
       case 'codeBlock':
         return `<pre><code>${contentText}</code></pre>`;
       case 'quote':
         return `<blockquote>${contentText}</blockquote>`;
-      case 'image':
-        const src = block.props?.url as string || '';
-        const alt = block.props?.caption as string || '';
+      case 'image': {
+        const src = (block.props?.url as string) ?? '';
+        const alt = (block.props?.caption as string) ?? '';
         return `<img src="${escapeHtml(src)}" alt="${escapeHtml(alt)}" class="todo-inline-image">`;
+      }
       default:
         return `<div>${contentText}${childrenHtml}</div>`;
     }
@@ -138,7 +141,7 @@ export function convertBlocksToHtml(content: BlockNoteJSON | undefined): string 
   let inList = false;
   let listType: 'ul' | 'ol' | null = null;
 
-  content.forEach((block, index) => {
+  content.forEach((block) => {
     const isListItem = block.type === 'bulletListItem' || block.type === 'numberedListItem';
     const currentListType = block.type === 'bulletListItem' ? 'ul' : block.type === 'numberedListItem' ? 'ol' : null;
 
