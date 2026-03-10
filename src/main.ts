@@ -49,7 +49,7 @@ function init(): void {
     elements.imageInput.value = '';
     elements.imagePreview.innerHTML = '';
     elements.imagePreview.classList.remove('has-image');
-    elements.clearImageBtn.style.display = 'none';
+    elements.clearImageBtn.classList.remove('visible');
   }
 
   async function handleImageSelect(e: Event): Promise<void> {
@@ -74,7 +74,7 @@ function init(): void {
       img.alt = 'Image preview';
       elements.imagePreview.appendChild(img);
       elements.imagePreview.classList.add('has-image');
-      elements.clearImageBtn.style.display = 'block';
+      elements.clearImageBtn.classList.add('visible');
     } catch (error) {
       ui.showError('Failed to read image file');
       elements.imageInput.value = '';
