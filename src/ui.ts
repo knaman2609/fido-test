@@ -52,7 +52,9 @@ class UIRendererImpl implements IUIRenderer {
       function openImage(): void {
         if (todo.image && isValidImageUrl(todo.image)) {
           const newWindow = window.open(todo.image, '_blank');
-          if (newWindow) newWindow.opener = null;
+          if (newWindow) {
+            newWindow.opener = null;
+          }
         }
       }
 
