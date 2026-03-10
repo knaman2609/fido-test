@@ -43,7 +43,7 @@ function init(): void {
   function handleSave(errorMessage: string): void {
     try {
       todoService.save();
-    } catch (_e) {
+    } catch {
       ui.showError(errorMessage);
     }
   }
