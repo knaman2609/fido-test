@@ -39,7 +39,7 @@ function init(): void {
   function handleSave(errorMessage: string): void {
     try {
       todoService.save();
-    } catch (e) {
+    } catch (_e) {
       ui.showError(errorMessage);
     }
   }
@@ -61,7 +61,9 @@ function init(): void {
     elements.imagePreview.classList.remove('has-image');
     elements.clearImageBtn.classList.remove('visible');
 
-    if (!file) return;
+    if (!file) {
+      return;
+    }
 
     if (!imageService.validateFile(file)) {
       currentImage = null;
@@ -81,7 +83,7 @@ function init(): void {
       elements.imagePreview.appendChild(img);
       elements.imagePreview.classList.add('has-image');
       elements.clearImageBtn.classList.add('visible');
-    } catch (error) {
+    } catch (_error) {
       ui.showError('Failed to read image file');
       clearImage();
     }
@@ -89,9 +91,11 @@ function init(): void {
 
   function addTodo(): void {
     const text = elements.todoInput.value.trim();
-    if (!text) return;
+    if (!text) {
+      return;
+    }
 
-    todoService.add(text, currentImage || undefined);
+    todoService.add(text, currentImage ?? undefined);
     handleSave('Warning: Your todos cannot be saved. Storage may be full or disabled.');
     render();
     elements.todoInput.value = '';
@@ -116,8 +120,10 @@ function init(): void {
     const action = target.getAttribute('data-action');
 
     if (action === 'delete') {
-      const id = parseInt(target.getAttribute('data-id') || '', 10);
-      if (isNaN(id)) return;
+      const id = parseInt(target.getAttribute('data-id') ?? '', 10);
+      if (isNaN(id)) {
+        return;
+      }
       deleteTodo(id);
     }
   });
@@ -125,17 +131,23 @@ function init(): void {
   elements.todoList.addEventListener('change', (e: Event) => {
     const target = e.target as HTMLElement;
     if (target.getAttribute('data-action') === 'toggle') {
-      const id = parseInt(target.getAttribute('data-id') || '', 10);
-      if (isNaN(id)) return;
+      const id = parseInt(target.getAttribute('data-id') ?? '', 10);
+      if (isNaN(id)) {
+        return;
+      }
       toggleTodo(id);
     }
   });
 
   elements.addBtn.addEventListener('click', addTodo);
   elements.todoInput.addEventListener('keypress', (e: KeyboardEvent) => {
-    if (e.key === 'Enter') addTodo();
+    if (e.key === 'Enter') {
+      addTodo();
+    }
   });
-  elements.imageInput.addEventListener('change', handleImageSelect);
+  elements.imageInput.addEventListener('change', (e: Event) => {
+    void handleImageSelect(e);
+  });
   elements.clearImageBtn.addEventListener('click', clearImage);
 
   todoService.load();
