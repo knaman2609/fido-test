@@ -5,7 +5,7 @@ import type { ImageService } from './types.js';
 // - Images are resized to max 800px width and compressed to JPEG at 70% quality
 // - This typically reduces file size by 60-80% compared to original
 // - With compression, users can store 15-25+ images within the 5-10MB localStorage quota
-const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
+export const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
 
 class ImageServiceImpl implements ImageService {
   validateFile(file: File): boolean {
