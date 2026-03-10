@@ -1,4 +1,5 @@
 import type { Todo, UIRenderer as IUIRenderer } from './types.js';
+import { isValidImageUrl } from './utils.js';
 
 class UIRendererImpl implements IUIRenderer {
   private todoList: HTMLUListElement;
@@ -47,6 +48,34 @@ class UIRendererImpl implements IUIRenderer {
 
       li.appendChild(checkbox);
       li.appendChild(span);
+
+      function openImage(): void {
+        if (todo.image && isValidImageUrl(todo.image)) {
+          const newWindow = window.open(todo.image, '_blank');
+          if (newWindow) newWindow.opener = null;
+        }
+      }
+
+      if (todo.image) {
+        const imgContainer = document.createElement('div');
+        imgContainer.className = 'todo-image-container';
+        const img = document.createElement('img');
+        img.className = 'todo-image';
+        img.src = todo.image;
+        img.alt = 'Todo attachment';
+        img.role = 'button';
+        img.tabIndex = 0;
+        img.addEventListener('click', openImage);
+        img.addEventListener('keydown', (e: KeyboardEvent) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            openImage();
+          }
+        });
+        imgContainer.appendChild(img);
+        li.appendChild(imgContainer);
+      }
+
       li.appendChild(deleteBtn);
       fragment.appendChild(li);
     });

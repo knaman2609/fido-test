@@ -2,13 +2,14 @@ export interface Todo {
   id: number;
   text: string;
   completed: boolean;
+  image?: string;
 }
 
 export type TodoId = number;
 
 export interface TodoService {
   getAll(): Todo[];
-  add(text: string): Todo;
+  add(text: string, image?: string): Todo;
   toggle(id: TodoId): Todo | undefined;
   delete(id: TodoId): boolean;
   load(): void;
@@ -25,4 +26,12 @@ export interface DOMElements {
   addBtn: HTMLButtonElement;
   todoList: HTMLUListElement;
   errorMessage: HTMLDivElement;
+  imageInput: HTMLInputElement;
+  imagePreview: HTMLDivElement;
+  clearImageBtn: HTMLButtonElement;
+}
+
+export interface ImageService {
+  validateFile(file: File): boolean;
+  readFile(file: File): Promise<string>;
 }
