@@ -8,12 +8,13 @@
     "watch": "tsc --watch",
     "serve": "npx serve . -p 3000",
     "start": "npm run build && npm run serve",
-    "clean": "rm -rf dist"
+    "clean": "node -e \"require('fs').rmSync('dist', {recursive: true, force: true})\""
   },
   "keywords": ["todo", "typescript", "app"],
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.0",
+    "serve": "^14.0.0"
   }
 }
