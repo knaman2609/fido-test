@@ -20,10 +20,15 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@blocknote/core": "^0.47.1",
+    "@blocknote/mantine": "^0.47.1",
+    "@blocknote/react": "^0.47.1",
     "@eslint/js": "^10.0.1",
     "@typescript-eslint/eslint-plugin": "^8.57.0",
     "@typescript-eslint/parser": "^8.57.0",
     "eslint": "^10.0.3",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
     "serve": "^14.0.0",
     "typescript": "^5.0.0",
     "typescript-eslint": "^8.57.0"
