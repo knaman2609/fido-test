@@ -6,10 +6,9 @@ import {
   getContent, 
   setContent, 
   createEmptyDocument,
-  isEmptyContent,
-  type BlockNoteDocument
+  isEmptyContent
 } from './blocknoteService.js';
-import type { DOMElements } from './types.js';
+import type { DOMElements, BlockNoteDocument } from './types.js';
 import type { BlockNoteEditor } from '@blocknote/core';
 
 function getDOMElements(): DOMElements {
@@ -43,8 +42,7 @@ async function init(): Promise<void> {
   let editor: BlockNoteEditor;
 
   try {
-    editor = initializeEditor(elements.editorContainer);
-    await editor.ready;
+    editor = await initializeEditor(elements.editorContainer);
   } catch (error) {
     ui.showError('Failed to initialize editor. Please refresh the page.');
     console.error('Editor initialization error:', error);
