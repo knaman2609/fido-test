@@ -224,6 +224,13 @@
     <div class="container">
         <h1>Todo List</h1>
         <div id="errorMessage" class="error-message"></div>
+        <div class="image-upload-group">
+            <div class="image-input-wrapper">
+                <input type="file" id="imageInput" accept="image/*" aria-label="Attach image">
+                <button id="clearImageBtn" class="clear-image-btn" type="button">Remove</button>
+            </div>
+            <div id="imagePreview" class="image-preview"></div>
+        </div>
         <div class="input-group">
             <input type="text" id="todoInput" placeholder="Add a new todo..." aria-label="New todo text" maxlength="200">
             <button id="addBtn">Add</button>
