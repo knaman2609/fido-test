@@ -83,11 +83,7 @@ function init(): void {
       elements.clearImageBtn.classList.add('visible');
     } catch (error) {
       ui.showError('Failed to read image file');
-      currentImage = null;
-      elements.imagePreview.innerHTML = '';
-      elements.imagePreview.classList.remove('has-image');
-      elements.clearImageBtn.classList.remove('visible');
-      elements.imageInput.value = '';
+      clearImage();
     }
   }
 

@@ -49,6 +49,13 @@ class UIRendererImpl implements IUIRenderer {
       li.appendChild(checkbox);
       li.appendChild(span);
 
+      function openImage(): void {
+        if (todo.image && isValidImageUrl(todo.image)) {
+          const newWindow = window.open(todo.image, '_blank');
+          if (newWindow) newWindow.opener = null;
+        }
+      }
+
       if (todo.image) {
         const imgContainer = document.createElement('div');
         imgContainer.className = 'todo-image-container';
@@ -58,19 +65,11 @@ class UIRendererImpl implements IUIRenderer {
         img.alt = 'Todo attachment';
         img.role = 'button';
         img.tabIndex = 0;
-        img.addEventListener('click', () => {
-          if (todo.image && isValidImageUrl(todo.image)) {
-            const newWindow = window.open(todo.image, '_blank');
-            if (newWindow) newWindow.opener = null;
-          }
-        });
+        img.addEventListener('click', openImage);
         img.addEventListener('keydown', (e: KeyboardEvent) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
-            if (todo.image && isValidImageUrl(todo.image)) {
-              const newWindow = window.open(todo.image, '_blank');
-              if (newWindow) newWindow.opener = null;
-            }
+            openImage();
           }
         });
         imgContainer.appendChild(img);
