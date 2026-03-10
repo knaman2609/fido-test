@@ -12,13 +12,14 @@ export class EditorService {
   }
 
   getContent(): BlockNoteDocument[] {
-    return this.editor?.document || [];
+    const doc = this.editor?.document;
+    return (doc as unknown as BlockNoteDocument[]) || [];
   }
 
   clear(): void {
     if (this.editor) {
       const blocks = this.editor.document;
-      if (blocks.length > 0) {
+      if ((blocks as unknown[]).length > 0) {
         this.editor.removeBlocks(blocks);
       }
     }
@@ -32,7 +33,7 @@ export class EditorService {
     const content = this.getContent();
     if (content.length === 0) return true;
     if (content.length === 1) {
-      const block = content[0];
+      const block = content[0] as { type?: string; content?: unknown[] };
       if (block.type === 'paragraph' && (!block.content || block.content.length === 0)) {
         return true;
       }
