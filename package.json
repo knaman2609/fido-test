@@ -10,6 +10,9 @@
     "start": "npm run build && npm run serve",
     "clean": "rm -rf dist"
   },
+  "keywords": ["todo", "typescript", "app"],
+  "author": "",
+  "license": "MIT",
   "devDependencies": {
     "typescript": "^5.0.0"
   }
