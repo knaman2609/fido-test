@@ -1,4 +1,7 @@
-import { BlockNoteEditor, type Block } from '@blocknote/core';
+import { BlockNoteEditor } from '@blocknote/core';
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Block = any;
 
 class BlockNoteService {
   createEditor(
@@ -46,14 +49,14 @@ class BlockNoteService {
 
   extractPlainText(blocks: Block[]): string {
     return blocks
-      .map((block) => {
+      .map((block: Block) => {
         if (!block.content) return '';
         if (typeof block.content === 'string') {
           return block.content;
         }
         if (Array.isArray(block.content)) {
           return block.content
-            .map((c) => {
+            .map((c: Block) => {
               if (typeof c === 'string') return c;
               if (c && typeof c === 'object' && 'text' in c) {
                 return String(c.text || '');
@@ -78,7 +81,7 @@ class BlockNoteService {
       {
         type: 'paragraph',
         content: [{ type: 'text', text }],
-      } as unknown as Block,
+      },
     ];
   }
 }
