@@ -17,13 +17,16 @@ class BlockNoteService {
     container: HTMLElement,
     initialContent?: Block[]
   ): BlockNoteEditor {
+    const defaultContent = initialContent ?? [
+      {
+        type: 'paragraph',
+        content: '',
+      },
+    ];
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const editor = BlockNoteEditor.create({
-      initialContent: (initialContent ?? [
-        {
-          type: 'paragraph',
-          content: '',
-        },
-      ]) as Parameters<typeof BlockNoteEditor.create>[0]['initialContent'],
+      initialContent: defaultContent as any,
     });
 
     return editor;
@@ -51,10 +54,12 @@ class BlockNoteService {
   }
 
   async blocksToHTML(blocks: Block[]): Promise<string> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const editor = BlockNoteEditor.create({
-      initialContent: blocks as Parameters<typeof BlockNoteEditor.create>[0]['initialContent'],
+      initialContent: blocks as any,
     });
-    const html = await editor.blocksToHTMLLossy(blocks as Parameters<typeof BlockNoteEditor.prototype.blocksToHTMLLossy>[0]);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const html = await editor.blocksToHTMLLossy(blocks as any);
     return html;
   }
 
