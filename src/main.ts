@@ -56,6 +56,11 @@ function init(): void {
     const target = e.target as HTMLInputElement;
     const file = target.files?.[0];
 
+    currentImage = null;
+    elements.imagePreview.innerHTML = '';
+    elements.imagePreview.classList.remove('has-image');
+    elements.clearImageBtn.classList.remove('visible');
+
     if (!file) return;
 
     if (!imageService.validateFile(file)) {
@@ -77,6 +82,10 @@ function init(): void {
       elements.clearImageBtn.classList.add('visible');
     } catch (error) {
       ui.showError('Failed to read image file');
+      currentImage = null;
+      elements.imagePreview.innerHTML = '';
+      elements.imagePreview.classList.remove('has-image');
+      elements.clearImageBtn.classList.remove('visible');
       elements.imageInput.value = '';
     }
   }
