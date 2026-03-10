@@ -47,6 +47,21 @@ class UIRendererImpl implements IUIRenderer {
 
       li.appendChild(checkbox);
       li.appendChild(span);
+
+      if (todo.image) {
+        const imgContainer = document.createElement('div');
+        imgContainer.className = 'todo-image-container';
+        const img = document.createElement('img');
+        img.className = 'todo-image';
+        img.src = todo.image;
+        img.alt = 'Todo attachment';
+        img.addEventListener('click', () => {
+          window.open(todo.image, '_blank');
+        });
+        imgContainer.appendChild(img);
+        li.appendChild(imgContainer);
+      }
+
       li.appendChild(deleteBtn);
       fragment.appendChild(li);
     });
