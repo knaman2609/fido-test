@@ -8,7 +8,7 @@
     "watch": "tsc --watch",
     "serve": "npx serve . -p 3000",
     "start": "npm run build && npm run serve",
-    "clean": "node -e \"try { require('fs').rmSync('dist', {recursive: true, force: true}); } catch(e) { /* ignore */ }\""
+    "clean": "node --input-type=module -e \"import { rmSync } from 'fs'; try { rmSync('dist', {recursive: true, force: true}); } catch(e) { /* ignore */ }\""
   },
   "keywords": ["todo", "typescript", "app"],
   "author": "",
