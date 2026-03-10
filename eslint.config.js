@@ -8,7 +8,6 @@ export default [
   {
     files: ["**/*.ts"],
     languageOptions: {
-      parser: await import("espree").then(m => m.default || m),
       parserOptions: {
         ecmaVersion: 2022,
         sourceType: "module",
