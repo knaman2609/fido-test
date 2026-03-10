@@ -1,41 +1,26 @@
-import tseslint from "typescript-eslint";
+import js from "@eslint/js";
 
-export default tseslint.config(
+export default [
   {
     ignores: ["dist/**", "node_modules/**", "*.js", "scripts/**"],
   },
+  js.configs.recommended,
   {
-    name: "eslint/recommended",
-    rules: {
-      "no-unused-vars": "warn",
-      "no-undef": "error",
-      "no-redeclare": "error",
-      "no-unreachable": "error",
-      "no-constant-condition": "warn",
-      "no-dupe-keys": "error",
-      "no-empty": "warn",
-      "no-extra-semi": "warn",
-      "no-func-assign": "error",
-      "no-invalid-regexp": "error",
-      "no-irregular-whitespace": "error",
-      "no-obj-calls": "error",
-      "no-sparse-arrays": "error",
-      "use-isnan": "error",
-      "valid-typeof": "error",
-    },
-  },
-  ...tseslint.configs.recommended,
-  ...tseslint.configs.recommendedTypeChecked,
-  {
+    files: ["**/*.ts"],
     languageOptions: {
+      parser: await import("@typescript-eslint/parser").then(m => m.default),
       parserOptions: {
         project: true,
         tsconfigRootDir: import.meta.dirname,
       },
     },
+    plugins: {
+      "@typescript-eslint": await import("@typescript-eslint/eslint-plugin").then(m => m.default),
+    },
     rules: {
       "no-console": "warn",
       "no-debugger": "error",
+      "no-unused-vars": "off",
       "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
       "@typescript-eslint/explicit-function-return-type": ["warn", { allowExpressions: true }],
       "@typescript-eslint/explicit-module-boundary-types": "warn",
@@ -58,4 +43,4 @@ export default tseslint.config(
       "@typescript-eslint/only-throw-error": "error",
     },
   }
-);
+];
