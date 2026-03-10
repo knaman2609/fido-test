@@ -1,7 +1,7 @@
 import { BlockNoteEditor } from '@blocknote/core';
 
 // Simplified Block type for our use case
-interface Block {
+export interface Block {
   id?: string;
   type: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -18,12 +18,12 @@ class BlockNoteService {
     initialContent?: Block[]
   ): BlockNoteEditor {
     const editor = BlockNoteEditor.create({
-      initialContent: initialContent ?? [
+      initialContent: (initialContent ?? [
         {
           type: 'paragraph',
           content: '',
         },
-      ],
+      ]) as Parameters<typeof BlockNoteEditor.create>[0]['initialContent'],
     });
 
     return editor;
@@ -51,8 +51,10 @@ class BlockNoteService {
   }
 
   async blocksToHTML(blocks: Block[]): Promise<string> {
-    const editor = BlockNoteEditor.create({ initialContent: blocks });
-    const html = await editor.blocksToHTMLLossy(blocks);
+    const editor = BlockNoteEditor.create({
+      initialContent: blocks as Parameters<typeof BlockNoteEditor.create>[0]['initialContent'],
+    });
+    const html = await editor.blocksToHTMLLossy(blocks as Parameters<typeof BlockNoteEditor.prototype.blocksToHTMLLossy>[0]);
     return html;
   }
 
