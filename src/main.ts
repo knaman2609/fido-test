@@ -1,7 +1,10 @@
+import React from 'react';
+import { createRoot } from 'react-dom/client';
 import { todoService } from './todoService.js';
 import { imageService, MAX_FILE_SIZE } from './imageService.js';
 import { createUIRenderer } from './ui.js';
-import type { DOMElements } from './types.js';
+import { BlockNoteEditor } from './components/BlockNoteEditor.js';
+import type { DOMElements, BlockNoteJSON } from './types.js';
 
 function getDOMElements(): DOMElements {
   const todoInput = document.getElementById('todoInput');
@@ -11,8 +14,9 @@ function getDOMElements(): DOMElements {
   const imageInput = document.getElementById('imageInput');
   const imagePreview = document.getElementById('imagePreview');
   const clearImageBtn = document.getElementById('clearImageBtn');
+  const editorContainer = document.getElementById('editorContainer');
 
-  if (!todoInput || !addBtn || !todoList || !errorMessage || !imageInput || !imagePreview || !clearImageBtn) {
+  if (!todoInput || !addBtn || !todoList || !errorMessage || !imageInput || !imagePreview || !clearImageBtn || !editorContainer) {
     throw new Error('Required DOM elements not found');
   }
 
@@ -23,14 +27,14 @@ function getDOMElements(): DOMElements {
     errorMessage: errorMessage as HTMLDivElement,
     imageInput: imageInput as HTMLInputElement,
     imagePreview: imagePreview as HTMLDivElement,
-    clearImageBtn: clearImageBtn as HTMLButtonElement
+    clearImageBtn: clearImageBtn as HTMLButtonElement,
+    editorContainer: editorContainer as HTMLDivElement
   };
 }
 
 function init(): void {
   const elements = getDOMElements();
   const ui = createUIRenderer(elements.todoList, elements.errorMessage);
-  let currentImage: string | null = null;
 
   function render(): void {
     ui.render(todoService.getAll());
@@ -44,59 +48,17 @@ function init(): void {
     }
   }
 
-  function clearImage(): void {
-    currentImage = null;
-    elements.imageInput.value = '';
-    elements.imagePreview.innerHTML = '';
-    elements.imagePreview.classList.remove('has-image');
-    elements.clearImageBtn.classList.remove('visible');
-  }
-
-  async function handleImageSelect(e: Event): Promise<void> {
-    const target = e.target as HTMLInputElement;
-    const file = target.files?.[0];
-
-    currentImage = null;
-    elements.imagePreview.innerHTML = '';
-    elements.imagePreview.classList.remove('has-image');
-    elements.clearImageBtn.classList.remove('visible');
-
-    if (!file) return;
-
+  async function handleImageSelect(file: File): Promise<string> {
     if (!imageService.validateFile(file)) {
-      currentImage = null;
-      ui.showError(`Please select a valid image file (max ${MAX_FILE_SIZE / 1024 / 1024}MB)`);
-      elements.imageInput.value = '';
-      return;
+      throw new Error(`Please select a valid image file (max ${MAX_FILE_SIZE / 1024 / 1024}MB)`);
     }
-
-    try {
-      const base64 = await imageService.readFile(file);
-      currentImage = base64;
-
-      elements.imagePreview.innerHTML = '';
-      const img = document.createElement('img');
-      img.src = base64;
-      img.alt = 'Image preview';
-      elements.imagePreview.appendChild(img);
-      elements.imagePreview.classList.add('has-image');
-      elements.clearImageBtn.classList.add('visible');
-    } catch (error) {
-      ui.showError('Failed to read image file');
-      clearImage();
-    }
+    return await imageService.readFile(file);
   }
 
-  function addTodo(): void {
-    const text = elements.todoInput.value.trim();
-    if (!text) return;
-
-    todoService.add(text, currentImage || undefined);
+  function addTodo(content: BlockNoteJSON, image?: string): void {
+    todoService.add(content, image);
     handleSave('Warning: Your todos cannot be saved. Storage may be full or disabled.');
     render();
-    elements.todoInput.value = '';
-    clearImage();
-    elements.todoInput.focus();
   }
 
   function toggleTodo(id: number): void {
@@ -131,12 +93,13 @@ function init(): void {
     }
   });
 
-  elements.addBtn.addEventListener('click', addTodo);
-  elements.todoInput.addEventListener('keypress', (e: KeyboardEvent) => {
-    if (e.key === 'Enter') addTodo();
-  });
-  elements.imageInput.addEventListener('change', handleImageSelect);
-  elements.clearImageBtn.addEventListener('click', clearImage);
+  const root = createRoot(elements.editorContainer);
+  root.render(
+    React.createElement(BlockNoteEditor, {
+      onSubmit: addTodo,
+      onImageSelect: handleImageSelect
+    })
+  );
 
   todoService.load();
   render();
