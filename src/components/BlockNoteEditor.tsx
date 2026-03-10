@@ -19,14 +19,16 @@ const getCustomSlashMenuItems = (
   ...getDefaultReactSlashMenuItems(editor),
 ];
 
-function filterItems<T extends { title: string; aliases?: readonly string[] | string[] }>(
-  items: T[],
+function filterItems(
+  items: DefaultReactSuggestionItem[],
   query: string
-): T[] {
+): DefaultReactSuggestionItem[] {
   const lowerQuery = query.toLowerCase();
   return items.filter(item => {
-    const titleMatch = item.title.toLowerCase().includes(lowerQuery);
-    const aliasMatch = item.aliases?.some(alias =>
+    const title = (item as unknown as { title: string }).title;
+    const aliases = (item as unknown as { aliases?: string[] }).aliases;
+    const titleMatch = title.toLowerCase().includes(lowerQuery);
+    const aliasMatch = aliases?.some(alias =>
       alias.toLowerCase().includes(lowerQuery)
     );
     return titleMatch || aliasMatch;
