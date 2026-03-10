@@ -1,5 +1,8 @@
 import type { Todo, TodoId, TodoService as ITodoService } from './types.js';
 
+// Storage: Uses localStorage with image compression (see imageService.ts).
+// Images are compressed to ~100-300KB each, allowing 15-25+ todos with images
+// within typical 5-10MB browser storage limits.
 const STORAGE_KEY = 'todos';
 
 function isValidTodo(item: unknown): item is Todo {
