@@ -33,7 +33,7 @@ export interface UIRenderer {
 }
 
 export interface DOMElements {
-  todoInput: HTMLInputElement;
+  editorContainer: HTMLDivElement;
   addBtn: HTMLButtonElement;
   todoList: HTMLUListElement;
   errorMessage: HTMLDivElement;
