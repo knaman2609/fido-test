@@ -1,6 +1,6 @@
 import type { Todo, TodoId, TodoService as ITodoService, BlockNoteDocument } from './types.js';
 import { isValidImageUrl } from './utils.js';
-import { isEmptyContent } from './blocknoteUtils.js';
+
 
 // Storage: Uses localStorage with image compression (see imageService.ts).
 // Images are compressed to ~100-300KB each, allowing 15-25+ todos with images
