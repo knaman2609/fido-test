@@ -1,7 +1,7 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { BlockNoteEditor as BNEditor, filterSuggestionItems } from '@blocknote/core';
 import {
-  BlockNoteView,
+  BlockNoteViewRaw,
   DefaultReactSuggestionItem,
   getDefaultReactSlashMenuItems,
   SuggestionMenuController,
@@ -103,7 +103,7 @@ export const BlockNoteEditor: React.FC<BlockNoteEditorProps> = ({
   return (
     <div className="blocknote-editor-wrapper" onKeyDown={handleKeyDown}>
       <div className="blocknote-editor-container">
-        <BlockNoteView
+        <BlockNoteViewRaw
           editor={editor}
           slashMenu={false}
           className="blocknote-editor"
@@ -114,7 +114,7 @@ export const BlockNoteEditor: React.FC<BlockNoteEditorProps> = ({
               filterSuggestionItems(getCustomSlashMenuItems(editor), query)
             }
           />
-        </BlockNoteView>
+        </BlockNoteViewRaw>
       </div>
 
       <div className="editor-toolbar">
