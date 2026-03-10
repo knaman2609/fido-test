@@ -28,16 +28,20 @@ function init(): void {
     ui.render(todoService.getAll());
   }
 
+  function handleSave(errorMessage: string): void {
+    try {
+      todoService.save();
+    } catch (e) {
+      ui.showError(errorMessage);
+    }
+  }
+
   function addTodo(): void {
     const text = elements.todoInput.value.trim();
     if (!text) return;
 
     todoService.add(text);
-    try {
-      todoService.save();
-    } catch (e) {
-      ui.showError('Warning: Your todos cannot be saved. Storage may be full or disabled.');
-    }
+    handleSave('Warning: Your todos cannot be saved. Storage may be full or disabled.');
     render();
     elements.todoInput.value = '';
     elements.todoInput.focus();
@@ -45,21 +49,13 @@ function init(): void {
 
   function toggleTodo(id: number): void {
     todoService.toggle(id);
-    try {
-      todoService.save();
-    } catch (e) {
-      ui.showError('Warning: Unable to save changes.');
-    }
+    handleSave('Warning: Unable to save changes.');
     render();
   }
 
   function deleteTodo(id: number): void {
     todoService.delete(id);
-    try {
-      todoService.save();
-    } catch (e) {
-      ui.showError('Warning: Unable to save changes.');
-    }
+    handleSave('Warning: Unable to save changes.');
     render();
   }
 
