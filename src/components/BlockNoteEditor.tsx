@@ -19,7 +19,7 @@ const getCustomSlashMenuItems = (
   ...getDefaultReactSlashMenuItems(editor),
 ];
 
-function filterItems<T extends { title: string; aliases?: readonly string[] }>(
+function filterItems<T extends { title: string; aliases?: readonly string[] | string[] }>(
   items: T[],
   query: string
 ): T[] {
