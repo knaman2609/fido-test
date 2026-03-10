@@ -1,11 +1,29 @@
-import js from "@eslint/js";
 import tseslint from "typescript-eslint";
 
 export default tseslint.config(
   {
     ignores: ["dist/**", "node_modules/**", "*.js", "scripts/**"],
   },
-  js.configs.recommended,
+  {
+    name: "eslint/recommended",
+    rules: {
+      "no-unused-vars": "warn",
+      "no-undef": "error",
+      "no-redeclare": "error",
+      "no-unreachable": "error",
+      "no-constant-condition": "warn",
+      "no-dupe-keys": "error",
+      "no-empty": "warn",
+      "no-extra-semi": "warn",
+      "no-func-assign": "error",
+      "no-invalid-regexp": "error",
+      "no-irregular-whitespace": "error",
+      "no-obj-calls": "error",
+      "no-sparse-arrays": "error",
+      "use-isnan": "error",
+      "valid-typeof": "error",
+    },
+  },
   ...tseslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
   {
