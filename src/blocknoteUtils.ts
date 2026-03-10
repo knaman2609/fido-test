@@ -13,10 +13,14 @@ interface Block {
   children?: Block[];
 }
 
+function toBlock(doc: BlockNoteDocument): Block {
+  return doc as unknown as Block;
+}
+
 export function isEmptyContent(content: BlockNoteDocument[]): boolean {
   if (content.length === 0) return true;
   if (content.length === 1) {
-    const block = content[0] as Block;
+    const block = toBlock(content[0]);
     if (block.type === 'paragraph' && (!block.content || block.content.length === 0)) {
       return true;
     }
@@ -28,7 +32,7 @@ export function getPlainTextPreview(content: BlockNoteDocument[]): string {
   const texts: string[] = [];
   
   for (const doc of content) {
-    const block = doc as Block;
+    const block = toBlock(doc);
     if (block.content) {
       for (const inline of block.content) {
         if (inline.text) {
@@ -45,7 +49,7 @@ export function convertToHtml(content: BlockNoteDocument[]): string {
   const blocks: string[] = [];
   
   for (const doc of content) {
-    const html = blockToHtml(doc as Block);
+    const html = blockToHtml(toBlock(doc));
     if (html) {
       blocks.push(html);
     }
