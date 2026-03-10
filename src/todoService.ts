@@ -7,10 +7,12 @@ function isValidTodo(item: unknown): item is Todo {
     return false;
   }
   const todo = item as Record<string, unknown>;
+  const hasValidImage = todo.image === undefined || typeof todo.image === 'string';
   return (
     typeof todo.id === 'number' &&
     typeof todo.text === 'string' &&
-    typeof todo.completed === 'boolean'
+    typeof todo.completed === 'boolean' &&
+    hasValidImage
   );
 }
 
@@ -22,11 +24,12 @@ class TodoServiceImpl implements ITodoService {
     return [...this.todos];
   }
 
-  add(text: string): Todo {
+  add(text: string, image?: string): Todo {
     const todo: Todo = {
       id: this.idCounter++,
       text: text,
-      completed: false
+      completed: false,
+      image: image
     };
     this.todos.push(todo);
     return todo;
