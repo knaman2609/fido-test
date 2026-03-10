@@ -1,4 +1,14 @@
-import type { Block } from '@blocknote/core';
+// Simplified Block type for BlockNote content
+export interface Block {
+  id?: string;
+  type: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  content?: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  props?: Record<string, any>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  children?: Block[];
+}
 
 export interface Todo {
   id: number;
