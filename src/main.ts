@@ -1,5 +1,5 @@
 import { todoService } from './todoService.js';
-import { imageService } from './imageService.js';
+import { imageService, MAX_FILE_SIZE } from './imageService.js';
 import { createUIRenderer } from './ui.js';
 import type { DOMElements } from './types.js';
 
