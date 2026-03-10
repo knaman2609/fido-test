@@ -2,6 +2,18 @@ import type { Todo, TodoId, TodoService as ITodoService } from './types.js';
 
 const STORAGE_KEY = 'todos';
 
+function isValidTodo(item: unknown): item is Todo {
+  if (typeof item !== 'object' || item === null) {
+    return false;
+  }
+  const todo = item as Record<string, unknown>;
+  return (
+    typeof todo.id === 'number' &&
+    typeof todo.text === 'string' &&
+    typeof todo.completed === 'boolean'
+  );
+}
+
 class TodoServiceImpl implements ITodoService {
   private todos: Todo[] = [];
   private idCounter: number = 1;
