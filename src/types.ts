@@ -1,6 +1,10 @@
+import type { Block } from '@blocknote/core';
+
+export type BlockNoteDocument = Block[];
+
 export interface Todo {
   id: number;
-  text: string;
+  content: BlockNoteDocument;
   completed: boolean;
   image?: string;
 }
@@ -9,7 +13,7 @@ export type TodoId = number;
 
 export interface TodoService {
   getAll(): Todo[];
-  add(text: string, image?: string): Todo;
+  add(content: BlockNoteDocument, image?: string): Todo;
   toggle(id: TodoId): Todo | undefined;
   delete(id: TodoId): boolean;
   load(): void;
@@ -22,7 +26,7 @@ export interface UIRenderer {
 }
 
 export interface DOMElements {
-  todoInput: HTMLInputElement;
+  editorContainer: HTMLDivElement;
   addBtn: HTMLButtonElement;
   todoList: HTMLUListElement;
   errorMessage: HTMLDivElement;
