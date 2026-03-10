@@ -35,7 +35,8 @@ export function createEmptyDocument(): BlockNoteDocument {
         textColor: 'default',
         textAlignment: 'left'
       },
-      content: []
+      content: [],
+      children: []
     }
   ];
 }
@@ -48,7 +49,8 @@ export function isEmptyContent(content: BlockNoteDocument): boolean {
     if (!block.content || block.content.length === 0) return true;
     return block.content.every((inline) => {
       if (typeof inline === 'object' && inline !== null && 'text' in inline) {
-        return !inline.text || inline.text === '';
+        const textInline = inline as { text?: string };
+        return !textInline.text || textInline.text === '';
       }
       return true;
     });
@@ -130,10 +132,16 @@ export function extractPlainText(content: BlockNoteDocument): string {
     let text = '';
     if (block.content && Array.isArray(block.content)) {
       text = block.content
-        .filter((item): item is { text?: string } => 
-          typeof item === 'object' && item !== null && ('text' in item)
-        )
-        .map((item) => item.text || '')
+        .map((item) => {
+          if (typeof item === 'object' && item !== null) {
+            const inline = item as { type?: string; text?: string; href?: string };
+            if (inline.type === 'link' && inline.href) {
+              return inline.text || inline.href;
+            }
+            return inline.text || '';
+          }
+          return '';
+        })
         .join('');
     }
     const childrenText = block.children ? extractPlainText(block.children) : '';
