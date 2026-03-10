@@ -1,5 +1,5 @@
 import React, { useCallback, useRef, useState } from 'react';
-import { BlockNoteEditor as BNEditor, filterSuggestionItems } from '@blocknote/core';
+import { BlockNoteEditor as BNEditor } from '@blocknote/core';
 import {
   BlockNoteViewRaw,
   DefaultReactSuggestionItem,
@@ -18,6 +18,20 @@ const getCustomSlashMenuItems = (
 ): DefaultReactSuggestionItem[] => [
   ...getDefaultReactSlashMenuItems(editor),
 ];
+
+function filterItems<T extends { title: string; aliases?: readonly string[] }>(
+  items: T[],
+  query: string
+): T[] {
+  const lowerQuery = query.toLowerCase();
+  return items.filter(item => {
+    const titleMatch = item.title.toLowerCase().includes(lowerQuery);
+    const aliasMatch = item.aliases?.some(alias =>
+      alias.toLowerCase().includes(lowerQuery)
+    );
+    return titleMatch || aliasMatch;
+  });
+}
 
 export const BlockNoteEditor: React.FC<BlockNoteEditorProps> = ({
   onSubmit,
@@ -111,7 +125,7 @@ export const BlockNoteEditor: React.FC<BlockNoteEditorProps> = ({
           <SuggestionMenuController
             triggerCharacter="/"
             getItems={async (query) =>
-              filterSuggestionItems(getCustomSlashMenuItems(editor), query)
+              filterItems(getCustomSlashMenuItems(editor), query)
             }
           />
         </BlockNoteViewRaw>
