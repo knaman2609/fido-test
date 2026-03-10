@@ -1,6 +1,17 @@
+export interface BlockNoteDocument {
+  type: string;
+  props?: Record<string, unknown>;
+  content?: Array<{
+    type: string;
+    text?: string;
+    styles?: Record<string, boolean>;
+  }>;
+  children?: BlockNoteDocument[];
+}
+
 export interface Todo {
   id: number;
-  text: string;
+  content: BlockNoteDocument[];
   completed: boolean;
   image?: string;
 }
