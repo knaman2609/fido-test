@@ -10,7 +10,7 @@ function isValidTodo(item: unknown): item is Todo {
     return false;
   }
   const todo = item as Record<string, unknown>;
-  const hasValidImage = todo.image === undefined || typeof todo.image === 'string';
+  const hasValidImage = todo.image === undefined || (typeof todo.image === 'string' && todo.image.startsWith('data:image/'));
   return (
     typeof todo.id === 'number' &&
     typeof todo.text === 'string' &&
