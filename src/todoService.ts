@@ -65,6 +65,7 @@ class TodoServiceImpl implements ITodoService {
           this.idCounter = maxId + 1;
         }
       } catch (e) {
+        // eslint-disable-next-line no-console
         console.error('Failed to parse todos from localStorage:', e);
         this.todos = [];
       }
@@ -75,6 +76,7 @@ class TodoServiceImpl implements ITodoService {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(this.todos));
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.error('Failed to save todos to localStorage:', e);
       throw new Error('Storage may be full or disabled', { cause: e });
     }
