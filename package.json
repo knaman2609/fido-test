@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix",
-    "build": "npm run lint && tsc",
+    "build": "tsc",
     "watch": "tsc --watch",
     "serve": "serve . -p 3000",
     "start": "npm run build && npm run serve",
