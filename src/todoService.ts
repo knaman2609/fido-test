@@ -1,6 +1,6 @@
 import type { Todo, TodoId, TodoService as ITodoService, BlockNoteJSON } from './types.js';
 import { isValidImageUrl } from './utils.js';
-import { migrateTodoTextToContent, isEmptyContent } from './blocknoteService.js';
+import { migrateTodoTextToContent } from './blocknoteService.js';
 
 const STORAGE_KEY = 'todos';
 
@@ -40,7 +40,7 @@ function isValidTodo(item: unknown): item is Todo {
 
 class TodoServiceImpl implements ITodoService {
   private todos: Todo[] = [];
-  private idCounter: number = 1;
+  private idCounter = 1;
 
   getAll(): Todo[] {
     return [...this.todos];
@@ -106,7 +106,7 @@ class TodoServiceImpl implements ITodoService {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(this.todos));
     } catch (e) {
       console.error('Failed to save todos to localStorage:', e);
-      throw new Error('Storage may be full or disabled');
+      throw new Error('Storage may be full or disabled', { cause: e });
     }
   }
 }
