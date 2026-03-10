@@ -39,7 +39,7 @@ function init(): void {
   function handleSave(errorMessage: string): void {
     try {
       todoService.save();
-    } catch (_e) {
+    } catch {
       ui.showError(errorMessage);
     }
   }
@@ -83,7 +83,7 @@ function init(): void {
       elements.imagePreview.appendChild(img);
       elements.imagePreview.classList.add('has-image');
       elements.clearImageBtn.classList.add('visible');
-    } catch (_error) {
+    } catch {
       ui.showError('Failed to read image file');
       clearImage();
     }
