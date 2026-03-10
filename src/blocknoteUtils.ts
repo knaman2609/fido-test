@@ -1,0 +1,89 @@
+import type { BlockNoteDocument } from './types.js';
+
+export function isEmptyContent(content: BlockNoteDocument[]): boolean {
+  if (content.length === 0) return true;
+  if (content.length === 1) {
+    const block = content[0];
+    if (block.type === 'paragraph' && (!block.content || block.content.length === 0)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+export function getPlainTextPreview(content: BlockNoteDocument[]): string {
+  const texts: string[] = [];
+  
+  for (const block of content) {
+    if (block.content) {
+      for (const inline of block.content) {
+        if (inline.text) {
+          texts.push(inline.text);
+        }
+      }
+    }
+  }
+  
+  return texts.join(' ').trim();
+}
+
+export function convertToHtml(content: BlockNoteDocument[]): string {
+  const blocks: string[] = [];
+  
+  for (const block of content) {
+    const html = blockToHtml(block);
+    if (html) {
+      blocks.push(html);
+    }
+  }
+  
+  return blocks.join('');
+}
+
+function blockToHtml(block: BlockNoteDocument): string {
+  const content = inlineContentToHtml(block.content || []);
+  
+  switch (block.type) {
+    case 'paragraph':
+      return `<p>${content}</p>`;
+    case 'heading':
+      const level = (block.props?.level as number) || 1;
+      return `<h${level}>${content}</h${level}>`;
+    case 'bulletListItem':
+      return `<li style="list-style-type: disc; margin-left: 20px;">${content}</li>`;
+    case 'numberedListItem':
+      return `<li style="list-style-type: decimal; margin-left: 20px;">${content}</li>`;
+    case 'checkListItem':
+      const checked = block.props?.checked ? 'checked' : '';
+      return `<div style="display: flex; align-items: center; gap: 8px; margin: 4px 0;"><input type="checkbox" disabled ${checked}><span>${content}</span></div>`;
+    case 'codeBlock':
+      return `<pre style="background: #f5f5f5; padding: 12px; border-radius: 4px; overflow-x: auto;"><code>${content}</code></pre>`;
+    case 'blockquote':
+      return `<blockquote style="border-left: 3px solid #ccc; padding-left: 12px; margin: 8px 0; color: #666;">${content}</blockquote>`;
+    default:
+      return `<p>${content}</p>`;
+  }
+}
+
+function inlineContentToHtml(content: Array<{ type: string; text?: string; styles?: Record<string, boolean> }>): string {
+  if (!content || content.length === 0) return '';
+  
+  return content.map(inline => {
+    let text = escapeHtml(inline.text || '');
+    const styles = inline.styles || {};
+    
+    if (styles.bold) text = `<strong>${text}</strong>`;
+    if (styles.italic) text = `<em>${text}</em>`;
+    if (styles.underline) text = `<u>${text}</u>`;
+    if (styles.strikethrough) text = `<s>${text}</s>`;
+    if (styles.code) text = `<code style="background: #f0f0f0; padding: 2px 4px; border-radius: 3px; font-family: monospace;">${text}</code>`;
+    
+    return text;
+  }).join('');
+}
+
+function escapeHtml(text: string): string {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
