@@ -1,10 +1,19 @@
 import { todoService } from './todoService.js';
 import { imageService, MAX_FILE_SIZE } from './imageService.js';
 import { createUIRenderer } from './ui.js';
+import { 
+  initializeEditor, 
+  getContent, 
+  setContent, 
+  createEmptyDocument,
+  isEmptyContent,
+  type BlockNoteDocument
+} from './blocknoteService.js';
 import type { DOMElements } from './types.js';
+import type { BlockNoteEditor } from '@blocknote/core';
 
 function getDOMElements(): DOMElements {
-  const todoInput = document.getElementById('todoInput');
+  const editorContainer = document.getElementById('editor');
   const addBtn = document.getElementById('addBtn');
   const todoList = document.getElementById('todoList');
   const errorMessage = document.getElementById('errorMessage');
@@ -12,12 +21,12 @@ function getDOMElements(): DOMElements {
   const imagePreview = document.getElementById('imagePreview');
   const clearImageBtn = document.getElementById('clearImageBtn');
 
-  if (!todoInput || !addBtn || !todoList || !errorMessage || !imageInput || !imagePreview || !clearImageBtn) {
+  if (!editorContainer || !addBtn || !todoList || !errorMessage || !imageInput || !imagePreview || !clearImageBtn) {
     throw new Error('Required DOM elements not found');
   }
 
   return {
-    todoInput: todoInput as HTMLInputElement,
+    editorContainer: editorContainer as HTMLDivElement,
     addBtn: addBtn as HTMLButtonElement,
     todoList: todoList as HTMLUListElement,
     errorMessage: errorMessage as HTMLDivElement,
@@ -27,10 +36,20 @@ function getDOMElements(): DOMElements {
   };
 }
 
-function init(): void {
+async function init(): Promise<void> {
   const elements = getDOMElements();
   const ui = createUIRenderer(elements.todoList, elements.errorMessage);
   let currentImage: string | null = null;
+  let editor: BlockNoteEditor;
+
+  try {
+    editor = initializeEditor(elements.editorContainer);
+    await editor.ready;
+  } catch (error) {
+    ui.showError('Failed to initialize editor. Please refresh the page.');
+    console.error('Editor initialization error:', error);
+    return;
+  }
 
   function render(): void {
     ui.render(todoService.getAll());
@@ -88,15 +107,16 @@ function init(): void {
   }
 
   function addTodo(): void {
-    const text = elements.todoInput.value.trim();
-    if (!text) return;
+    const content = getContent(editor);
+    
+    if (isEmptyContent(content)) return;
 
-    todoService.add(text, currentImage || undefined);
+    todoService.add(content, currentImage || undefined);
     handleSave('Warning: Your todos cannot be saved. Storage may be full or disabled.');
     render();
-    elements.todoInput.value = '';
+    setContent(editor, createEmptyDocument());
     clearImage();
-    elements.todoInput.focus();
+    editor.focus();
   }
 
   function toggleTodo(id: number): void {
@@ -132,9 +152,6 @@ function init(): void {
   });
 
   elements.addBtn.addEventListener('click', addTodo);
-  elements.todoInput.addEventListener('keypress', (e: KeyboardEvent) => {
-    if (e.key === 'Enter') addTodo();
-  });
   elements.imageInput.addEventListener('change', handleImageSelect);
   elements.clearImageBtn.addEventListener('click', clearImage);
 
