@@ -3,6 +3,7 @@ import type { Todo, UIRenderer as IUIRenderer } from './types.js';
 class UIRendererImpl implements IUIRenderer {
   private todoList: HTMLUListElement;
   private errorMessage: HTMLDivElement;
+  private errorTimeoutId: number | null = null;
 
   constructor(todoList: HTMLUListElement, errorMessage: HTMLDivElement) {
     this.todoList = todoList;
