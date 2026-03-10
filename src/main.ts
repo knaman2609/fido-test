@@ -60,7 +60,7 @@ function init(): void {
 
     if (!imageService.validateFile(file)) {
       ui.showError('Please select a valid image file (max 2MB)');
-      clearImage();
+      elements.imageInput.value = '';
       return;
     }
 
