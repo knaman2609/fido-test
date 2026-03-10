@@ -55,7 +55,7 @@ class ImageServiceImpl implements ImageService {
           const compressed = await this.compressImage(result);
           resolve(compressed);
         } catch (error) {
-          reject(error);
+          reject(error instanceof Error ? error : new Error(String(error)));
         }
       };
       reader.onerror = () => {
