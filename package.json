@@ -4,9 +4,9 @@
   "description": "A simple TypeScript Todo App",
   "type": "module",
   "scripts": {
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "build": "eslint . && tsc",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix",
+    "build": "eslint src/ && tsc",
     "watch": "tsc --watch",
     "serve": "serve . -p 3000",
     "start": "npm run build && npm run serve",
