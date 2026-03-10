@@ -52,7 +52,7 @@ function init(): void {
     elements.clearImageBtn.style.display = 'none';
   }
 
-  async function handleImageSelect(e: Event): void {
+  async function handleImageSelect(e: Event): Promise<void> {
     const target = e.target as HTMLInputElement;
     const file = target.files?.[0];
 
