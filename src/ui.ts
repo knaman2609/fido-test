@@ -1,5 +1,5 @@
 import type { Todo, UIRenderer as IUIRenderer } from './types.js';
-import { isValidImageUrl } from './todoService.js';
+import { isValidImageUrl } from './utils.js';
 
 class UIRendererImpl implements IUIRenderer {
   private todoList: HTMLUListElement;
