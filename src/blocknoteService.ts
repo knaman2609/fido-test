@@ -3,12 +3,12 @@ import type { BlockNoteDocument } from './types.js';
 
 let editorInstance: BlockNoteEditor | null = null;
 
-export function initializeEditor(container: HTMLElement): BlockNoteEditor {
+export async function initializeEditor(container: HTMLElement): Promise<BlockNoteEditor> {
   if (editorInstance) {
     return editorInstance;
   }
 
-  editorInstance = new BlockNoteEditor({
+  editorInstance = await BlockNoteEditor.create({
     parentElement: container,
     defaultStyles: true,
     initialContent: createEmptyDocument()
@@ -30,7 +30,11 @@ export function createEmptyDocument(): BlockNoteDocument {
     {
       id: 'initial-block',
       type: 'paragraph',
-      props: {},
+      props: {
+        backgroundColor: 'default',
+        textColor: 'default',
+        textAlignment: 'left'
+      },
       content: []
     }
   ];
@@ -42,7 +46,12 @@ export function isEmptyContent(content: BlockNoteDocument): boolean {
   return content.every(block => {
     if (block.type !== 'paragraph') return false;
     if (!block.content || block.content.length === 0) return true;
-    return block.content.every((inline: { text?: string }) => !inline.text || inline.text === '');
+    return block.content.every((inline) => {
+      if (typeof inline === 'object' && inline !== null && 'text' in inline) {
+        return !inline.text || inline.text === '';
+      }
+      return true;
+    });
   });
 }
 
@@ -82,18 +91,27 @@ function blockToHTML(block: Block): string {
 function inlineContentToHTML(content: unknown): string {
   if (!content || !Array.isArray(content)) return '';
 
-  return content.map((item: { type?: string; text?: string; styles?: Record<string, boolean> }) => {
-    if (item.type === 'text' && item.text) {
-      let text = escapeHTML(item.text);
-      const styles = item.styles || {};
+  return content.map((item) => {
+    if (typeof item === 'object' && item !== null) {
+      const inline = item as { type?: string; text?: string; styles?: Record<string, boolean>; href?: string };
       
-      if (styles.bold) text = `<strong>${text}</strong>`;
-      if (styles.italic) text = `<em>${text}</em>`;
-      if (styles.underline) text = `<u>${text}</u>`;
-      if (styles.strike) text = `<s>${text}</s>`;
-      if (styles.code) text = `<code>${text}</code>`;
+      if (inline.type === 'link' && inline.href) {
+        const text = escapeHTML(inline.text || inline.href);
+        return `<a href="${escapeHTML(inline.href)}" target="_blank" rel="noopener noreferrer">${text}</a>`;
+      }
       
-      return text;
+      if (inline.text) {
+        let text = escapeHTML(inline.text);
+        const styles = inline.styles || {};
+        
+        if (styles.bold) text = `<strong>${text}</strong>`;
+        if (styles.italic) text = `<em>${text}</em>`;
+        if (styles.underline) text = `<u>${text}</u>`;
+        if (styles.strike) text = `<s>${text}</s>`;
+        if (styles.code) text = `<code>${text}</code>`;
+        
+        return text;
+      }
     }
     return '';
   }).join('');
@@ -112,8 +130,10 @@ export function extractPlainText(content: BlockNoteDocument): string {
     let text = '';
     if (block.content && Array.isArray(block.content)) {
       text = block.content
-        .filter((item: { type?: string; text?: string }) => item.type === 'text')
-        .map((item: { text?: string }) => item.text || '')
+        .filter((item): item is { text?: string } => 
+          typeof item === 'object' && item !== null && ('text' in item)
+        )
+        .map((item) => item.text || '')
         .join('');
     }
     const childrenText = block.children ? extractPlainText(block.children) : '';
