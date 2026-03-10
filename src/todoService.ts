@@ -52,7 +52,8 @@ class TodoServiceImpl implements ITodoService {
       try {
         const parsed: unknown = JSON.parse(stored);
         if (Array.isArray(parsed)) {
-          this.todos = parsed as Todo[];
+          const validTodos = parsed.filter(isValidTodo);
+          this.todos = validTodos;
           const maxId = this.todos.reduce((max, todo) => Math.max(max, todo.id), 0);
           this.idCounter = maxId + 1;
         }
