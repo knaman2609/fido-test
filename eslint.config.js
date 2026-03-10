@@ -8,7 +8,7 @@ export default [
   {
     files: ["**/*.ts"],
     languageOptions: {
-      parser: await import("@typescript-eslint/parser").then(m => m.default),
+      parser: await import("espree").then(m => m.default || m),
       parserOptions: {
         ecmaVersion: 2022,
         sourceType: "module",
