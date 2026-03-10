@@ -54,9 +54,12 @@ class UIRendererImpl implements IUIRenderer {
   }
 
   showError(message: string): void {
+    if (this.errorTimeoutId !== null) {
+      clearTimeout(this.errorTimeoutId);
+    }
     this.errorMessage.textContent = message;
     this.errorMessage.classList.add('visible');
-    setTimeout(() => {
+    this.errorTimeoutId = window.setTimeout(() => {
       this.errorMessage.classList.remove('visible');
     }, 5000);
   }
