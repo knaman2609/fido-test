@@ -1,4 +1,5 @@
 import js from "@eslint/js";
+import tsParser from "@typescript-eslint/parser";
 
 export default [
   {
@@ -8,6 +9,7 @@ export default [
   {
     files: ["src/**/*.ts"],
     languageOptions: {
+      parser: tsParser,
       parserOptions: {
         ecmaVersion: 2022,
         sourceType: "module",
