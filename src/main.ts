@@ -64,6 +64,7 @@ function init(): void {
     if (!file) return;
 
     if (!imageService.validateFile(file)) {
+      currentImage = null;
       ui.showError(`Please select a valid image file (max ${MAX_FILE_SIZE / 1024 / 1024}MB)`);
       elements.imageInput.value = '';
       return;
