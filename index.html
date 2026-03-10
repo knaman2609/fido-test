@@ -241,12 +241,6 @@
             todoList.appendChild(fragment);
         }
 
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-
         addBtn.addEventListener('click', addTodo);
         todoInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') addTodo();
