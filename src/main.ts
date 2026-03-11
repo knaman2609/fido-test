@@ -47,7 +47,10 @@ function init(): void {
 
   const EditorComponent = (): ReactElement => {
     return createElement(
-      BlockNoteView,
+      BlockNoteView as React.FunctionComponent<{
+        editor: typeof editor;
+        onChange: () => void;
+      }>,
       {
         editor: editor,
         onChange: (): void => {
