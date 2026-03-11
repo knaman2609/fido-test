@@ -1,8 +1,8 @@
 import { BlockNoteEditor } from '@blocknote/core';
 import { BlockNoteView } from '@blocknote/mantine';
 import '@blocknote/mantine/style.css';
-import { createElement } from 'react';
-import { createRoot } from 'react-dom/client';
+import { createElement, type ReactElement } from 'react';
+import { createRoot, type Root } from 'react-dom/client';
 import { documentService } from './documentService.js';
 import type { DOMElements } from './types.js';
 
@@ -43,15 +43,15 @@ function init(): void {
     initialContent: doc.blocks
   });
 
-  const root = createRoot(elements.editorContainer);
+  const root: Root = createRoot(elements.editorContainer);
 
-  const EditorComponent = () => {
+  const EditorComponent = (): ReactElement => {
     return createElement(BlockNoteView, {
       editor: editor,
-      onChange: () => {
+      onChange: (): void => {
         try {
           documentService.save(editor.document);
-        } catch (e) {
+        } catch {
           showError('Warning: Unable to save changes. Storage may be full.', elements.errorMessage);
         }
       }
