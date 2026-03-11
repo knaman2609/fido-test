@@ -67,9 +67,18 @@ function init(): void {
   const saveStatus = new SaveStatus(saveStatusElement);
   const initialContent = documentStorage.load() ?? getDefaultContent();
 
-  const editor = BlockNoteEditor.create({
-    initialContent,
-  });
+  let editor: BlockNoteEditor;
+  try {
+    editor = BlockNoteEditor.create({
+      initialContent,
+    });
+  } catch (error) {
+    console.error("Failed to initialize BlockNote editor:", error);
+    saveStatus.showError("Failed to initialize editor");
+    editorContainer.innerHTML =
+      '<p style="padding: 20px; color: #f44336;">Failed to initialize editor. Please refresh the page.</p>';
+    return;
+  }
 
   editor.mount(editorContainer);
 
