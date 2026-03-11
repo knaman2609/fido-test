@@ -38,7 +38,6 @@ export default tseslint.config(
       "prefer-arrow-callback": "warn",
       "no-throw-literal": "off",
       "@typescript-eslint/only-throw-error": "error",
-      "preserve-caught-error": "off",
     },
   }
 );
