@@ -12,8 +12,8 @@ import type { DOMElements, BlockNoteDocument } from './types.js';
 import '@blocknote/mantine/style.css';
 import '@mantine/core/styles.css';
 
-// Get the actual editor type from the hook return type
-type EditorType = ReturnType<typeof useCreateBlockNote>;
+// Use BlockNoteEditor without generics - the library's default type
+type EditorType = BlockNoteEditor;
 
 interface EditorProps {
   onEditorReady?: (editor: EditorType) => void;
@@ -31,7 +31,7 @@ function EditorComponent({ onEditorReady }: EditorProps): React.ReactElement {
   }, [editor, onEditorReady]);
 
   const element = React.createElement(BlockNoteView, {
-    editor: editor as BlockNoteEditor,
+    editor: editor,
     className: 'bn-editor'
   });
   return element;
@@ -99,8 +99,8 @@ function getEditorContent(editorState: EditorState): BlockNoteDocument | null {
 function clearEditor(editorState: EditorState): void {
   const editor = editorState.getEditorInstance();
   if (editor) {
-    (editor as BlockNoteEditor).replaceBlocks(
-      (editor as BlockNoteEditor).document,
+    editor.replaceBlocks(
+      editor.document,
       blocknoteService.createEmptyDocument() as PartialBlock[]
     );
   }
