@@ -132,7 +132,6 @@ class TodoServiceImpl implements ITodoService {
     } catch (err) {
       console.error('Failed to save todos to localStorage:', err);
       const error = new Error('Storage may be full or disabled');
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access
       (error as Record<string, unknown>).cause = err;
       throw error;
     }
