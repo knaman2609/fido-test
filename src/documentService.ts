@@ -52,7 +52,7 @@ class DocumentServiceImpl implements IDocumentService {
         } else {
           this.createNewDocument();
         }
-      } catch (e) {
+      } catch {
         this.createNewDocument();
       }
     } else {
