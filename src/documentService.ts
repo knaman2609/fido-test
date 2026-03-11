@@ -85,7 +85,7 @@ class DocumentServiceImpl implements IDocumentService {
     this.persist();
   }
 
-  save(blocks: Block[]): void {
+  save(blocks: BlockData[]): void {
     if (!this.document) {
       this.createNewDocument();
     }
