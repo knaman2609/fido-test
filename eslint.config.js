@@ -12,9 +12,12 @@ export default [
       globals: {
         ...globals.browser,
       },
+      parser: await import("@typescript-eslint/parser").then(m => m.default),
       parserOptions: {
         ecmaVersion: 2022,
         sourceType: "module",
+        project: true,
+        tsconfigRootDir: import.meta.dirname,
       },
     },
     rules: {
