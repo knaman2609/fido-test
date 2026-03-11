@@ -74,14 +74,19 @@ class TodoServiceImpl implements ITodoService {
     const stored = localStorage.getItem(STORAGE_KEY);
     const hasLegacyData = localStorage.getItem(LEGACY_STORAGE_KEY) !== null;
 
+    let hasNewFormatData = false;
+
     if (stored) {
       try {
         const parsed: unknown = JSON.parse(stored);
         if (Array.isArray(parsed)) {
           const validTodos = parsed.filter(isValidTodo);
-          this.todos = validTodos;
-          const maxId = this.todos.reduce((max, todo) => Math.max(max, todo.id), 0);
-          this.idCounter = maxId + 1;
+          if (validTodos.length > 0) {
+            this.todos = validTodos;
+            const maxId = this.todos.reduce((max, todo) => Math.max(max, todo.id), 0);
+            this.idCounter = maxId + 1;
+            hasNewFormatData = true;
+          }
         }
       } catch (err) {
         console.error('Failed to parse todos from localStorage:', err);
@@ -89,7 +94,8 @@ class TodoServiceImpl implements ITodoService {
       }
     }
 
-    if (hasLegacyData) {
+    // Only migrate from legacy if we don't have valid new format data
+    if (!hasNewFormatData && hasLegacyData) {
       this.migrateFromLegacy();
     }
   }
