@@ -68,7 +68,7 @@ class DocumentServiceImpl implements IDocumentService {
         {
           id: generateId(),
           type: 'paragraph',
-          props: {},
+          props: { backgroundColor: 'default', textColor: 'default', textAlignment: 'left' },
           content: [
             {
               type: 'text',
@@ -111,8 +111,8 @@ class DocumentServiceImpl implements IDocumentService {
       if (this.document) {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(this.document));
       }
-    } catch (e) {
-      throw new Error('Storage may be full or disabled', { cause: e });
+    } catch {
+      throw new Error('Storage may be full or disabled');
     }
   }
 }
