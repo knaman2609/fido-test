@@ -2,7 +2,7 @@ import * as React from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { BlockNoteView } from '@blocknote/mantine';
 import { useCreateBlockNote } from '@blocknote/react';
-import type { BlockNoteEditor, DefaultBlockSchema, DefaultInlineContentSchema, DefaultStyleSchema, PartialBlock } from '@blocknote/core';
+import type { BlockNoteEditor, PartialBlock } from '@blocknote/core';
 import { todoService } from './todoService.js';
 import { imageService, MAX_FILE_SIZE } from './imageService.js';
 import { createUIRenderer } from './ui.js';
@@ -12,7 +12,8 @@ import type { DOMElements, BlockNoteDocument } from './types.js';
 import '@blocknote/mantine/style.css';
 import '@mantine/core/styles.css';
 
-type EditorType = BlockNoteEditor<DefaultBlockSchema, DefaultInlineContentSchema, DefaultStyleSchema>;
+// Get the editor type from the hook's return type
+type EditorType = ReturnType<typeof useCreateBlockNote>;
 
 interface EditorProps {
   onEditorReady?: (editor: EditorType) => void;
@@ -30,7 +31,7 @@ function EditorComponent({ onEditorReady }: EditorProps): React.ReactElement {
   }, [editor, onEditorReady]);
 
   const element = React.createElement(BlockNoteView, {
-    editor: editor as EditorType,
+    editor: editor,
     className: 'bn-editor'
   });
   return element;
@@ -100,7 +101,7 @@ function clearEditor(editorState: EditorState): void {
   if (editor) {
     editor.replaceBlocks(
       editor.document,
-      blocknoteService.createEmptyDocument() as PartialBlock<DefaultBlockSchema, DefaultInlineContentSchema, DefaultStyleSchema>[]
+      blocknoteService.createEmptyDocument() as PartialBlock<BlockNoteEditor['schema']['blockSchema'], BlockNoteEditor['schema']['inlineContentSchema'], BlockNoteEditor['schema']['styleSchema']>[]
     );
   }
 }
