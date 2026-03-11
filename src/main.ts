@@ -1,145 +1,64 @@
-import { todoService } from './todoService.js';
-import { imageService, MAX_FILE_SIZE } from './imageService.js';
-import { createUIRenderer } from './ui.js';
+import { BlockNoteEditor } from '@blocknote/core';
+import { BlockNoteView } from '@blocknote/mantine';
+import '@blocknote/mantine/style.css';
+import { createElement } from 'react';
+import { createRoot } from 'react-dom/client';
+import { documentService } from './documentService.js';
 import type { DOMElements } from './types.js';
 
 function getDOMElements(): DOMElements {
-  const todoInput = document.getElementById('todoInput');
-  const addBtn = document.getElementById('addBtn');
-  const todoList = document.getElementById('todoList');
+  const editorContainer = document.getElementById('editorContainer');
   const errorMessage = document.getElementById('errorMessage');
-  const imageInput = document.getElementById('imageInput');
-  const imagePreview = document.getElementById('imagePreview');
-  const clearImageBtn = document.getElementById('clearImageBtn');
 
-  if (!todoInput || !addBtn || !todoList || !errorMessage || !imageInput || !imagePreview || !clearImageBtn) {
+  if (!editorContainer || !errorMessage) {
     throw new Error('Required DOM elements not found');
   }
 
   return {
-    todoInput: todoInput as HTMLInputElement,
-    addBtn: addBtn as HTMLButtonElement,
-    todoList: todoList as HTMLUListElement,
-    errorMessage: errorMessage as HTMLDivElement,
-    imageInput: imageInput as HTMLInputElement,
-    imagePreview: imagePreview as HTMLDivElement,
-    clearImageBtn: clearImageBtn as HTMLButtonElement
+    editorContainer: editorContainer as HTMLDivElement,
+    errorMessage: errorMessage as HTMLDivElement
   };
+}
+
+function showError(message: string, errorElement: HTMLDivElement): void {
+  errorElement.textContent = message;
+  errorElement.classList.add('visible');
+  setTimeout(() => {
+    errorElement.classList.remove('visible');
+  }, 5000);
 }
 
 function init(): void {
   const elements = getDOMElements();
-  const ui = createUIRenderer(elements.todoList, elements.errorMessage);
-  let currentImage: string | null = null;
 
-  function render(): void {
-    ui.render(todoService.getAll());
+  documentService.load();
+  const doc = documentService.getCurrentDocument();
+
+  if (!doc) {
+    showError('Failed to load document', elements.errorMessage);
+    return;
   }
 
-  function handleSave(errorMessage: string): void {
-    try {
-      todoService.save();
-    } catch (e) {
-      ui.showError(errorMessage);
-    }
-  }
-
-  function clearImage(): void {
-    currentImage = null;
-    elements.imageInput.value = '';
-    elements.imagePreview.innerHTML = '';
-    elements.imagePreview.classList.remove('has-image');
-    elements.clearImageBtn.classList.remove('visible');
-  }
-
-  async function handleImageSelect(e: Event): Promise<void> {
-    const target = e.target as HTMLInputElement;
-    const file = target.files?.[0];
-
-    currentImage = null;
-    elements.imagePreview.innerHTML = '';
-    elements.imagePreview.classList.remove('has-image');
-    elements.clearImageBtn.classList.remove('visible');
-
-    if (!file) return;
-
-    if (!imageService.validateFile(file)) {
-      currentImage = null;
-      ui.showError(`Please select a valid image file (max ${MAX_FILE_SIZE / 1024 / 1024}MB)`);
-      elements.imageInput.value = '';
-      return;
-    }
-
-    try {
-      const base64 = await imageService.readFile(file);
-      currentImage = base64;
-
-      elements.imagePreview.innerHTML = '';
-      const img = document.createElement('img');
-      img.src = base64;
-      img.alt = 'Image preview';
-      elements.imagePreview.appendChild(img);
-      elements.imagePreview.classList.add('has-image');
-      elements.clearImageBtn.classList.add('visible');
-    } catch (error) {
-      ui.showError('Failed to read image file');
-      clearImage();
-    }
-  }
-
-  function addTodo(): void {
-    const text = elements.todoInput.value.trim();
-    if (!text) return;
-
-    todoService.add(text, currentImage || undefined);
-    handleSave('Warning: Your todos cannot be saved. Storage may be full or disabled.');
-    render();
-    elements.todoInput.value = '';
-    clearImage();
-    elements.todoInput.focus();
-  }
-
-  function toggleTodo(id: number): void {
-    todoService.toggle(id);
-    handleSave('Warning: Unable to save changes.');
-    render();
-  }
-
-  function deleteTodo(id: number): void {
-    todoService.delete(id);
-    handleSave('Warning: Unable to save changes.');
-    render();
-  }
-
-  elements.todoList.addEventListener('click', (e: Event) => {
-    const target = e.target as HTMLElement;
-    const action = target.getAttribute('data-action');
-
-    if (action === 'delete') {
-      const id = parseInt(target.getAttribute('data-id') || '', 10);
-      if (isNaN(id)) return;
-      deleteTodo(id);
-    }
+  const editor = BlockNoteEditor.create({
+    initialContent: doc.blocks
   });
 
-  elements.todoList.addEventListener('change', (e: Event) => {
-    const target = e.target as HTMLElement;
-    if (target.getAttribute('data-action') === 'toggle') {
-      const id = parseInt(target.getAttribute('data-id') || '', 10);
-      if (isNaN(id)) return;
-      toggleTodo(id);
-    }
-  });
+  const root = createRoot(elements.editorContainer);
 
-  elements.addBtn.addEventListener('click', addTodo);
-  elements.todoInput.addEventListener('keypress', (e: KeyboardEvent) => {
-    if (e.key === 'Enter') addTodo();
-  });
-  elements.imageInput.addEventListener('change', handleImageSelect);
-  elements.clearImageBtn.addEventListener('click', clearImage);
+  const EditorComponent = () => {
+    return createElement(BlockNoteView, {
+      editor: editor,
+      onChange: () => {
+        try {
+          documentService.save(editor.document);
+        } catch (e) {
+          showError('Warning: Unable to save changes. Storage may be full.', elements.errorMessage);
+        }
+      }
+    });
+  };
 
-  todoService.load();
-  render();
+  root.render(createElement(EditorComponent));
 }
 
 if (document.readyState === 'loading') {
