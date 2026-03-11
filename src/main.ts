@@ -19,23 +19,25 @@ interface EditorProps {
 }
 
 function EditorComponent({ onEditorReady }: EditorProps): React.ReactElement {
-  const editor: EditorType = useCreateBlockNote({
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const editor = useCreateBlockNote({
     initialContent: blocknoteService.createEmptyDocument()
   });
 
   React.useEffect(() => {
     if (editor && onEditorReady) {
-      onEditorReady(editor);
+      onEditorReady(editor as EditorType);
     }
   }, [editor, onEditorReady]);
 
   return React.createElement(BlockNoteView, {
-    editor,
+    editor: editor as EditorType,
     className: 'bn-editor'
   });
 }
 
-let editorInstance: EditorType | null = null;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let editorInstance: any = null;
 let reactRoot: Root | null = null;
 
 function getDOMElements(): DOMElements {
