@@ -36,8 +36,7 @@ export default tseslint.config(
       "eqeqeq": ["error", "always"],
       "curly": ["error", "all"],
       "prefer-arrow-callback": "warn",
-      "no-throw-literal": "off",
-      "@typescript-eslint/only-throw-error": "error",
+      "no-throw-literal": "error",
     },
   }
 );
