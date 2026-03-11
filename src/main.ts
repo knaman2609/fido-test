@@ -33,9 +33,9 @@ function EditorComponent({ onEditorReady }: EditorProps): React.ReactElement {
 
   // The BlockNoteView from @blocknote/mantine has strict generic constraints
   // that don't match useCreateBlockNote's return type exactly.
-  // We cast the props object to satisfy TypeScript while maintaining runtime correctness.
+  // We cast through unknown to satisfy TypeScript while maintaining runtime correctness.
   const props = {
-    editor: editor as BlockNoteEditor,
+    editor: editor as unknown,
     className: 'bn-editor'
   };
   const element = React.createElement(BlockNoteView, props as React.ComponentProps<typeof BlockNoteView>);
