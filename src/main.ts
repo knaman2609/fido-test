@@ -2,7 +2,6 @@ import * as React from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { BlockNoteView } from '@blocknote/mantine';
 import { useCreateBlockNote } from '@blocknote/react';
-import { type BlockNoteEditor } from '@blocknote/core';
 import { todoService } from './todoService.js';
 import { imageService, MAX_FILE_SIZE } from './imageService.js';
 import { createUIRenderer } from './ui.js';
@@ -12,15 +11,18 @@ import type { DOMElements, BlockNoteDocument } from './types.js';
 import '@blocknote/mantine/style.css';
 import '@mantine/core/styles.css';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type EditorType = any;
+
 interface EditorProps {
-  onEditorReady?: (editor: BlockNoteEditor) => void;
+  onEditorReady?: (editor: EditorType) => void;
 }
 
 function EditorComponent({ onEditorReady }: EditorProps): React.ReactElement {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   const editor = useCreateBlockNote({
     initialContent: blocknoteService.createEmptyDocument()
-  }) as unknown as BlockNoteEditor;
+  }) as EditorType;
 
   React.useEffect(() => {
     if (editor && onEditorReady) {
@@ -34,7 +36,7 @@ function EditorComponent({ onEditorReady }: EditorProps): React.ReactElement {
   });
 }
 
-let editorInstance: BlockNoteEditor | null = null;
+let editorInstance: EditorType | null = null;
 let reactRoot: Root | null = null;
 
 function getDOMElements(): DOMElements {
@@ -68,7 +70,7 @@ function initEditor(container: HTMLDivElement): void {
 
   reactRoot = createRoot(container);
 
-  const handleEditorReady = (editor: BlockNoteEditor): void => {
+  const handleEditorReady = (editor: EditorType): void => {
     editorInstance = editor;
   };
 
@@ -87,6 +89,7 @@ function getEditorContent(): BlockNoteDocument | null {
 
 function clearEditor(): void {
   if (editorInstance) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
     editorInstance.replaceBlocks(editorInstance.document, blocknoteService.createEmptyDocument());
   }
 }
