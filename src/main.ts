@@ -1,8 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { BlockNoteEditor } from '@blocknote/core';
 import { BlockNoteView } from '@blocknote/mantine';
 import '@blocknote/mantine/style.css';
-import { createElement, type ReactElement } from 'react';
+import { createElement, type ReactElement, type ComponentType } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { documentService } from './documentService.js';
 import type { DOMElements } from './types.js';
@@ -47,7 +46,7 @@ function init(): void {
   const root: Root = createRoot(elements.editorContainer);
 
   const EditorComponent = (): ReactElement => {
-    return createElement(BlockNoteView as any, {
+    return createElement(BlockNoteView as ComponentType<Parameters<typeof BlockNoteView>[0]>, {
       editor: editor,
       onChange: (): void => {
         try {
