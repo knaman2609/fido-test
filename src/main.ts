@@ -47,9 +47,12 @@ function init(): void {
 
   const EditorComponent = (): ReactElement => {
     return createElement(
-      BlockNoteView,
+      BlockNoteView as unknown as React.FunctionComponent<{
+        editor: typeof editor;
+        onChange: () => void;
+      }>,
       {
-        editor: editor as BlockNoteEditor,
+        editor: editor,
         onChange: (): void => {
           try {
             documentService.save(editor.document as Block[]);
