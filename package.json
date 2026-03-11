@@ -23,15 +23,17 @@
   "dependencies": {
     "@blocknote/core": "^0.25.0",
     "@blocknote/mantine": "^0.25.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "serve": "^14.0.0"
+  },
+  "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@typescript-eslint/eslint-plugin": "^8.57.0",
     "@typescript-eslint/parser": "^8.57.0",
-    "eslint": "^10.0.3",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "serve": "^14.0.0",
+    "eslint": "^10.0.3",
     "typescript": "^5.0.0",
     "typescript-eslint": "^8.57.0"
   }
