@@ -30,10 +30,11 @@ function EditorComponent({ onEditorReady }: EditorProps): React.ReactElement {
     }
   }, [editor, onEditorReady]);
 
-  // BlockNoteView is typed with generic schema parameters.
-  // We use a type assertion to align the editor instance with the component's expected props.
+  // BlockNoteView has strict generic constraints that differ from useCreateBlockNote's return type.
+  // The editor works correctly at runtime; we use a targeted type assertion for the editor prop only.
+  type BlockNoteViewProps = React.ComponentProps<typeof BlockNoteView>;
   return React.createElement(BlockNoteView, {
-    editor: editor,
+    editor: editor as BlockNoteViewProps['editor'],
     className: 'bn-editor'
   });
 }
