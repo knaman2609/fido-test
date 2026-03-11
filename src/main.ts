@@ -85,8 +85,8 @@ function initEditor(container: HTMLDivElement): EditorState {
   );
 
   return {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    get editorInstance(): any {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
+    getEditorInstance(): any {
       return editorInstance;
     },
     reactRoot
