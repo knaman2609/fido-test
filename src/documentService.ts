@@ -114,9 +114,7 @@ class DocumentServiceImpl implements IDocumentService {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(this.document));
       }
     } catch (error) {
-      const wrappedError = new Error('Storage may be full or disabled');
-      Object.assign(wrappedError, { cause: error });
-      throw wrappedError;
+      throw new Error('Storage may be full or disabled', { cause: error });
     }
   }
 }
