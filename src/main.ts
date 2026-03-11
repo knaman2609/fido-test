@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return */
 import { BlockNoteEditor } from '@blocknote/core';
 import { BlockNoteView } from '@blocknote/mantine';
 import '@blocknote/mantine/style.css';
@@ -39,16 +40,13 @@ function init(): void {
     return;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
   const editor = BlockNoteEditor.create({
     initialContent: doc.blocks
   });
 
   const root: Root = createRoot(elements.editorContainer);
 
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   const EditorComponent = (): ReactElement => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     return createElement(BlockNoteView, {
       editor: editor,
       onChange: (): void => {
@@ -61,7 +59,6 @@ function init(): void {
     });
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
   root.render(createElement(EditorComponent));
 }
 
