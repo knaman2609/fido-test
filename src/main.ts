@@ -46,22 +46,16 @@ function init(): void {
   const root: Root = createRoot(elements.editorContainer);
 
   const EditorComponent = (): ReactElement => {
-    return createElement(
-      BlockNoteView as React.FunctionComponent<{
-        editor: typeof editor;
-        onChange: () => void;
-      }>,
-      {
-        editor: editor,
-        onChange: (): void => {
-          try {
-            documentService.save(editor.document as Block[]);
-          } catch {
-            showError('Warning: Unable to save changes. Storage may be full.', elements.errorMessage);
-          }
+    return createElement(BlockNoteView, {
+      editor,
+      onChange: (): void => {
+        try {
+          documentService.save(editor.document as Block[]);
+        } catch {
+          showError('Warning: Unable to save changes. Storage may be full.', elements.errorMessage);
         }
       }
-    );
+    });
   };
 
   root.render(createElement(EditorComponent));
