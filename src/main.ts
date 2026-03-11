@@ -1,11 +1,10 @@
-import { BlockNoteEditor, type Block, type BlockSchema, type InlineContentSchema, type StyleSchema } from '@blocknote/core';
+import { BlockNoteEditor, type Block } from '@blocknote/core';
 import { BlockNoteView } from '@blocknote/mantine';
 import '@blocknote/mantine/style.css';
-import { createElement, type ReactElement, type ComponentType } from 'react';
+import { createElement, type ReactElement } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { documentService } from './documentService.js';
 import type { DOMElements } from './types.js';
-import type { BlockNoteViewProps } from '@blocknote/react';
 
 function getDOMElements(): DOMElements {
   const editorContainer = document.getElementById('editorContainer');
@@ -23,9 +22,9 @@ function getDOMElements(): DOMElements {
 
 function showError(message: string, errorElement: HTMLDivElement): void {
   errorElement.textContent = message;
-  errorElement.classList.add('visible');
+  errorMessage.classList.add('visible');
   setTimeout(() => {
-    errorElement.classList.remove('visible');
+    errorMessage.classList.remove('visible');
   }, 5000);
 }
 
@@ -47,8 +46,8 @@ function init(): void {
   const root: Root = createRoot(elements.editorContainer);
 
   const EditorComponent = (): ReactElement => {
-    return createElement<BlockNoteViewProps<BlockSchema, InlineContentSchema, StyleSchema>>(
-      BlockNoteView as ComponentType<BlockNoteViewProps<BlockSchema, InlineContentSchema, StyleSchema>>,
+    return createElement(
+      BlockNoteView,
       {
         editor: editor,
         onChange: (): void => {
