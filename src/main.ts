@@ -1,10 +1,42 @@
+import React from 'react';
+import { createRoot, type Root } from 'react-dom/client';
+import { BlockNoteView } from '@blocknote/mantine';
+import { useCreateBlockNote, type BlockNoteEditor } from '@blocknote/core';
 import { todoService } from './todoService.js';
 import { imageService, MAX_FILE_SIZE } from './imageService.js';
 import { createUIRenderer } from './ui.js';
-import type { DOMElements } from './types.js';
+import { blocknoteService } from './blocknoteService.js';
+import type { DOMElements, BlockNoteDocument } from './types.js';
+
+import '@blocknote/mantine/style.css';
+import '@mantine/core/styles.css';
+
+interface EditorProps {
+  onEditorReady?: (editor: BlockNoteEditor) => void;
+}
+
+function EditorComponent({ onEditorReady }: EditorProps): React.ReactElement {
+  const editor = useCreateBlockNote({
+    initialContent: blocknoteService.createEmptyDocument()
+  });
+
+  React.useEffect(() => {
+    if (editor && onEditorReady) {
+      onEditorReady(editor);
+    }
+  }, [editor, onEditorReady]);
+
+  return React.createElement(BlockNoteView, {
+    editor,
+    className: 'bn-editor'
+  });
+}
+
+let editorInstance: BlockNoteEditor | null = null;
+let reactRoot: Root | null = null;
 
 function getDOMElements(): DOMElements {
-  const todoInput = document.getElementById('todoInput');
+  const editorContainer = document.getElementById('editorContainer');
   const addBtn = document.getElementById('addBtn');
   const todoList = document.getElementById('todoList');
   const errorMessage = document.getElementById('errorMessage');
@@ -12,12 +44,12 @@ function getDOMElements(): DOMElements {
   const imagePreview = document.getElementById('imagePreview');
   const clearImageBtn = document.getElementById('clearImageBtn');
 
-  if (!todoInput || !addBtn || !todoList || !errorMessage || !imageInput || !imagePreview || !clearImageBtn) {
+  if (!editorContainer || !addBtn || !todoList || !errorMessage || !imageInput || !imagePreview || !clearImageBtn) {
     throw new Error('Required DOM elements not found');
   }
 
   return {
-    todoInput: todoInput as HTMLInputElement,
+    editorContainer: editorContainer as HTMLDivElement,
     addBtn: addBtn as HTMLButtonElement,
     todoList: todoList as HTMLUListElement,
     errorMessage: errorMessage as HTMLDivElement,
@@ -27,10 +59,42 @@ function getDOMElements(): DOMElements {
   };
 }
 
+function initEditor(container: HTMLDivElement): void {
+  if (reactRoot) {
+    return;
+  }
+
+  reactRoot = createRoot(container);
+
+  const handleEditorReady = (editor: BlockNoteEditor): void => {
+    editorInstance = editor;
+  };
+
+  reactRoot.render(
+    React.createElement(EditorComponent, { onEditorReady: handleEditorReady })
+  );
+}
+
+function getEditorContent(): BlockNoteDocument | null {
+  if (!editorInstance) {
+    return null;
+  }
+
+  return editorInstance.document as BlockNoteDocument;
+}
+
+function clearEditor(): void {
+  if (editorInstance) {
+    editorInstance.replaceBlocks(editorInstance.document, blocknoteService.createEmptyDocument());
+  }
+}
+
 function init(): void {
   const elements = getDOMElements();
   const ui = createUIRenderer(elements.todoList, elements.errorMessage);
   let currentImage: string | null = null;
+
+  initEditor(elements.editorContainer);
 
   function render(): void {
     ui.render(todoService.getAll());
@@ -88,15 +152,17 @@ function init(): void {
   }
 
   function addTodo(): void {
-    const text = elements.todoInput.value.trim();
-    if (!text) return;
+    const content = getEditorContent();
+    if (!content) return;
 
-    todoService.add(text, currentImage || undefined);
+    const plainText = blocknoteService.extractPlainText(content);
+    if (!plainText.trim()) return;
+
+    todoService.add(content, currentImage || undefined);
     handleSave('Warning: Your todos cannot be saved. Storage may be full or disabled.');
     render();
-    elements.todoInput.value = '';
+    clearEditor();
     clearImage();
-    elements.todoInput.focus();
   }
 
   function toggleTodo(id: number): void {
@@ -132,9 +198,6 @@ function init(): void {
   });
 
   elements.addBtn.addEventListener('click', addTodo);
-  elements.todoInput.addEventListener('keypress', (e: KeyboardEvent) => {
-    if (e.key === 'Enter') addTodo();
-  });
   elements.imageInput.addEventListener('change', handleImageSelect);
   elements.clearImageBtn.addEventListener('click', clearImage);
 
