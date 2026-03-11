@@ -1,7 +1,7 @@
 import { BlockNoteEditor, type Block } from '@blocknote/core';
 import { BlockNoteView } from '@blocknote/mantine';
 import '@blocknote/mantine/style.css';
-import { createElement, type ReactElement } from 'react';
+import { createElement, type ReactElement, type ComponentType } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { documentService } from './documentService.js';
 import type { DOMElements } from './types.js';
