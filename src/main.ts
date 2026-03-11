@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { BlockNoteView } from '@blocknote/mantine';
 import { useCreateBlockNote, type BlockNoteEditor } from '@blocknote/core';
@@ -18,7 +18,7 @@ interface EditorProps {
 function EditorComponent({ onEditorReady }: EditorProps): React.ReactElement {
   const editor = useCreateBlockNote({
     initialContent: blocknoteService.createEmptyDocument()
-  });
+  }) as BlockNoteEditor;
 
   React.useEffect(() => {
     if (editor && onEditorReady) {
@@ -27,7 +27,7 @@ function EditorComponent({ onEditorReady }: EditorProps): React.ReactElement {
   }, [editor, onEditorReady]);
 
   return React.createElement(BlockNoteView, {
-    editor,
+    editor: editor as BlockNoteEditor,
     className: 'bn-editor'
   });
 }
@@ -103,7 +103,7 @@ function init(): void {
   function handleSave(errorMessage: string): void {
     try {
       todoService.save();
-    } catch (e) {
+    } catch {
       ui.showError(errorMessage);
     }
   }
@@ -125,7 +125,9 @@ function init(): void {
     elements.imagePreview.classList.remove('has-image');
     elements.clearImageBtn.classList.remove('visible');
 
-    if (!file) return;
+    if (!file) {
+      return;
+    }
 
     if (!imageService.validateFile(file)) {
       currentImage = null;
@@ -145,7 +147,7 @@ function init(): void {
       elements.imagePreview.appendChild(img);
       elements.imagePreview.classList.add('has-image');
       elements.clearImageBtn.classList.add('visible');
-    } catch (error) {
+    } catch {
       ui.showError('Failed to read image file');
       clearImage();
     }
@@ -153,12 +155,16 @@ function init(): void {
 
   function addTodo(): void {
     const content = getEditorContent();
-    if (!content) return;
+    if (!content) {
+      return;
+    }
 
     const plainText = blocknoteService.extractPlainText(content);
-    if (!plainText.trim()) return;
+    if (!plainText.trim()) {
+      return;
+    }
 
-    todoService.add(content, currentImage || undefined);
+    todoService.add(content, currentImage ?? undefined);
     handleSave('Warning: Your todos cannot be saved. Storage may be full or disabled.');
     render();
     clearEditor();
@@ -182,8 +188,10 @@ function init(): void {
     const action = target.getAttribute('data-action');
 
     if (action === 'delete') {
-      const id = parseInt(target.getAttribute('data-id') || '', 10);
-      if (isNaN(id)) return;
+      const id = parseInt(target.getAttribute('data-id') ?? '', 10);
+      if (isNaN(id)) {
+        return;
+      }
       deleteTodo(id);
     }
   });
@@ -191,14 +199,18 @@ function init(): void {
   elements.todoList.addEventListener('change', (e: Event) => {
     const target = e.target as HTMLElement;
     if (target.getAttribute('data-action') === 'toggle') {
-      const id = parseInt(target.getAttribute('data-id') || '', 10);
-      if (isNaN(id)) return;
+      const id = parseInt(target.getAttribute('data-id') ?? '', 10);
+      if (isNaN(id)) {
+        return;
+      }
       toggleTodo(id);
     }
   });
 
   elements.addBtn.addEventListener('click', addTodo);
-  elements.imageInput.addEventListener('change', handleImageSelect);
+  elements.imageInput.addEventListener('change', (e: Event) => {
+    void handleImageSelect(e);
+  });
   elements.clearImageBtn.addEventListener('click', clearImage);
 
   todoService.load();
