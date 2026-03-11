@@ -131,7 +131,10 @@ class TodoServiceImpl implements ITodoService {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(this.todos));
     } catch (err) {
       console.error('Failed to save todos to localStorage:', err);
-      throw new Error('Storage may be full or disabled', { cause: err });
+      const error = new Error('Storage may be full or disabled');
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (error as any).cause = err;
+      throw error;
     }
   }
 }
