@@ -11,6 +11,7 @@ import type { DOMElements, BlockNoteDocument } from './types.js';
 import '@blocknote/mantine/style.css';
 import '@mantine/core/styles.css';
 
+// BlockNote editor type - using any due to complex generic types from library
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type EditorType = any;
 
@@ -26,12 +27,14 @@ function EditorComponent({ onEditorReady }: EditorProps): React.ReactElement {
 
   React.useEffect(() => {
     if (editor && onEditorReady) {
-      onEditorReady(editor as EditorType);
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      onEditorReady(editor);
     }
   }, [editor, onEditorReady]);
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   return React.createElement(BlockNoteView, {
-    editor: editor as EditorType,
+    editor,
     className: 'bn-editor'
   });
 }
@@ -72,6 +75,7 @@ function initEditor(container: HTMLDivElement): void {
   reactRoot = createRoot(container);
 
   const handleEditorReady = (editor: EditorType): void => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     editorInstance = editor;
   };
 
@@ -85,11 +89,13 @@ function getEditorContent(): BlockNoteDocument | null {
     return null;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   return editorInstance.document as BlockNoteDocument;
 }
 
 function clearEditor(): void {
   if (editorInstance) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
     editorInstance.replaceBlocks(editorInstance.document, blocknoteService.createEmptyDocument());
   }
 }
