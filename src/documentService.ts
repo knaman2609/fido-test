@@ -53,7 +53,6 @@ class DocumentServiceImpl implements IDocumentService {
           this.createNewDocument();
         }
       } catch (e) {
-        console.error('Failed to parse document from localStorage:', e);
         this.createNewDocument();
       }
     } else {
@@ -113,8 +112,7 @@ class DocumentServiceImpl implements IDocumentService {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(this.document));
       }
     } catch (e) {
-      console.error('Failed to save document to localStorage:', e);
-      throw new Error('Storage may be full or disabled');
+      throw new Error('Storage may be full or disabled', { cause: e });
     }
   }
 }
