@@ -51,7 +51,7 @@ function getDefaultContent(): Block[] {
   ];
 }
 
-async function init(): Promise<void> {
+function init(): void {
   const editorContainer = document.getElementById("editor");
   const saveStatusElement = document.getElementById("saveStatus");
 
@@ -60,7 +60,7 @@ async function init(): Promise<void> {
   }
 
   const saveStatus = new SaveStatus(saveStatusElement);
-  const initialContent = documentStorage.load() || getDefaultContent();
+  const initialContent = documentStorage.load() ?? getDefaultContent();
 
   const editor = BlockNoteEditor.create({
     initialContent,
@@ -79,7 +79,7 @@ async function init(): Promise<void> {
       try {
         documentStorage.save(blocks);
         saveStatus.showSaved();
-      } catch (e) {
+      } catch {
         saveStatus.showError("Failed to save");
       }
     }, SAVE_DEBOUNCE_MS);
@@ -90,7 +90,8 @@ async function init(): Promise<void> {
     handleSave(blocks);
   });
 
-  const view = new BlockNoteView(editor, editorContainer);
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  new BlockNoteView(editor, editorContainer);
 }
 
 if (document.readyState === "loading") {
