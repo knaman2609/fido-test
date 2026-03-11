@@ -20,21 +20,19 @@ interface EditorProps {
 }
 
 function EditorComponent({ onEditorReady }: EditorProps): React.ReactElement {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const editor = useCreateBlockNote({
     initialContent: blocknoteService.createEmptyDocument()
   });
 
   React.useEffect(() => {
     if (editor && onEditorReady) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       onEditorReady(editor);
     }
   }, [editor, onEditorReady]);
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   return React.createElement(BlockNoteView, {
-    editor,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    editor: editor as any,
     className: 'bn-editor'
   });
 }

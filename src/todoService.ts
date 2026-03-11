@@ -132,7 +132,7 @@ class TodoServiceImpl implements ITodoService {
     } catch (err) {
       console.error('Failed to save todos to localStorage:', err);
       const error = new Error('Storage may be full or disabled');
-      (error as Record<string, unknown>).cause = err;
+      Object.assign(error, { cause: err });
       throw error;
     }
   }
