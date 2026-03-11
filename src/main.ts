@@ -41,7 +41,7 @@ function EditorComponent({ onEditorReady }: EditorProps): React.ReactElement {
 
 interface EditorState {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  editorInstance: any;
+  getEditorInstance(): any;
   reactRoot: Root;
 }
 
