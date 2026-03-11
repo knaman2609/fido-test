@@ -39,9 +39,11 @@ function EditorComponent({ onEditorReady }: EditorProps): React.ReactElement {
   /* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any */
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-let editorInstance: any = null;
-let reactRoot: Root | null = null;
+interface EditorState {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  editorInstance: any;
+  reactRoot: Root;
+}
 
 function getDOMElements(): DOMElements {
   const editorContainer = document.getElementById('editorContainer');
