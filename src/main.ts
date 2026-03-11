@@ -12,8 +12,8 @@ import type { DOMElements, BlockNoteDocument } from './types.js';
 import '@blocknote/mantine/style.css';
 import '@mantine/core/styles.css';
 
-// Use BlockNoteEditor without generics - the library's default type
-type EditorType = BlockNoteEditor;
+// Extract the editor type from the hook's return type
+type EditorType = ReturnType<typeof useCreateBlockNote>;
 
 interface EditorProps {
   onEditorReady?: (editor: EditorType) => void;
@@ -30,8 +30,10 @@ function EditorComponent({ onEditorReady }: EditorProps): React.ReactElement {
     }
   }, [editor, onEditorReady]);
 
+  // Cast to BlockNoteEditor to satisfy BlockNoteView's prop types
+  // The mantine BlockNoteView uses a different generic constraint than the hook returns
   const element = React.createElement(BlockNoteView, {
-    editor: editor,
+    editor: editor as BlockNoteEditor,
     className: 'bn-editor'
   });
   return element;
