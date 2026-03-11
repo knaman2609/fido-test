@@ -1,6 +1,7 @@
 import { BlockNoteEditor } from "@blocknote/core";
 import { documentStorage } from "./storageService.js";
 import type { Block } from "@blocknote/core";
+import "@blocknote/mantine/style.css";
 
 const SAVE_DEBOUNCE_MS = 500;
 
