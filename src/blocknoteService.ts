@@ -128,6 +128,18 @@ class BlockNoteServiceImpl implements IBlockNoteService {
     return div.innerHTML;
   }
 
+  private isValidImageUrl(url: string): boolean {
+    if (!url) {
+      return false;
+    }
+    try {
+      const parsed = new URL(url, window.location.href);
+      return parsed.protocol === 'data:' || parsed.protocol === 'http:' || parsed.protocol === 'https:';
+    } catch {
+      return false;
+    }
+  }
+
   extractPlainText(document: BlockNoteDocument): string {
     if (!document || document.length === 0) {
       return '';
