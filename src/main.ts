@@ -34,7 +34,7 @@ function EditorComponent({ onEditorReady }: EditorProps): React.ReactElement {
   // The editor works correctly at runtime; we use a targeted type assertion for the editor prop only.
   type BlockNoteViewProps = React.ComponentProps<typeof BlockNoteView>;
   return React.createElement(BlockNoteView, {
-    editor: editor as BlockNoteViewProps['editor'],
+    editor: editor as unknown as BlockNoteViewProps['editor'],
     className: 'bn-editor'
   });
 }
