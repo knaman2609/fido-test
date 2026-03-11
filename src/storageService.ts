@@ -30,7 +30,7 @@ class DocumentStorageImpl implements DocumentStorage {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(blocks));
     } catch (e) {
       console.error("Failed to save document to localStorage:", e);
-      throw new Error("Storage may be full or disabled");
+      throw new Error("Storage may be full or disabled", { cause: e });
     }
   }
 }
