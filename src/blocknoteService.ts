@@ -193,14 +193,14 @@ class BlockNoteServiceImpl implements IBlockNoteService {
     const texts: string[] = [];
 
     if (block.content && block.content.length > 0) {
-      texts.push(block.content.map(item => item.text).join(' '));
+      texts.push(block.content.map(item => item.text).join(''));
     }
 
     if (block.children && block.children.length > 0) {
       texts.push(...block.children.map(child => this.extractTextFromBlock(child)));
     }
 
-    return texts.join('');
+    return texts.join(' ');
   }
 }
 
