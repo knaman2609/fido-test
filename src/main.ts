@@ -2,7 +2,7 @@ import * as React from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { BlockNoteView } from '@blocknote/mantine';
 import { useCreateBlockNote } from '@blocknote/react';
-import type { BlockNoteEditor, PartialBlock } from '@blocknote/core';
+import type { BlockNoteEditor, PartialBlock, DefaultBlockSchema, DefaultInlineContentSchema, DefaultStyleSchema } from '@blocknote/core';
 import { todoService } from './todoService.js';
 import { imageService, MAX_FILE_SIZE } from './imageService.js';
 import { createUIRenderer } from './ui.js';
@@ -12,10 +12,8 @@ import type { DOMElements, BlockNoteDocument } from './types.js';
 import '@blocknote/mantine/style.css';
 import '@mantine/core/styles.css';
 
-// The BlockNote hook and view components have complex generic types that are
-// incompatible at the TypeScript level but work correctly at runtime.
-// We use a simplified type alias to avoid the generic complexity.
-type EditorType = BlockNoteEditor;
+// Use BlockNote's default schema types for proper type safety
+type EditorType = BlockNoteEditor<DefaultBlockSchema, DefaultInlineContentSchema, DefaultStyleSchema>;
 
 interface EditorProps {
   onEditorReady?: (editor: EditorType) => void;
@@ -24,20 +22,17 @@ interface EditorProps {
 function EditorComponent({ onEditorReady }: EditorProps): React.ReactElement {
   const editor = useCreateBlockNote({
     initialContent: blocknoteService.createEmptyDocument()
-  });
+  }) as EditorType;
 
   React.useEffect(() => {
     if (editor && onEditorReady) {
-      onEditorReady(editor as EditorType);
+      onEditorReady(editor);
     }
   }, [editor, onEditorReady]);
 
-  // The BlockNoteView from @blocknote/mantine has strict generic constraints
-  // that don't match useCreateBlockNote's return type exactly.
-  // We cast the component to a more permissive type to bridge the gap.
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const ViewComponent = BlockNoteView as React.ComponentType<any>;
-  return React.createElement(ViewComponent, {
+  // BlockNoteView is typed with generic schema parameters.
+  // We use a type assertion to align the editor instance with the component's expected props.
+  return React.createElement(BlockNoteView, {
     editor: editor,
     className: 'bn-editor'
   });
@@ -232,8 +227,9 @@ function init(): () => void {
 
   elements.addBtn.addEventListener('click', addTodo);
   elements.imageInput.addEventListener('change', (e: Event) => {
-    handleImageSelect(e).catch(() => {
+    handleImageSelect(e).catch((err: unknown) => {
       ui.showError('Image processing failed');
+      console.error('Image processing error:', err);
     });
   });
   elements.clearImageBtn.addEventListener('click', clearImage);
