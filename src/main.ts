@@ -1,14 +1,11 @@
-import { BlockNoteEditor } from '@blocknote/core';
+import { BlockNoteEditor, type Block, type BlockSchema, type InlineContentSchema, type StyleSchema } from '@blocknote/core';
 import { BlockNoteView } from '@blocknote/mantine';
 import '@blocknote/mantine/style.css';
 import { createElement, type ReactElement, type ComponentType } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { documentService } from './documentService.js';
 import type { DOMElements } from './types.js';
-
-// Type for BlockNoteView props extracted from the component
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type BlockNoteViewProps = React.ComponentProps<typeof BlockNoteView<any, any, any>>;
+import type { BlockNoteViewProps } from '@blocknote/react';
 
 function getDOMElements(): DOMElements {
   const editorContainer = document.getElementById('editorContainer');
@@ -50,13 +47,13 @@ function init(): void {
   const root: Root = createRoot(elements.editorContainer);
 
   const EditorComponent = (): ReactElement => {
-    return createElement<BlockNoteViewProps>(
-      BlockNoteView as ComponentType<BlockNoteViewProps>,
+    return createElement<BlockNoteViewProps<BlockSchema, InlineContentSchema, StyleSchema>>(
+      BlockNoteView as ComponentType<BlockNoteViewProps<BlockSchema, InlineContentSchema, StyleSchema>>,
       {
         editor: editor,
         onChange: (): void => {
           try {
-            documentService.save(editor.document);
+            documentService.save(editor.document as Block[]);
           } catch {
             showError('Warning: Unable to save changes. Storage may be full.', elements.errorMessage);
           }
