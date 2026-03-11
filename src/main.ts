@@ -29,8 +29,8 @@ function EditorComponent({ onEditorReady }: EditorProps): React.ReactElement {
     }
   }, [editor, onEditorReady]);
 
-  return React.createElement(BlockNoteView, {
-    editor: editor as unknown as BlockNoteEditor<Record<string, BlockConfig>, InlineContentSchema, StyleSchema>,
+  return React.createElement(BlockNoteView as React.ComponentType<{ editor: typeof editor; className?: string }>, {
+    editor: editor,
     className: 'bn-editor'
   });
 }
