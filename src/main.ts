@@ -69,12 +69,11 @@ function getDOMElements(): DOMElements {
   };
 }
 
-function initEditor(container: HTMLDivElement): void {
-  if (reactRoot) {
-    return;
-  }
+function initEditor(container: HTMLDivElement): EditorState {
+  const reactRoot = createRoot(container);
 
-  reactRoot = createRoot(container);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let editorInstance: any = null;
 
   const handleEditorReady = (editor: EditorType): void => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -84,21 +83,28 @@ function initEditor(container: HTMLDivElement): void {
   reactRoot.render(
     React.createElement(EditorComponent, { onEditorReady: handleEditorReady })
   );
+
+  return {
+    get editorInstance() {
+      return editorInstance;
+    },
+    reactRoot
+  };
 }
 
-function getEditorContent(): BlockNoteDocument | null {
-  if (!editorInstance) {
+function getEditorContent(editorState: EditorState): BlockNoteDocument | null {
+  if (!editorState.editorInstance) {
     return null;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-  return editorInstance.document as BlockNoteDocument;
+  return editorState.editorInstance.document as BlockNoteDocument;
 }
 
-function clearEditor(): void {
-  if (editorInstance) {
+function clearEditor(editorState: EditorState): void {
+  if (editorState.editorInstance) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-    editorInstance.replaceBlocks(editorInstance.document, blocknoteService.createEmptyDocument());
+    editorState.editorInstance.replaceBlocks(editorState.editorInstance.document, blocknoteService.createEmptyDocument());
   }
 }
 
