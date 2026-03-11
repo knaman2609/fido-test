@@ -46,7 +46,10 @@ function init(): void {
   const root: Root = createRoot(elements.editorContainer);
 
   const EditorComponent = (): ReactElement => {
-    return createElement(BlockNoteView, {
+    return createElement(BlockNoteView as ComponentType<{
+      editor: BlockNoteEditor;
+      onChange: () => void;
+    }>, {
       editor,
       onChange: (): void => {
         try {
