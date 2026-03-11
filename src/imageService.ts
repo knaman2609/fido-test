@@ -18,7 +18,7 @@ class ImageServiceImpl implements ImageService {
     return true;
   }
 
-  private compressImage(dataUrl: string, maxWidth: number = 800, quality: number = 0.7): Promise<string> {
+  private compressImage(dataUrl: string, maxWidth = 800, quality = 0.7): Promise<string> {
     return new Promise((resolve, reject) => {
       const img = new Image();
       img.onload = () => {
@@ -63,6 +63,9 @@ class ImageServiceImpl implements ImageService {
       };
       reader.onabort = () => {
         reject(new Error('File reading was aborted'));
+      };
+      reader.onerror = () => {
+        reject(new Error('Failed to read file'));
       };
       reader.readAsDataURL(file);
     });

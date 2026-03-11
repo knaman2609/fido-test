@@ -18,7 +18,7 @@ interface EditorProps {
 function EditorComponent({ onEditorReady }: EditorProps): React.ReactElement {
   const editor = useCreateBlockNote({
     initialContent: blocknoteService.createEmptyDocument()
-  }) as BlockNoteEditor;
+  }) as unknown as BlockNoteEditor;
 
   React.useEffect(() => {
     if (editor && onEditorReady) {
@@ -27,7 +27,7 @@ function EditorComponent({ onEditorReady }: EditorProps): React.ReactElement {
   }, [editor, onEditorReady]);
 
   return React.createElement(BlockNoteView, {
-    editor: editor as BlockNoteEditor,
+    editor,
     className: 'bn-editor'
   });
 }
