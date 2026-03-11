@@ -94,18 +94,20 @@ function initEditor(container: HTMLDivElement): EditorState {
 }
 
 function getEditorContent(editorState: EditorState): BlockNoteDocument | null {
-  if (!editorState.editorInstance) {
+  const editor = editorState.getEditorInstance();
+  if (!editor) {
     return null;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-  return editorState.editorInstance.document as BlockNoteDocument;
+  return editor.document as BlockNoteDocument;
 }
 
 function clearEditor(editorState: EditorState): void {
-  if (editorState.editorInstance) {
+  const editor = editorState.getEditorInstance();
+  if (editor) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-    editorState.editorInstance.replaceBlocks(editorState.editorInstance.document, blocknoteService.createEmptyDocument());
+    editor.replaceBlocks(editor.document, blocknoteService.createEmptyDocument());
   }
 }
 
