@@ -16,6 +16,7 @@ interface EditorProps {
 }
 
 function EditorComponent({ onEditorReady }: EditorProps): React.ReactElement {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   const editor = useCreateBlockNote({
     initialContent: blocknoteService.createEmptyDocument()
   }) as unknown as BlockNoteEditor;
