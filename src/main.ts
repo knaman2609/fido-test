@@ -1,5 +1,4 @@
 import { BlockNoteEditor } from "@blocknote/core";
-import "@blocknote/mantine/style.css";
 import { documentStorage } from "./storageService.js";
 import type { Block } from "@blocknote/core";
 
