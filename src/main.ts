@@ -2,7 +2,7 @@ import * as React from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { BlockNoteView } from '@blocknote/mantine';
 import { useCreateBlockNote } from '@blocknote/react';
-import type { BlockNoteEditor, PartialBlock } from '@blocknote/core';
+import type { BlockNoteEditor, PartialBlock, DefaultBlockSchema, DefaultInlineContentSchema, DefaultStyleSchema } from '@blocknote/core';
 import { todoService } from './todoService.js';
 import { imageService, MAX_FILE_SIZE } from './imageService.js';
 import { createUIRenderer } from './ui.js';
@@ -12,8 +12,8 @@ import type { DOMElements, BlockNoteDocument } from './types.js';
 import '@blocknote/mantine/style.css';
 import '@mantine/core/styles.css';
 
-// Extract the editor type from the hook's return type
-type EditorType = ReturnType<typeof useCreateBlockNote>;
+// Use the default schema types from BlockNote
+type EditorType = BlockNoteEditor<DefaultBlockSchema, DefaultInlineContentSchema, DefaultStyleSchema>;
 
 interface EditorProps {
   onEditorReady?: (editor: EditorType) => void;
@@ -22,7 +22,7 @@ interface EditorProps {
 function EditorComponent({ onEditorReady }: EditorProps): React.ReactElement {
   const editor = useCreateBlockNote({
     initialContent: blocknoteService.createEmptyDocument()
-  });
+  }) as EditorType;
 
   React.useEffect(() => {
     if (editor && onEditorReady) {
@@ -30,10 +30,8 @@ function EditorComponent({ onEditorReady }: EditorProps): React.ReactElement {
     }
   }, [editor, onEditorReady]);
 
-  // Cast to BlockNoteEditor to satisfy BlockNoteView's prop types
-  // The mantine BlockNoteView uses a different generic constraint than the hook returns
   const element = React.createElement(BlockNoteView, {
-    editor: editor as BlockNoteEditor,
+    editor: editor,
     className: 'bn-editor'
   });
   return element;
