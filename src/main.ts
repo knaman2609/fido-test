@@ -46,7 +46,6 @@ function getDefaultContent(): Block[] {
   return [
     {
       type: "paragraph",
-      content: "",
     },
   ];
 }
@@ -90,7 +89,7 @@ function init(): void {
     handleSave(blocks);
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   new BlockNoteView(editor, editorContainer);
 }
 
