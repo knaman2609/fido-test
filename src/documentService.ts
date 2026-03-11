@@ -1,10 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import type { Block } from '@blocknote/core';
 import type { Document, DocumentService as IDocumentService } from './types.js';
 
 const STORAGE_KEY = 'blocknote-document';
 
 function generateId(): string {
-  return Date.now().toString(36) + Math.random().toString(36).substr(2);
+  return Date.now().toString(36) + Math.random().toString(36).substring(2);
 }
 
 function isValidBlock(item: unknown): boolean {
@@ -82,7 +82,7 @@ class DocumentServiceImpl implements IDocumentService {
     this.persist();
   }
 
-  save(blocks: any[]): void {
+  save(blocks: Block[]): void {
     if (!this.document) {
       this.createNewDocument();
     }
@@ -109,8 +109,8 @@ class DocumentServiceImpl implements IDocumentService {
       if (this.document) {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(this.document));
       }
-    } catch {
-      throw new Error('Storage may be full or disabled');
+    } catch (error) {
+      throw new Error('Storage may be full or disabled', { cause: error });
     }
   }
 }
