@@ -190,11 +190,17 @@ class BlockNoteServiceImpl implements IBlockNoteService {
   }
 
   private extractTextFromBlock(block: BlockNoteBlock): string {
-    if (!block.content || block.content.length === 0) {
-      return '';
+    const texts: string[] = [];
+
+    if (block.content && block.content.length > 0) {
+      texts.push(...block.content.map(item => item.text));
     }
 
-    return block.content.map(item => item.text).join('');
+    if (block.children && block.children.length > 0) {
+      texts.push(...block.children.map(child => this.extractTextFromBlock(child)));
+    }
+
+    return texts.join('');
   }
 }
 
