@@ -1,37 +1,14 @@
-export interface Todo {
-  id: number;
-  text: string;
-  completed: boolean;
-  image?: string;
+import type { Block } from "@blocknote/core";
+
+export type Document = Block[];
+
+export interface DocumentStorage {
+  load(): Document | null;
+  save(document: Document): void;
 }
 
-export type TodoId = number;
-
-export interface TodoService {
-  getAll(): Todo[];
-  add(text: string, image?: string): Todo;
-  toggle(id: TodoId): Todo | undefined;
-  delete(id: TodoId): boolean;
-  load(): void;
-  save(): void;
-}
-
-export interface UIRenderer {
-  render(todos: Todo[]): void;
+export interface SaveStatusElement {
+  showSaved(): void;
   showError(message: string): void;
-}
-
-export interface DOMElements {
-  todoInput: HTMLInputElement;
-  addBtn: HTMLButtonElement;
-  todoList: HTMLUListElement;
-  errorMessage: HTMLDivElement;
-  imageInput: HTMLInputElement;
-  imagePreview: HTMLDivElement;
-  clearImageBtn: HTMLButtonElement;
-}
-
-export interface ImageService {
-  validateFile(file: File): boolean;
-  readFile(file: File): Promise<string>;
+  showSaving(): void;
 }
