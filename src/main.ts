@@ -95,7 +95,8 @@ function init(): void {
       try {
         documentStorage.save(blocks);
         saveStatus.showSaved();
-      } catch {
+      } catch (error) {
+        console.error("Failed to save document:", error);
         saveStatus.showError("Failed to save");
       }
     }, SAVE_DEBOUNCE_MS);
