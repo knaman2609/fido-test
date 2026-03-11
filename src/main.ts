@@ -34,15 +34,13 @@ function EditorComponent({ onEditorReady }: EditorProps): React.ReactElement {
 
   // The BlockNoteView from @blocknote/mantine has strict generic constraints
   // that don't match useCreateBlockNote's return type exactly.
-  // We use JSX syntax which provides better type inference than React.createElement.
+  // We cast the component to a more permissive type to bridge the gap.
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const ViewComponent = BlockNoteView as React.ComponentType<any>;
-  return (
-    <ViewComponent
-      editor={editor}
-      className="bn-editor"
-    />
-  );
+  return React.createElement(ViewComponent, {
+    editor: editor,
+    className: 'bn-editor'
+  });
 }
 
 interface EditorState {
