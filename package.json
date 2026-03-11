@@ -35,6 +35,6 @@
     "@typescript-eslint/parser": "^6.21.0",
     "eslint": "^8.57.1",
     "typescript": "^5.0.0",
-    "typescript-eslint": "^8.57.0"
+    "typescript-eslint": "^7.0.0"
   }
 }
