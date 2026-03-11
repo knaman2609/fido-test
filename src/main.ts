@@ -44,12 +44,20 @@ class SaveStatus {
 function getDefaultContent(): Block[] {
   return [
     {
+      id: "default",
       type: "paragraph",
+      props: {
+        backgroundColor: "default",
+        textColor: "default",
+        textAlignment: "left",
+      },
+      content: [],
+      children: [],
     },
   ];
 }
 
-async function init(): Promise<void> {
+function init(): void {
   const editorContainer = document.getElementById("editor");
   const saveStatusElement = document.getElementById("saveStatus");
 
