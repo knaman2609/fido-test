@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { BlockNoteView } from '@blocknote/mantine';
-import { useCreateBlockNote, type BlockNoteEditor } from '@blocknote/core';
+import { useCreateBlockNote } from '@blocknote/react';
+import { type BlockNoteEditor } from '@blocknote/core';
 import { todoService } from './todoService.js';
 import { imageService, MAX_FILE_SIZE } from './imageService.js';
 import { createUIRenderer } from './ui.js';
