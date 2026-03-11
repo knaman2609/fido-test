@@ -31,11 +31,13 @@ function EditorComponent({ onEditorReady }: EditorProps): React.ReactElement {
   }, [editor, onEditorReady]);
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  return React.createElement(BlockNoteView, {
+  const element = React.createElement(BlockNoteView, {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     editor: editor as any,
     className: 'bn-editor'
   });
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+  return element;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
