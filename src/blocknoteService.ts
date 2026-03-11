@@ -175,7 +175,7 @@ class BlockNoteServiceImpl implements IBlockNoteService {
     }
     try {
       const parsed = new URL(url, window.location.href);
-      return parsed.protocol === 'data:' || parsed.protocol === 'http:' || parsed.protocol === 'https:';
+      return parsed.protocol === 'http:' || parsed.protocol === 'https:';
     } catch {
       return false;
     }
@@ -193,7 +193,7 @@ class BlockNoteServiceImpl implements IBlockNoteService {
     const texts: string[] = [];
 
     if (block.content && block.content.length > 0) {
-      texts.push(...block.content.map(item => item.text));
+      texts.push(block.content.map(item => item.text).join(' '));
     }
 
     if (block.children && block.children.length > 0) {
