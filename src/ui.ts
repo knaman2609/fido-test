@@ -72,7 +72,7 @@ class UIRendererImpl implements IUIRenderer {
         img.addEventListener('keydown', (e: KeyboardEvent) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
-            openImage();
+            void openImage();
           }
         });
         imgContainer.appendChild(img);

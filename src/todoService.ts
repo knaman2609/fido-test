@@ -39,7 +39,7 @@ function migrateLegacyTodo(legacy: { id: number; text: string; completed: boolea
 
 class TodoServiceImpl implements ITodoService {
   private todos: Todo[] = [];
-  private idCounter: number = 1;
+  private idCounter = 1;
 
   getAll(): Todo[] {
     return [...this.todos];
@@ -82,8 +82,8 @@ class TodoServiceImpl implements ITodoService {
           const maxId = this.todos.reduce((max, todo) => Math.max(max, todo.id), 0);
           this.idCounter = maxId + 1;
         }
-      } catch (e) {
-        console.error('Failed to parse todos from localStorage:', e);
+      } catch (err) {
+        console.error('Failed to parse todos from localStorage:', err);
         this.todos = [];
       }
     } else {
@@ -93,14 +93,20 @@ class TodoServiceImpl implements ITodoService {
 
   private migrateFromLegacy(): void {
     const legacyStored = localStorage.getItem(LEGACY_STORAGE_KEY);
-    if (!legacyStored) return;
+    if (!legacyStored) {
+      return;
+    }
 
     try {
       const parsed: unknown = JSON.parse(legacyStored);
-      if (!Array.isArray(parsed)) return;
+      if (!Array.isArray(parsed)) {
+        return;
+      }
 
       const legacyTodos = parsed.filter((item): item is { id: number; text: string; completed: boolean; image?: string } => {
-        if (typeof item !== 'object' || item === null) return false;
+        if (typeof item !== 'object' || item === null) {
+          return false;
+        }
         const t = item as Record<string, unknown>;
         return (
           typeof t.id === 'number' &&
@@ -115,17 +121,17 @@ class TodoServiceImpl implements ITodoService {
         this.idCounter = maxId + 1;
         this.save();
       }
-    } catch (e) {
-      console.error('Failed to migrate legacy todos:', e);
+    } catch (err) {
+      console.error('Failed to migrate legacy todos:', err);
     }
   }
 
   save(): void {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(this.todos));
-    } catch (e) {
-      console.error('Failed to save todos to localStorage:', e);
-      throw new Error('Storage may be full or disabled');
+    } catch (err) {
+      console.error('Failed to save todos to localStorage:', err);
+      throw new Error('Storage may be full or disabled', { cause: err });
     }
   }
 }
