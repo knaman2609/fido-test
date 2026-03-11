@@ -108,12 +108,12 @@ function clearEditor(editorState: EditorState): void {
   }
 }
 
-function init(): void {
+function init(): () => void {
   const elements = getDOMElements();
   const ui = createUIRenderer(elements.todoList, elements.errorMessage);
   let currentImage: string | null = null;
 
-  initEditor(elements.editorContainer);
+  const editorState = initEditor(elements.editorContainer);
 
   function render(): void {
     ui.render(todoService.getAll());
@@ -173,7 +173,7 @@ function init(): void {
   }
 
   function addTodo(): void {
-    const content = getEditorContent();
+    const content = getEditorContent(editorState);
     if (!content) {
       return;
     }
@@ -186,7 +186,7 @@ function init(): void {
     todoService.add(content, currentImage ?? undefined);
     handleSave('Warning: Your todos cannot be saved. Storage may be full or disabled.');
     render();
-    clearEditor();
+    clearEditor(editorState);
     clearImage();
   }
 
