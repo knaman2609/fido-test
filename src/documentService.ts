@@ -1,5 +1,4 @@
-import type { Block } from '@blocknote/core';
-import type { Document, DocumentService as IDocumentService } from './types.js';
+import type { Document, DocumentService as IDocumentService, BlockData } from './types.js';
 
 const STORAGE_KEY = 'blocknote-document';
 
