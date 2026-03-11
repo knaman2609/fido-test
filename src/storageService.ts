@@ -1,10 +1,24 @@
 import type { Block } from "@blocknote/core";
+import type { DocumentStorage } from "./types.js";
 
 const STORAGE_KEY = "blocknote-document";
 
-export interface DocumentStorage {
-  load(): Block[] | null;
-  save(blocks: Block[]): void;
+function isValidBlock(obj: unknown): obj is Block {
+  if (typeof obj !== "object" || obj === null) {
+    return false;
+  }
+  const block = obj as Record<string, unknown>;
+  return (
+    typeof block.id === "string" &&
+    typeof block.type === "string" &&
+    typeof block.props === "object" &&
+    block.props !== null &&
+    Array.isArray(block.children)
+  );
+}
+
+function isValidBlockArray(data: unknown): data is Block[] {
+  return Array.isArray(data) && data.every(isValidBlock);
 }
 
 class DocumentStorageImpl implements DocumentStorage {
@@ -15,8 +29,8 @@ class DocumentStorageImpl implements DocumentStorage {
         return null;
       }
       const parsed = JSON.parse(stored) as unknown;
-      if (Array.isArray(parsed)) {
-        return parsed as Block[];
+      if (isValidBlockArray(parsed)) {
+        return parsed;
       }
       return null;
     } catch (e) {
