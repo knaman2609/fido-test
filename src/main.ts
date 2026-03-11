@@ -1,5 +1,4 @@
 import { BlockNoteEditor } from "@blocknote/core";
-import { BlockNoteView } from "@blocknote/mantine";
 import "@blocknote/mantine/style.css";
 import { documentStorage } from "./storageService.js";
 import type { Block } from "@blocknote/core";
@@ -50,7 +49,7 @@ function getDefaultContent(): Block[] {
   ];
 }
 
-function init(): void {
+async function init(): Promise<void> {
   const editorContainer = document.getElementById("editor");
   const saveStatusElement = document.getElementById("saveStatus");
 
@@ -64,6 +63,8 @@ function init(): void {
   const editor = BlockNoteEditor.create({
     initialContent,
   });
+
+  editor.mount(editorContainer);
 
   let saveTimeoutId: number | null = null;
 
@@ -88,13 +89,10 @@ function init(): void {
     const blocks = editor.document;
     handleSave(blocks);
   });
-
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-  new BlockNoteView(editor, editorContainer);
 }
 
 if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", init);
+  document.addEventListener("DOMContentLoaded", () => void init());
 } else {
-  init();
+  void init();
 }
