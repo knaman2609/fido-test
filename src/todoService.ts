@@ -72,6 +72,7 @@ class TodoServiceImpl implements ITodoService {
 
   load(): void {
     const stored = localStorage.getItem(STORAGE_KEY);
+    const hasLegacyData = localStorage.getItem(LEGACY_STORAGE_KEY) !== null;
 
     if (stored) {
       try {
@@ -86,7 +87,9 @@ class TodoServiceImpl implements ITodoService {
         console.error('Failed to parse todos from localStorage:', err);
         this.todos = [];
       }
-    } else {
+    }
+
+    if (hasLegacyData) {
       this.migrateFromLegacy();
     }
   }
