@@ -91,7 +91,12 @@ function getEditorContent(editorState: EditorState): BlockNoteDocument | null {
     return null;
   }
 
-  return editor.document as BlockNoteDocument;
+  const document = editor.document;
+  if (!blocknoteService.isValidDocument(document)) {
+    return null;
+  }
+
+  return document;
 }
 
 function clearEditor(editorState: EditorState): void {
