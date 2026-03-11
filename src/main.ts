@@ -12,9 +12,8 @@ import type { DOMElements, BlockNoteDocument } from './types.js';
 import '@blocknote/mantine/style.css';
 import '@mantine/core/styles.css';
 
-// The BlockNote hook and view components have complex generic types that are
-// incompatible at the TypeScript level but work correctly at runtime.
-// We use a simplified type alias to avoid the generic complexity.
+// The BlockNote hook and view components have complex generic types.
+// We use the base BlockNoteEditor type without generics for our type alias.
 type EditorType = BlockNoteEditor;
 
 interface EditorProps {
@@ -34,12 +33,12 @@ function EditorComponent({ onEditorReady }: EditorProps): React.ReactElement {
 
   // The BlockNoteView from @blocknote/mantine has strict generic constraints
   // that don't match useCreateBlockNote's return type exactly.
-  // We use a double cast through unknown to satisfy TypeScript while
-  // maintaining runtime correctness.
-  const element = React.createElement(BlockNoteView, {
-    editor: editor as unknown as BlockNoteEditor,
+  // We cast the props object to satisfy TypeScript while maintaining runtime correctness.
+  const props = {
+    editor: editor as BlockNoteEditor,
     className: 'bn-editor'
-  } as React.ComponentProps<typeof BlockNoteView>);
+  };
+  const element = React.createElement(BlockNoteView, props as React.ComponentProps<typeof BlockNoteView>);
   return element;
 }
 
