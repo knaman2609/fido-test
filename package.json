@@ -1,7 +1,7 @@
 {
-  "name": "todo-app",
+  "name": "document-editor",
   "version": "1.0.0",
-  "description": "A simple TypeScript Todo App",
+  "description": "A BlockNote-based document editor with localStorage persistence",
   "type": "module",
   "scripts": {
     "lint": "eslint src/**/*.ts",
@@ -13,17 +13,22 @@
     "clean": "node scripts/clean.js"
   },
   "keywords": [
-    "todo",
-    "typescript",
-    "app"
+    "document",
+    "editor",
+    "blocknote",
+    "typescript"
   ],
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@blocknote/core": "^0.25.0",
+    "@blocknote/mantine": "^0.25.0",
     "@eslint/js": "^10.0.1",
     "@typescript-eslint/eslint-plugin": "^8.57.0",
     "@typescript-eslint/parser": "^8.57.0",
     "eslint": "^10.0.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "serve": "^14.0.0",
     "typescript": "^5.0.0",
     "typescript-eslint": "^8.57.0"
