@@ -30,14 +30,13 @@ function EditorComponent({ onEditorReady }: EditorProps): React.ReactElement {
     }
   }, [editor, onEditorReady]);
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  /* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-return */
   const element = React.createElement(BlockNoteView, {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     editor: editor as any,
     className: 'bn-editor'
   });
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return element;
+  /* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-return */
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
