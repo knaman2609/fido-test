@@ -4,8 +4,8 @@
   "description": "A BlockNote-based document editor with localStorage persistence",
   "type": "module",
   "scripts": {
-    "lint": "npx eslint src/**/*.ts",
-    "lint:fix": "npx eslint src/**/*.ts --fix",
+    "lint": "./node_modules/.bin/eslint src/**/*.ts",
+    "lint:fix": "./node_modules/.bin/eslint src/**/*.ts --fix",
     "build": "tsc",
     "watch": "tsc --watch",
     "serve": "serve . -p 3000",
