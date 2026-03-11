@@ -19,7 +19,7 @@
         }
 
         .container {
-            max-width: 500px;
+            max-width: 600px;
             margin: 0 auto;
             background: white;
             border-radius: 8px;
@@ -37,20 +37,27 @@
             display: flex;
             gap: 8px;
             margin-bottom: 20px;
+            align-items: flex-start;
         }
 
-        #todoInput {
+        #editorContainer {
             flex: 1;
-            padding: 12px 16px;
+            min-height: 100px;
             border: 2px solid #e0e0e0;
             border-radius: 6px;
-            font-size: 16px;
-            outline: none;
-            transition: border-color 0.2s;
+            overflow: hidden;
         }
 
-        #todoInput:focus {
+        #editorContainer:focus-within {
             border-color: #4CAF50;
+        }
+
+        .bn-editor {
+            min-height: 100px;
+        }
+
+        .bn-editor .bn-container {
+            min-height: 100px;
         }
 
         #addBtn {
@@ -62,6 +69,8 @@
             font-size: 16px;
             cursor: pointer;
             transition: background 0.2s;
+            height: fit-content;
+            margin-top: 4px;
         }
 
         #addBtn:hover {
@@ -74,7 +83,7 @@
 
         .todo-item {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             gap: 12px;
             padding: 12px;
             border-bottom: 1px solid #f0f0f0;
@@ -94,17 +103,74 @@
             height: 20px;
             cursor: pointer;
             accent-color: #4CAF50;
+            margin-top: 4px;
+            flex-shrink: 0;
         }
 
-        .todo-text {
+        .todo-content {
             flex: 1;
             font-size: 16px;
             color: #333;
         }
 
-        .todo-item.completed .todo-text {
+        .todo-content p {
+            margin: 0 0 8px 0;
+        }
+
+        .todo-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        .todo-content h1,
+        .todo-content h2,
+        .todo-content h3,
+        .todo-content h4,
+        .todo-content h5,
+        .todo-content h6 {
+            margin: 8px 0;
+            font-weight: 600;
+        }
+
+        .todo-content ul,
+        .todo-content ol {
+            margin: 8px 0;
+            padding-left: 24px;
+        }
+
+        .todo-content li {
+            margin: 4px 0;
+        }
+
+        .todo-content code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+            font-size: 14px;
+        }
+
+        .todo-content strong {
+            font-weight: 600;
+        }
+
+        .todo-content em {
+            font-style: italic;
+        }
+
+        .todo-content s {
             text-decoration: line-through;
-            color: #999;
+        }
+
+        .todo-content u {
+            text-decoration: underline;
+        }
+
+        .todo-item.completed .todo-content {
+            opacity: 0.6;
+        }
+
+        .todo-item.completed .todo-content p {
+            text-decoration: line-through;
         }
 
         .delete-btn {
@@ -117,6 +183,8 @@
             cursor: pointer;
             opacity: 1;
             transition: background 0.2s;
+            flex-shrink: 0;
+            margin-top: 2px;
         }
 
         .delete-btn:hover {
@@ -207,6 +275,7 @@
 
         .todo-image-container {
             margin-right: 8px;
+            flex-shrink: 0;
         }
 
         .todo-image {
@@ -222,6 +291,16 @@
         .todo-image:hover {
             transform: scale(1.1);
         }
+
+        .bn-check-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .bn-check-item input[type="checkbox"] {
+            cursor: default;
+        }
     </style>
 </head>
 <body>
@@ -236,7 +315,7 @@
             <div id="imagePreview" class="image-preview"></div>
         </div>
         <div class="input-group">
-            <input type="text" id="todoInput" placeholder="Add a new todo..." aria-label="New todo text" maxlength="200">
+            <div id="editorContainer"></div>
             <button id="addBtn">Add</button>
         </div>
         <ul id="todoList"></ul>
