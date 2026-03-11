@@ -61,6 +61,9 @@ class ImageServiceImpl implements ImageService {
       reader.onerror = () => {
         reject(new Error('Failed to read file'));
       };
+      reader.onabort = () => {
+        reject(new Error('File reading was aborted'));
+      };
       reader.readAsDataURL(file);
     });
   }

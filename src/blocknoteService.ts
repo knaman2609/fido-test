@@ -62,21 +62,24 @@ class BlockNoteServiceImpl implements IBlockNoteService {
     switch (block.type) {
       case 'paragraph':
         return `<p>${content}</p>`;
-      case 'heading':
+      case 'heading': {
         const level = (block.props?.level as number) || 1;
         const validLevel = Math.min(Math.max(level, 1), 6);
         return `<h${validLevel}>${content}</h${validLevel}>`;
+      }
       case 'bulletListItem':
         return `<li class="bn-bullet-item">${content}</li>`;
       case 'numberedListItem':
         return `<li class="bn-numbered-item">${content}</li>`;
-      case 'checkListItem':
+      case 'checkListItem': {
         const checked = block.props?.checked ? 'checked' : '';
         return `<div class="bn-check-item"><input type="checkbox" ${checked} disabled> ${content}</div>`;
-      case 'image':
-        const src = block.props?.src as string || '';
-        const alt = block.props?.alt as string || '';
+      }
+      case 'image': {
+        const src = (block.props?.src as string) || '';
+        const alt = (block.props?.alt as string) || '';
         return `<img src="${this.escapeHtml(src)}" alt="${this.escapeHtml(alt)}" class="bn-image">`;
+      }
       default:
         return `<p>${content}</p>`;
     }
