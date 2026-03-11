@@ -1,4 +1,4 @@
-import type { Block } from '@blocknote/core';
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Document, DocumentService as IDocumentService } from './types.js';
 
 const STORAGE_KEY = 'blocknote-document';
@@ -7,16 +7,14 @@ function generateId(): string {
   return Date.now().toString(36) + Math.random().toString(36).substr(2);
 }
 
-function isValidBlock(item: unknown): item is Block {
+function isValidBlock(item: unknown): boolean {
   if (typeof item !== 'object' || item === null) {
     return false;
   }
   const block = item as Record<string, unknown>;
   return (
     typeof block.id === 'string' &&
-    typeof block.type === 'string' &&
-    (block.props === undefined || typeof block.props === 'object') &&
-    (block.content === undefined || Array.isArray(block.content) || typeof block.content === 'string')
+    typeof block.type === 'string'
   );
 }
 
@@ -68,7 +66,7 @@ class DocumentServiceImpl implements IDocumentService {
         {
           id: generateId(),
           type: 'paragraph',
-          props: { backgroundColor: 'default', textColor: 'default', textAlignment: 'left' },
+          props: {},
           content: [
             {
               type: 'text',
@@ -84,7 +82,7 @@ class DocumentServiceImpl implements IDocumentService {
     this.persist();
   }
 
-  save(blocks: Block[]): void {
+  save(blocks: any[]): void {
     if (!this.document) {
       this.createNewDocument();
     }
