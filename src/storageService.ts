@@ -13,8 +13,8 @@ function isValidBlock(obj: unknown): obj is Block {
     typeof block.type === "string" &&
     typeof block.props === "object" &&
     block.props !== null &&
-    Array.isArray(block.children) &&
-    Array.isArray(block.content)
+    (block.children === undefined || Array.isArray(block.children)) &&
+    (block.content === undefined || Array.isArray(block.content))
   );
 }
 
