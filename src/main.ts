@@ -234,6 +234,10 @@ function init(): () => void {
 
   todoService.load();
   render();
+
+  return () => {
+    editorState.reactRoot.unmount();
+  };
 }
 
 if (document.readyState === 'loading') {
