@@ -22,9 +22,9 @@ function getDOMElements(): DOMElements {
 
 function showError(message: string, errorElement: HTMLDivElement): void {
   errorElement.textContent = message;
-  errorMessage.classList.add('visible');
+  errorElement.classList.add('visible');
   setTimeout(() => {
-    errorMessage.classList.remove('visible');
+    errorElement.classList.remove('visible');
   }, 5000);
 }
 
