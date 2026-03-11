@@ -49,7 +49,7 @@ function init(): void {
     return createElement(
       BlockNoteView,
       {
-        editor: editor,
+        editor: editor as BlockNoteEditor,
         onChange: (): void => {
           try {
             documentService.save(editor.document as Block[]);
