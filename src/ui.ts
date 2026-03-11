@@ -1,5 +1,6 @@
 import type { Todo, UIRenderer as IUIRenderer } from './types.js';
 import { isValidImageUrl } from './utils.js';
+import { blocknoteService } from './blocknoteService.js';
 
 class UIRendererImpl implements IUIRenderer {
   private todoList: HTMLUListElement;
@@ -31,23 +32,25 @@ class UIRendererImpl implements IUIRenderer {
       checkbox.type = 'checkbox';
       checkbox.className = 'todo-checkbox';
       checkbox.checked = todo.completed;
-      checkbox.setAttribute('aria-label', `Mark "${todo.text}" as ${todo.completed ? 'incomplete' : 'complete'}`);
+
+      const plainText = blocknoteService.extractPlainText(todo.content);
+      checkbox.setAttribute('aria-label', `Mark "${plainText || 'todo'}" as ${todo.completed ? 'incomplete' : 'complete'}`);
       checkbox.setAttribute('data-id', todo.id.toString());
       checkbox.setAttribute('data-action', 'toggle');
 
-      const span = document.createElement('span');
-      span.className = 'todo-text';
-      span.textContent = todo.text;
+      const contentDiv = document.createElement('div');
+      contentDiv.className = 'todo-content';
+      contentDiv.innerHTML = blocknoteService.documentToHTML(todo.content);
 
       const deleteBtn = document.createElement('button');
       deleteBtn.className = 'delete-btn';
       deleteBtn.textContent = 'Delete';
-      deleteBtn.setAttribute('aria-label', `Delete "${todo.text}"`);
+      deleteBtn.setAttribute('aria-label', `Delete "${plainText || 'todo'}"`);
       deleteBtn.setAttribute('data-id', todo.id.toString());
       deleteBtn.setAttribute('data-action', 'delete');
 
       li.appendChild(checkbox);
-      li.appendChild(span);
+      li.appendChild(contentDiv);
 
       function openImage(): void {
         if (todo.image && isValidImageUrl(todo.image)) {
