@@ -94,6 +94,7 @@ function initEditor(container: HTMLDivElement): EditorState {
 }
 
 function getEditorContent(editorState: EditorState): BlockNoteDocument | null {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const editor = editorState.getEditorInstance();
   if (!editor) {
     return null;
@@ -104,6 +105,7 @@ function getEditorContent(editorState: EditorState): BlockNoteDocument | null {
 }
 
 function clearEditor(editorState: EditorState): void {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const editor = editorState.getEditorInstance();
   if (editor) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
