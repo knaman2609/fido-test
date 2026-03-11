@@ -78,6 +78,9 @@ class BlockNoteServiceImpl implements IBlockNoteService {
       case 'image': {
         const src = (block.props?.src as string) || '';
         const alt = (block.props?.alt as string) || '';
+        if (!this.isValidImageUrl(src)) {
+          return '';
+        }
         return `<img src="${this.escapeHtml(src)}" alt="${this.escapeHtml(alt)}" class="bn-image">`;
       }
       default:
