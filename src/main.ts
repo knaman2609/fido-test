@@ -2,6 +2,7 @@ import * as React from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { BlockNoteView } from '@blocknote/mantine';
 import { useCreateBlockNote } from '@blocknote/react';
+import type { BlockNoteEditor, DefaultBlockSchema, DefaultInlineContentSchema, DefaultStyleSchema } from '@blocknote/core';
 import { todoService } from './todoService.js';
 import { imageService, MAX_FILE_SIZE } from './imageService.js';
 import { createUIRenderer } from './ui.js';
@@ -11,9 +12,7 @@ import type { DOMElements, BlockNoteDocument } from './types.js';
 import '@blocknote/mantine/style.css';
 import '@mantine/core/styles.css';
 
-// BlockNote editor type - using any due to complex generic types from library
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type EditorType = any;
+type EditorType = BlockNoteEditor<DefaultBlockSchema, DefaultInlineContentSchema, DefaultStyleSchema>;
 
 interface EditorProps {
   onEditorReady?: (editor: EditorType) => void;
@@ -30,18 +29,15 @@ function EditorComponent({ onEditorReady }: EditorProps): React.ReactElement {
     }
   }, [editor, onEditorReady]);
 
-  /* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any */
   const element = React.createElement(BlockNoteView, {
-    editor: editor as any,
+    editor: editor,
     className: 'bn-editor'
   });
   return element;
-  /* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any */
 }
 
 interface EditorState {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  getEditorInstance(): any;
+  getEditorInstance(): EditorType | null;
   reactRoot: Root;
 }
 
@@ -72,11 +68,9 @@ function getDOMElements(): DOMElements {
 function initEditor(container: HTMLDivElement): EditorState {
   const reactRoot = createRoot(container);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let editorInstance: any = null;
+  let editorInstance: EditorType | null = null;
 
   const handleEditorReady = (editor: EditorType): void => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     editorInstance = editor;
   };
 
@@ -85,8 +79,7 @@ function initEditor(container: HTMLDivElement): EditorState {
   );
 
   return {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    getEditorInstance(): any {
+    getEditorInstance(): EditorType | null {
       return editorInstance;
     },
     reactRoot
@@ -94,21 +87,17 @@ function initEditor(container: HTMLDivElement): EditorState {
 }
 
 function getEditorContent(editorState: EditorState): BlockNoteDocument | null {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const editor = editorState.getEditorInstance();
   if (!editor) {
     return null;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   return editor.document as BlockNoteDocument;
 }
 
 function clearEditor(editorState: EditorState): void {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const editor = editorState.getEditorInstance();
   if (editor) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
     editor.replaceBlocks(editor.document, blocknoteService.createEmptyDocument());
   }
 }
@@ -233,7 +222,9 @@ function init(): () => void {
 
   elements.addBtn.addEventListener('click', addTodo);
   elements.imageInput.addEventListener('change', (e: Event) => {
-    void handleImageSelect(e);
+    handleImageSelect(e).catch(() => {
+      ui.showError('Image processing failed');
+    });
   });
   elements.clearImageBtn.addEventListener('click', clearImage);
 
