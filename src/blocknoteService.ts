@@ -174,7 +174,7 @@ class BlockNoteServiceImpl implements IBlockNoteService {
       return false;
     }
     try {
-      const parsed = new URL(url, window.location.href);
+      const parsed = new URL(url);
       return parsed.protocol === 'http:' || parsed.protocol === 'https:';
     } catch {
       return false;
