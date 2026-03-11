@@ -1,23 +1,40 @@
-import type { Todo, TodoId, TodoService as ITodoService } from './types.js';
+import type { Todo, TodoId, TodoService as ITodoService, BlockNoteDocument } from './types.js';
 import { isValidImageUrl } from './utils.js';
+import { blocknoteService } from './blocknoteService.js';
 
-// Storage: Uses localStorage with image compression (see imageService.ts).
-// Images are compressed to ~100-300KB each, allowing 15-25+ todos with images
-// within typical 5-10MB browser storage limits.
-const STORAGE_KEY = 'todos';
+const STORAGE_KEY = 'todos-v2';
+const LEGACY_STORAGE_KEY = 'todos';
 
 function isValidTodo(item: unknown): item is Todo {
   if (typeof item !== 'object' || item === null) {
     return false;
   }
+
   const todo = item as Record<string, unknown>;
+
   const hasValidImage = todo.image === undefined || (typeof todo.image === 'string' && isValidImageUrl(todo.image));
+  const hasValidContent = blocknoteService.isValidDocument(todo.content);
+
   return (
     typeof todo.id === 'number' &&
-    typeof todo.text === 'string' &&
+    hasValidContent &&
     typeof todo.completed === 'boolean' &&
     hasValidImage
   );
+}
+
+function migrateLegacyTodo(legacy: { id: number; text: string; completed: boolean; image?: string }): Todo {
+  return {
+    id: legacy.id,
+    content: [
+      {
+        type: 'paragraph',
+        content: legacy.text ? [{ type: 'text', text: legacy.text }] : []
+      }
+    ],
+    completed: legacy.completed,
+    image: legacy.image
+  };
 }
 
 class TodoServiceImpl implements ITodoService {
@@ -28,10 +45,10 @@ class TodoServiceImpl implements ITodoService {
     return [...this.todos];
   }
 
-  add(text: string, image?: string): Todo {
+  add(content: BlockNoteDocument, image?: string): Todo {
     const todo: Todo = {
       id: this.idCounter++,
-      text: text,
+      content: content,
       completed: false,
       image: image
     };
@@ -55,6 +72,7 @@ class TodoServiceImpl implements ITodoService {
 
   load(): void {
     const stored = localStorage.getItem(STORAGE_KEY);
+
     if (stored) {
       try {
         const parsed: unknown = JSON.parse(stored);
@@ -68,6 +86,37 @@ class TodoServiceImpl implements ITodoService {
         console.error('Failed to parse todos from localStorage:', e);
         this.todos = [];
       }
+    } else {
+      this.migrateFromLegacy();
+    }
+  }
+
+  private migrateFromLegacy(): void {
+    const legacyStored = localStorage.getItem(LEGACY_STORAGE_KEY);
+    if (!legacyStored) return;
+
+    try {
+      const parsed: unknown = JSON.parse(legacyStored);
+      if (!Array.isArray(parsed)) return;
+
+      const legacyTodos = parsed.filter((item): item is { id: number; text: string; completed: boolean; image?: string } => {
+        if (typeof item !== 'object' || item === null) return false;
+        const t = item as Record<string, unknown>;
+        return (
+          typeof t.id === 'number' &&
+          typeof t.text === 'string' &&
+          typeof t.completed === 'boolean'
+        );
+      });
+
+      if (legacyTodos.length > 0) {
+        this.todos = legacyTodos.map(migrateLegacyTodo);
+        const maxId = this.todos.reduce((max, todo) => Math.max(max, todo.id), 0);
+        this.idCounter = maxId + 1;
+        this.save();
+      }
+    } catch (e) {
+      console.error('Failed to migrate legacy todos:', e);
     }
   }
 
