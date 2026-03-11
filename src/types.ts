@@ -1,9 +1,10 @@
-import type { Block } from '@blocknote/core';
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type BlockData = any;
 
 export interface Document {
   id: string;
   title: string;
-  blocks: Block[];
+  blocks: BlockData[];
   createdAt: number;
   updatedAt: number;
 }
@@ -11,7 +12,8 @@ export interface Document {
 export interface DocumentService {
   getCurrentDocument(): Document | null;
   load(): void;
-  save(blocks: Block[]): void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  save(blocks: any[]): void;
   updateTitle(title: string): void;
 }
 
