@@ -12,7 +12,6 @@ import type { DOMElements, BlockNoteDocument } from './types.js';
 import '@blocknote/mantine/style.css';
 import '@mantine/core/styles.css';
 
-// Use BlockNote's default schema types for proper type safety
 type EditorType = BlockNoteEditor<DefaultBlockSchema, DefaultInlineContentSchema, DefaultStyleSchema>;
 
 interface EditorProps {
@@ -22,7 +21,7 @@ interface EditorProps {
 function EditorComponent({ onEditorReady }: EditorProps): React.ReactElement {
   const editor = useCreateBlockNote({
     initialContent: blocknoteService.createEmptyDocument()
-  }) as EditorType;
+  });
 
   React.useEffect(() => {
     if (editor && onEditorReady) {
@@ -30,11 +29,8 @@ function EditorComponent({ onEditorReady }: EditorProps): React.ReactElement {
     }
   }, [editor, onEditorReady]);
 
-  // BlockNoteView has strict generic constraints that differ from useCreateBlockNote's return type.
-  // The editor works correctly at runtime; we use a targeted type assertion for the editor prop only.
-  type BlockNoteViewProps = React.ComponentProps<typeof BlockNoteView>;
   return React.createElement(BlockNoteView, {
-    editor: editor as unknown as BlockNoteViewProps['editor'],
+    editor: editor,
     className: 'bn-editor'
   });
 }
