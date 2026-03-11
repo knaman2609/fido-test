@@ -97,5 +97,5 @@ function init(): void {
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", init);
 } else {
-  void init();
+  init();
 }
