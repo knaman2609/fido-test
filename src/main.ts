@@ -2,7 +2,7 @@ import * as React from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { BlockNoteView } from '@blocknote/mantine';
 import { useCreateBlockNote } from '@blocknote/react';
-import type { BlockNoteEditor, PartialBlock, DefaultBlockSchema, DefaultInlineContentSchema, DefaultStyleSchema } from '@blocknote/core';
+import type { BlockNoteEditor, PartialBlock } from '@blocknote/core';
 import { todoService } from './todoService.js';
 import { imageService, MAX_FILE_SIZE } from './imageService.js';
 import { createUIRenderer } from './ui.js';
@@ -12,8 +12,9 @@ import type { DOMElements, BlockNoteDocument } from './types.js';
 import '@blocknote/mantine/style.css';
 import '@mantine/core/styles.css';
 
-// Use the default schema types from BlockNote
-type EditorType = BlockNoteEditor<DefaultBlockSchema, DefaultInlineContentSchema, DefaultStyleSchema>;
+// Use the BlockNoteEditor type directly - the hook and view have compatible runtime behavior
+// even if their generic types differ slightly due to library implementation details
+type EditorType = BlockNoteEditor;
 
 interface EditorProps {
   onEditorReady?: (editor: EditorType) => void;
@@ -22,7 +23,7 @@ interface EditorProps {
 function EditorComponent({ onEditorReady }: EditorProps): React.ReactElement {
   const editor = useCreateBlockNote({
     initialContent: blocknoteService.createEmptyDocument()
-  }) as EditorType;
+  });
 
   React.useEffect(() => {
     if (editor && onEditorReady) {
@@ -30,8 +31,10 @@ function EditorComponent({ onEditorReady }: EditorProps): React.ReactElement {
     }
   }, [editor, onEditorReady]);
 
+  // The BlockNoteView from @blocknote/mantine expects a specific generic type,
+  // but the runtime behavior is identical. We cast to satisfy TypeScript.
   const element = React.createElement(BlockNoteView, {
-    editor: editor,
+    editor: editor as BlockNoteEditor,
     className: 'bn-editor'
   });
   return element;
