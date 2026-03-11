@@ -12,14 +12,13 @@ import '@blocknote/mantine/style.css';
 import '@mantine/core/styles.css';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type EditorType = unknown;
+type EditorType = any;
 
 interface EditorProps {
   onEditorReady?: (editor: EditorType) => void;
 }
 
 function EditorComponent({ onEditorReady }: EditorProps): React.ReactElement {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const editor: EditorType = useCreateBlockNote({
     initialContent: blocknoteService.createEmptyDocument()
   });
@@ -71,7 +70,6 @@ function initEditor(container: HTMLDivElement): void {
   reactRoot = createRoot(container);
 
   const handleEditorReady = (editor: EditorType): void => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     editorInstance = editor;
   };
 
@@ -85,13 +83,11 @@ function getEditorContent(): BlockNoteDocument | null {
     return null;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   return editorInstance.document as BlockNoteDocument;
 }
 
 function clearEditor(): void {
   if (editorInstance) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
     editorInstance.replaceBlocks(editorInstance.document, blocknoteService.createEmptyDocument());
   }
 }
