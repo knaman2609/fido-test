@@ -53,27 +53,68 @@ class BlockNoteServiceImpl implements IBlockNoteService {
       return '<p></p>';
     }
 
-    return document.map(block => this.blockToHTML(block)).join('');
+    return this.processBlocksWithLists(document);
+  }
+
+  private processBlocksWithLists(blocks: BlockNoteDocument): string {
+    const result: string[] = [];
+    let currentListType: 'bullet' | 'numbered' | null = null;
+    const currentListItems: string[] = [];
+
+    const flushList = (): void => {
+      if (currentListItems.length === 0) {
+        return;
+      }
+      const tag = currentListType === 'bullet' ? 'ul' : 'ol';
+      result.push(`<${tag} class="bn-${currentListType}-list">${currentListItems.join('')}</${tag}>`);
+      currentListItems.length = 0;
+      currentListType = null;
+    };
+
+    for (const block of blocks) {
+      if (block.type === 'bulletListItem') {
+        if (currentListType !== null && currentListType !== 'bullet') {
+          flushList();
+        }
+        currentListType = 'bullet';
+        currentListItems.push(this.blockToHTML(block));
+      } else if (block.type === 'numberedListItem') {
+        if (currentListType !== null && currentListType !== 'numbered') {
+          flushList();
+        }
+        currentListType = 'numbered';
+        currentListItems.push(this.blockToHTML(block));
+      } else {
+        flushList();
+        result.push(this.blockToHTML(block));
+      }
+    }
+
+    flushList();
+    return result.join('');
   }
 
   private blockToHTML(block: BlockNoteBlock): string {
     const content = this.inlineContentToHTML(block.content);
+    const childrenHTML = block.children && block.children.length > 0
+      ? this.processBlocksWithLists(block.children)
+      : '';
 
     switch (block.type) {
       case 'paragraph':
-        return `<p>${content}</p>`;
+        return `<p>${content}${childrenHTML}</p>`;
       case 'heading': {
         const level = (block.props?.level as number) || 1;
         const validLevel = Math.min(Math.max(level, 1), 6);
-        return `<h${validLevel}>${content}</h${validLevel}>`;
+        return `<h${validLevel}>${content}${childrenHTML}</h${validLevel}>`;
       }
       case 'bulletListItem':
-        return `<li class="bn-bullet-item">${content}</li>`;
+        return `<li class="bn-bullet-item">${content}${childrenHTML}</li>`;
       case 'numberedListItem':
-        return `<li class="bn-numbered-item">${content}</li>`;
+        return `<li class="bn-numbered-item">${content}${childrenHTML}</li>`;
       case 'checkListItem': {
         const checked = block.props?.checked ? 'checked' : '';
-        return `<div class="bn-check-item"><input type="checkbox" ${checked} disabled> ${content}</div>`;
+        return `<div class="bn-check-item"><input type="checkbox" ${checked} disabled> ${content}${childrenHTML}</div>`;
       }
       case 'image': {
         const src = (block.props?.src as string) || '';
@@ -84,7 +125,7 @@ class BlockNoteServiceImpl implements IBlockNoteService {
         return `<img src="${this.escapeHtml(src)}" alt="${this.escapeHtml(alt)}" class="bn-image">`;
       }
       default:
-        return `<p>${content}</p>`;
+        return `<p>${content}${childrenHTML}</p>`;
     }
   }
 
