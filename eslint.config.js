@@ -1,6 +1,4 @@
 import js from "@eslint/js";
-import tseslint from "@typescript-eslint/eslint-plugin";
-import tsparser from "@typescript-eslint/parser";
 
 export default [
   {
@@ -10,14 +8,14 @@ export default [
   {
     files: ["**/*.ts"],
     languageOptions: {
-      parser: tsparser,
+      parser: await import("@typescript-eslint/parser").then(m => m.default),
       parserOptions: {
         project: true,
         tsconfigRootDir: import.meta.dirname,
       },
     },
     plugins: {
-      "@typescript-eslint": tseslint,
+      "@typescript-eslint": await import("@typescript-eslint/eslint-plugin").then(m => m.default),
     },
     rules: {
       "no-console": "warn",
