@@ -110,18 +110,9 @@ class NoteSidebar {
 
   private extractPreview(blocks: Block[]): string {
     for (const block of blocks) {
-      if (block.content && Array.isArray(block.content)) {
-        const text = block.content
-          .map((c) => {
-            if (typeof c === "object" && c !== null && "text" in c) {
-              return String((c as { text: string }).text);
-            }
-            return "";
-          })
-          .join("");
-        if (text.trim()) {
-          return text.slice(0, 60) + (text.length > 60 ? "..." : "");
-        }
+      const text = extractTextFromBlock(block);
+      if (text.trim()) {
+        return text.slice(0, 60) + (text.length > 60 ? "..." : "");
       }
     }
     return "No additional text";
