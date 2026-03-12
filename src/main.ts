@@ -2,7 +2,7 @@ import { BlockNoteEditor, BlockNoteSchema, defaultBlockSpecs } from "@blocknote/
 import { noteStorage } from "./storageService.js";
 import type { Block } from "@blocknote/core";
 import type { Note, NotesCollection } from "./types.js";
-import { findFirstTextBlock } from "./types.js";
+import { findFirstTextBlock, findFirstTextBlockPreferHeadings } from "./types.js";
 
 const SAVE_DEBOUNCE_MS = 500;
 
