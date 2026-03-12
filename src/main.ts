@@ -357,7 +357,6 @@ function EditorApp({ noteManagerRef, initialContent }: EditorAppProps): React.Re
       }
     }
     // noteManagerRef is a stable ref - the object reference never changes
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editor]);
 
   if (error) {
