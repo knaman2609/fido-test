@@ -218,7 +218,7 @@ class NoteManager {
     }
   }
 
-  createNewNote(): void {
+  async createNewNote(): Promise<void> {
     const newNote = noteStorage.createNote();
     this.notes.push(newNote);
     this.sidebar.renderNotesList(this.notes);
