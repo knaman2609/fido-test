@@ -51,6 +51,49 @@ export function findFirstTextBlock(
   return null;
 }
 
+export function findFirstTextBlockPreferHeadings(blocks: Block[]): {
+  text: string;
+  isHeading: boolean;
+} | null {
+  let firstNonHeadingText: string | null = null;
+
+  function traverse(blocksToSearch: Block[]): { text: string; isHeading: boolean } | null {
+    for (const block of blocksToSearch) {
+      const isHeading = block.type === "heading";
+      const text = extractTextFromBlock(block);
+      const trimmedText = text.trim();
+
+      if (trimmedText) {
+        if (isHeading) {
+          return { text: trimmedText, isHeading: true };
+        }
+        if (!firstNonHeadingText) {
+          firstNonHeadingText = trimmedText;
+        }
+      }
+
+      if (block.children && Array.isArray(block.children)) {
+        const childResult = traverse(block.children);
+        if (childResult?.isHeading) {
+          return childResult;
+        }
+      }
+    }
+    return null;
+  }
+
+  const headingResult = traverse(blocks);
+  if (headingResult) {
+    return headingResult;
+  }
+
+  if (firstNonHeadingText) {
+    return { text: firstNonHeadingText, isHeading: false };
+  }
+
+  return null;
+}
+
 export interface Note {
   id: string;
   title: string;
