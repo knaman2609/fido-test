@@ -308,6 +308,9 @@ async function init(): Promise<void> {
     // eslint-disable-next-line @typescript-eslint/await-thenable
     editor = await BlockNoteEditor.create({
       initialContent,
+      schema: {
+        blockSpecs: defaultBlockSpecs,
+      },
     });
   } catch (error) {
     // eslint-disable-next-line no-console
