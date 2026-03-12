@@ -346,6 +346,8 @@ function EditorApp({ noteManager, initialContent }: EditorAppProps): React.React
 
     const initEditor = async (): Promise<void> => {
       try {
+        // BlockNoteEditor.create returns a Promise but ESLint can't detect it
+        // eslint-disable-next-line @typescript-eslint/await-thenable
         const ed = await BlockNoteEditor.create({ initialContent });
         if (isMounted) {
           setEditor(ed);
