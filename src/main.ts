@@ -373,7 +373,7 @@ function EditorApp({ noteManager, initialContent }: EditorAppProps): React.React
   // This is a known compatibility issue between @blocknote/react and @blocknote/mantine
   // versions. The runtime behavior is correct, so we use type assertion.
   return React.createElement(BlockNoteView, {
-    editor: editor as BlockNoteEditor,
+    editor: editor as unknown as BlockNoteEditor,
     slashMenu: true,
     formattingToolbar: true,
     sideMenu: true,
