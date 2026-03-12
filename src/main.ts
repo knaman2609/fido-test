@@ -187,7 +187,7 @@ class NoteManager {
     return this.notes[0]?.content;
   }
 
-  async selectNote(id: string): Promise<void> {
+  selectNote(id: string): void {
     const note = noteStorage.getNote(id);
     if (!note) {
       // eslint-disable-next-line no-console
@@ -204,7 +204,8 @@ class NoteManager {
       // This prevents users from accidentally undoing into a different note's content
       this.editor.mount(undefined);
 
-      const newEditor = await BlockNoteEditor.create({
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+      const newEditor = BlockNoteEditor.create({
         initialContent: note.content,
       });
 
