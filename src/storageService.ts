@@ -175,7 +175,7 @@ class NoteStorageImpl implements NoteStorage {
         notes.push(note);
         localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
       } else {
-        this.saveAllNotes([note]);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify([note]));
       }
     } catch (e) {
       // eslint-disable-next-line no-console
