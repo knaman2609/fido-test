@@ -8,6 +8,9 @@ import type { Block } from "@blocknote/core";
 import type { Note, NotesCollection } from "./types.js";
 import { findFirstTextBlock, findFirstTextBlockPreferHeadings } from "./types.js";
 
+// Extract the editor type from the create method's return type
+type CreatedEditor = ReturnType<typeof BlockNoteEditor.create> extends Promise<infer T> ? T : never;
+
 const SAVE_DEBOUNCE_MS = 500;
 
 class SaveStatus {
