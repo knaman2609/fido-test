@@ -368,10 +368,12 @@ function EditorApp({ noteManager, initialContent }: EditorAppProps): React.React
     }, "Loading editor...");
   }
 
-  // Use BlockNoteViewRaw from @blocknote/react which has compatible types
-  // with the editor returned by useCreateBlockNote
-  return React.createElement(BlockNoteViewRaw, {
-    editor,
+  // The editor from useCreateBlockNote has a specific schema type that doesn't
+  // match BlockNoteView's generic constraints due to library type definitions.
+  // This is a known compatibility issue between @blocknote/react and @blocknote/mantine
+  // versions. The runtime behavior is correct, so we use type assertion.
+  return React.createElement(BlockNoteView, {
+    editor: editor as BlockNoteEditor,
     slashMenu: true,
     formattingToolbar: true,
     sideMenu: true,
