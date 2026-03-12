@@ -198,7 +198,10 @@ class NoteManager {
       return;
     }
 
-    this.flushPendingSave();
+    const saveSuccess = this.flushPendingSave();
+    if (!saveSuccess) {
+      return;
+    }
     this.activeNoteId = id;
     this.sidebar.setActiveNote(id);
 
