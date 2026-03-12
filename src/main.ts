@@ -330,8 +330,10 @@ interface EditorAppProps {
 }
 
 function EditorApp({ noteManager, initialContent }: EditorAppProps): React.ReactElement | null {
-  const [editor, setEditor] = useState<BlockNoteEditor | null>(null);
-  const editorRef = useRef<BlockNoteEditor | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [editor, setEditor] = useState<any>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const editorRef = useRef<any>(null);
 
   useEffect(() => {
     const schema = BlockNoteSchema.create({
@@ -342,11 +344,10 @@ function EditorApp({ noteManager, initialContent }: EditorAppProps): React.React
     void BlockNoteEditor.create({
       initialContent,
       schema,
-    }).then((ed: BlockNoteEditor) => {
+    }).then((ed) => {
       setEditor(ed);
       editorRef.current = ed;
-      noteManager.setEditor(ed);
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      noteManager.setEditor(ed as BlockNoteEditor);
     }).catch((error: unknown) => {
       // eslint-disable-next-line no-console
       console.error("Failed to initialize BlockNote editor:", error);
@@ -367,6 +368,7 @@ function EditorApp({ noteManager, initialContent }: EditorAppProps): React.React
     }, "Loading editor...");
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   return React.createElement(BlockNoteView, {
     editor: editor,
     slashMenu: true,
