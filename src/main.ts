@@ -8,9 +8,6 @@ import type { Block } from "@blocknote/core";
 import type { Note, NotesCollection } from "./types.js";
 import { findFirstTextBlock, findFirstTextBlockPreferHeadings } from "./types.js";
 
-// Type for the BlockNoteEditor instance
-type EditorInstance = BlockNoteEditor;
-
 const SAVE_DEBOUNCE_MS = 500;
 
 class SaveStatus {
