@@ -1,4 +1,4 @@
-import { BlockNoteEditor, defaultBlockSpecs, getDefaultSlashMenuItems } from "@blocknote/core";
+import { BlockNoteEditor, BlockNoteSchema } from "@blocknote/core";
 import { noteStorage } from "./storageService.js";
 import type { Block } from "@blocknote/core";
 import type { Note, NotesCollection } from "./types.js";
