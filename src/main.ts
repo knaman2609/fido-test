@@ -56,7 +56,7 @@ function getDefaultContent(): Block[] {
   ];
 }
 
-async function init(): Promise<void> {
+function init(): void {
   const editorContainer = document.getElementById("editor");
   const saveStatusElement = document.getElementById("saveStatus");
 
