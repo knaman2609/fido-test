@@ -387,11 +387,12 @@ function EditorApp({ noteManagerRef, initialContent }: EditorAppProps): React.Re
       style: { padding: "40px", textAlign: "center", color: "#f44336" }
     }, "Editor initialization failed. Please refresh the page.");
   }
+  // Type assertion through unknown to handle schema type incompatibility
+  // between @blocknote/react's useCreateBlockNote and @blocknote/mantine's BlockNoteView.
+  // Runtime validation above ensures the editor has required methods.
+  const typedEditor = editor as unknown as BlockNoteEditor;
   return React.createElement(BlockNoteView, {
-    // Type assertion needed due to schema type incompatibility between
-    // @blocknote/react's useCreateBlockNote and @blocknote/mantine's BlockNoteView.
-    // Runtime validation above ensures the editor has required methods.
-    editor: editor as unknown as BlockNoteEditor,
+    editor: typedEditor,
     slashMenu: true,
     formattingToolbar: true,
     sideMenu: true,
