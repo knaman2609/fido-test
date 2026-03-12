@@ -338,19 +338,25 @@ function EditorApp({ noteManager, initialContent }: EditorAppProps) {
   const editorRef = useRef<any>(null);
 
   useEffect(() => {
+    let isMounted = true;
+
     const schema = BlockNoteSchema.create({
       blockSpecs: defaultBlockSpecs,
     });
 
-    const ed = BlockNoteEditor.create({
+    void BlockNoteEditor.create({
       initialContent,
       schema,
+    }).then((ed) => {
+      if (isMounted) {
+        setEditor(ed);
+        editorRef.current = ed;
+        noteManager.setEditor(ed);
+      }
     });
-    setEditor(ed);
-    editorRef.current = ed;
-    noteManager.setEditor(ed);
 
     return () => {
+      isMounted = false;
       if (editorRef.current) {
         editorRef.current.destroy();
         editorRef.current = null;
