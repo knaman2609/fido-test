@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { BlockNoteEditor } from "@blocknote/core";
 import { BlockNoteView } from "@blocknote/mantine";
-import { useCreateBlockNote } from "@blocknote/react";
+import { useCreateBlockNote, BlockNoteViewRaw } from "@blocknote/react";
 
 import { noteStorage } from "./storageService.js";
 import type { Block } from "@blocknote/core";
@@ -339,17 +339,14 @@ function EditorApp({ noteManager, initialContent }: EditorAppProps): React.React
   const [error, setError] = React.useState<string | null>(null);
 
   // Use the official React hook to create the editor
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const editor = useCreateBlockNote({
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    initialContent: initialContent as unknown[],
+    initialContent,
   });
 
   // Set up the editor in the note manager when it's ready
   useEffect(() => {
     if (editor) {
       try {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         noteManager.setEditor(editor);
       } catch (err) {
         // eslint-disable-next-line no-console
@@ -371,12 +368,10 @@ function EditorApp({ noteManager, initialContent }: EditorAppProps): React.React
     }, "Loading editor...");
   }
 
-  // Use type assertion to satisfy BlockNoteView's generic requirements
-  // The editor from useCreateBlockNote is compatible but TypeScript's strict type checking
-  // doesn't recognize the schema compatibility between @blocknote/react and @blocknote/mantine
-  return React.createElement(BlockNoteView, {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    editor: editor as unknown as BlockNoteEditor,
+  // Use BlockNoteViewRaw from @blocknote/react which has compatible types
+  // with the editor returned by useCreateBlockNote
+  return React.createElement(BlockNoteViewRaw, {
+    editor,
     slashMenu: true,
     formattingToolbar: true,
     sideMenu: true,
