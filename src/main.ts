@@ -257,15 +257,8 @@ class NoteManager {
 
   private extractTitle(blocks: Block[]): string {
     for (const block of blocks) {
-      if (block.type === "heading" && block.content) {
-        const text = block.content
-          .map((c) => {
-            if (typeof c === "object" && c !== null && "text" in c) {
-              return String((c as { text: string }).text);
-            }
-            return "";
-          })
-          .join("");
+      if (block.type === "heading") {
+        const text = extractTextFromBlock(block);
         if (text.trim()) {
           return text.trim();
         }
@@ -273,18 +266,9 @@ class NoteManager {
     }
 
     for (const block of blocks) {
-      if (block.content && Array.isArray(block.content)) {
-        const text = block.content
-          .map((c) => {
-            if (typeof c === "object" && c !== null && "text" in c) {
-              return String((c as { text: string }).text);
-            }
-            return "";
-          })
-          .join("");
-        if (text.trim()) {
-          return text.trim().slice(0, 50) + (text.length > 50 ? "..." : "");
-        }
+      const text = extractTextFromBlock(block);
+      if (text.trim()) {
+        return text.trim().slice(0, 50) + (text.length > 50 ? "..." : "");
       }
     }
 
