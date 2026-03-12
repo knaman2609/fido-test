@@ -6,8 +6,21 @@ export function extractTextFromBlock(block: Block): string {
   }
   return block.content
     .map((c) => {
-      if (typeof c === "object" && c !== null && "text" in c) {
+      if (typeof c !== "object" || c === null) {
+        return "";
+      }
+      if ("text" in c) {
         return String((c as { text: string }).text);
+      }
+      if ("type" in c && c.type === "link" && "href" in c) {
+        const linkContent = (c as { content?: Array<{ text?: string }> }).content;
+        if (Array.isArray(linkContent)) {
+          return linkContent.map((item) => item.text || "").join("");
+        }
+      }
+      if ("type" in c && c.type === "mention" && "user" in c) {
+        const mentionUser = (c as { user?: { name?: string } }).user;
+        return mentionUser?.name || "";
       }
       return "";
     })
@@ -25,6 +38,12 @@ export function findFirstTextBlock(
     const text = extractTextFromBlock(block);
     if (text.trim()) {
       return text.trim();
+    }
+    if (block.children && Array.isArray(block.children)) {
+      const childText = findFirstTextBlock(block.children, predicate);
+      if (childText) {
+        return childText;
+      }
     }
   }
   return null;
