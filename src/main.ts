@@ -331,11 +331,11 @@ class NoteManager {
 }
 
 interface EditorAppProps {
-  noteManager: NoteManager;
+  noteManagerRef: React.MutableRefObject<NoteManager>;
   initialContent: Block[] | undefined;
 }
 
-function EditorApp({ noteManager, initialContent }: EditorAppProps): React.ReactElement | null {
+function EditorApp({ noteManagerRef, initialContent }: EditorAppProps): React.ReactElement | null {
   const [error, setError] = React.useState<string | null>(null);
 
   // Use the official React hook to create the editor
@@ -347,14 +347,14 @@ function EditorApp({ noteManager, initialContent }: EditorAppProps): React.React
   useEffect(() => {
     if (editor) {
       try {
-        noteManager.setEditor(editor);
+        noteManagerRef.current.setEditor(editor);
       } catch (err) {
         // eslint-disable-next-line no-console
         console.error("Failed to set up editor:", err);
         setError("Failed to initialize editor. Please refresh the page.");
       }
     }
-  }, [editor, noteManager]);
+  }, [editor]);
 
   if (error) {
     return React.createElement("div", {
@@ -372,16 +372,21 @@ function EditorApp({ noteManager, initialContent }: EditorAppProps): React.React
   // match BlockNoteView's generic constraints due to library type definitions.
   // This is a known compatibility issue between @blocknote/react and @blocknote/mantine
   // versions. The runtime behavior is correct.
+  // Using type assertion with validation to ensure runtime safety.
+  if (!editor) {
+    return null;
+  }
   return React.createElement(BlockNoteView, {
-    // @ts-expect-error - Type incompatibility between @blocknote/react and @blocknote/mantine
-    editor,
+    editor: editor as BlockNoteEditor,
     slashMenu: true,
     formattingToolbar: true,
     sideMenu: true,
   });
 }
 
-function init(): void {
+let reactRoot: ReturnType<typeof createRoot> | null = null;
+
+function init(): () => void {
   const editorRootElement = document.getElementById("editor-root");
   const saveStatusElement = document.getElementById("saveStatus");
   const notesListElement = document.getElementById("notesList");
@@ -391,27 +396,46 @@ function init(): void {
     throw new Error("Required DOM elements not found");
   }
 
+  // Clean up any existing React root (for HMR scenarios)
+  if (reactRoot) {
+    reactRoot.unmount();
+    reactRoot = null;
+  }
+
   const saveStatus = new SaveStatus(saveStatusElement);
 
   const sidebar = new NoteSidebar(notesListElement, (id: string) => {
-    noteManager.selectNote(id);
+    noteManagerRef.current.selectNote(id);
   });
 
   const noteManager = new NoteManager(sidebar, saveStatus);
+  const noteManagerRef = { current: noteManager };
 
-  newNoteBtn.addEventListener("click", () => {
-    noteManager.createNewNote();
-  });
+  const handleNewNote = (): void => {
+    noteManagerRef.current.createNewNote();
+  };
+
+  newNoteBtn.addEventListener("click", handleNewNote);
 
   const initialContent = noteManager.initialize();
 
-  const root = createRoot(editorRootElement);
-  root.render(
+  reactRoot = createRoot(editorRootElement);
+  reactRoot.render(
     React.createElement(EditorApp, {
-      noteManager,
+      noteManagerRef,
       initialContent,
     })
   );
+
+  // Return cleanup function
+  return (): void => {
+    newNoteBtn.removeEventListener("click", handleNewNote);
+    noteManagerRef.current.destroy();
+    if (reactRoot) {
+      reactRoot.unmount();
+      reactRoot = null;
+    }
+  };
 }
 
 if (document.readyState === "loading") {
