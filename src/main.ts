@@ -331,7 +331,7 @@ class NoteManager {
 }
 
 interface EditorAppProps {
-  noteManagerRef: React.MutableRefObject<NoteManager>;
+  noteManagerRef: React.MutableRefObject<NoteManager | null>;
   initialContent: Block[] | undefined;
 }
 
@@ -371,23 +371,14 @@ function EditorApp({ noteManagerRef, initialContent }: EditorAppProps): React.Re
     }, "Loading editor...");
   }
 
-  // Type wrapper for BlockNoteView editor prop to handle schema type incompatibility
-  // between @blocknote/react's useCreateBlockNote and @blocknote/mantine's BlockNoteView.
-  interface BlockNoteViewEditor {
-    editor: BlockNoteEditor;
-    slashMenu?: boolean;
-    formattingToolbar?: boolean;
-    sideMenu?: boolean;
-  }
-  
-  const viewProps: BlockNoteViewEditor = {
+  // BlockNoteView props - using inline object to avoid complex type assertions
+  // The editor from useCreateBlockNote is compatible with BlockNoteView at runtime
+  return React.createElement(BlockNoteView, {
     editor,
     slashMenu: true,
     formattingToolbar: true,
     sideMenu: true,
-  };
-  
-  return React.createElement(BlockNoteView, viewProps as unknown as Parameters<typeof BlockNoteView>[0]);
+  } as React.ComponentProps<typeof BlockNoteView>);
 }
 
 let reactRoot: ReturnType<typeof createRoot> | null = null;
@@ -411,18 +402,18 @@ function init(): () => void {
 
   const saveStatus = new SaveStatus(saveStatusElement);
 
-  // Declare ref first to avoid TDZ in sidebar callback
-  const noteManagerRef: { current: NoteManager } = { current: null as unknown as NoteManager };
+  // Declare ref with proper nullable type to avoid TDZ and type assertions
+  const noteManagerRef: React.MutableRefObject<NoteManager | null> = { current: null };
   
   const sidebar = new NoteSidebar(notesListElement, (id: string) => {
-    noteManagerRef.current.selectNote(id);
+    noteManagerRef.current?.selectNote(id);
   });
 
   const noteManager = new NoteManager(sidebar, saveStatus);
   noteManagerRef.current = noteManager;
 
   const handleNewNote = (): void => {
-    noteManagerRef.current.createNewNote();
+    noteManagerRef.current?.createNewNote();
   };
 
   newNoteBtn.addEventListener("click", handleNewNote);
@@ -440,12 +431,12 @@ function init(): () => void {
   // Return cleanup function
   return (): void => {
     newNoteBtn.removeEventListener("click", handleNewNote);
-    noteManagerRef.current.destroy();
+    noteManagerRef.current?.destroy();
     if (reactRoot) {
       reactRoot.unmount();
       reactRoot = null;
     }
-    // Reset initCleanup to prevent stale state
+    // Reset module-level state to prevent memory leaks in HMR/test scenarios
     initCleanup = null;
   };
 }
