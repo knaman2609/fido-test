@@ -210,6 +210,11 @@ class NoteManager {
 
   createNewNote(): void {
     const newNote = noteStorage.createNote();
+    const savedNote = noteStorage.getNote(newNote.id);
+    if (!savedNote) {
+      this.saveStatus.showError("Failed to create note");
+      return;
+    }
     this.notes.push(newNote);
     this.sidebar.renderNotesList(this.notes);
     this.selectNote(newNote.id);
