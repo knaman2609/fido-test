@@ -335,15 +335,37 @@ interface EditorAppProps {
 }
 
 function EditorApp({ noteManager, initialContent }: EditorAppProps): React.ReactElement | null {
-  const editor: BlockNoteEditor | null = useCreateBlockNote({
-    initialContent,
-  });
+  const [error, setError] = React.useState<string | null>(null);
+  const [editor, setEditor] = React.useState<BlockNoteEditor | null>(null);
 
   useEffect(() => {
-    if (editor) {
-      noteManager.setEditor(editor);
-    }
-  }, [editor, noteManager]);
+    let isMounted = true;
+
+    BlockNoteEditor.create({ initialContent })
+      .then((ed) => {
+        if (isMounted) {
+          setEditor(ed);
+          noteManager.setEditor(ed);
+        }
+      })
+      .catch((err) => {
+        if (isMounted) {
+          // eslint-disable-next-line no-console
+          console.error("Failed to initialize editor:", err);
+          setError("Failed to initialize editor. Please refresh the page.");
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [initialContent, noteManager]);
+
+  if (error) {
+    return React.createElement("div", {
+      style: { padding: "40px", textAlign: "center", color: "#f44336" }
+    }, error);
+  }
 
   if (!editor) {
     return React.createElement("div", {
