@@ -390,7 +390,8 @@ function EditorApp({ noteManagerRef, initialContent }: EditorAppProps): React.Re
   // Type assertion through unknown to handle schema type incompatibility
   // between @blocknote/react's useCreateBlockNote and @blocknote/mantine's BlockNoteView.
   // Runtime validation above ensures the editor has required methods.
-  const typedEditor = editor as unknown as BlockNoteEditor;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const typedEditor = editor as unknown as BlockNoteEditor<any, any, any>;
   return React.createElement(BlockNoteView, {
     editor: typedEditor,
     slashMenu: true,
