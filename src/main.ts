@@ -200,21 +200,9 @@ class NoteManager {
     this.sidebar.setActiveNote(id);
 
     if (this.editor) {
-      // Unmount the old editor and create a new one to clear undo history
-      // This prevents users from accidentally undoing into a different note's content
-      this.editor.mount(undefined);
-
-      const newEditor = BlockNoteEditor.create({
-        initialContent: note.content,
-      });
-
-      const editorContainer = document.getElementById("editor");
-      if (editorContainer) {
-        newEditor.mount(editorContainer);
-      }
-
-      this.editor = newEditor;
-      this.setupEditorOnChange(newEditor);
+      const currentBlocks = this.editor.document;
+      const blockIds = currentBlocks.map((block) => block.id);
+      this.editor.replaceBlocks(blockIds, note.content);
     }
   }
 
