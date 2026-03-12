@@ -299,7 +299,7 @@ class NoteManager {
     }
   }
 
-  flushPendingSave(): void {
+  flushPendingSave(): boolean {
     if (this.saveTimeoutId !== null) {
       clearTimeout(this.saveTimeoutId);
       this.saveTimeoutId = null;
@@ -312,9 +312,11 @@ class NoteManager {
           // eslint-disable-next-line no-console
           console.error("Failed to save note:", error);
           this.saveStatus.showError("Failed to save");
+          return false;
         }
       }
     }
+    return true;
   }
 }
 
