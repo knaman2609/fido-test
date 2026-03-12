@@ -168,9 +168,20 @@ class NoteStorageImpl implements NoteStorage {
       createdAt: Date.now(),
       updatedAt: Date.now(),
     };
-    const notes = this.loadAllNotes();
-    notes.push(note);
-    this.saveAllNotes(notes);
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        const notes = JSON.parse(stored) as NotesCollection;
+        notes.push(note);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
+      } else {
+        this.saveAllNotes([note]);
+      }
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error("Failed to create note in localStorage:", e);
+      throw new Error("Storage may be full or disabled", { cause: e });
+    }
     return note;
   }
 
