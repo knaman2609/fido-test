@@ -373,14 +373,18 @@ function EditorApp({ noteManager, initialContent }: EditorAppProps): React.React
   // This is a known compatibility issue between @blocknote/react and @blocknote/mantine
   // versions. The runtime behavior is correct, so we use type assertion.
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const viewEditor = editor as unknown as BlockNoteEditor;
+  const viewEditor = editor as BlockNoteEditor;
 
-  return React.createElement(BlockNoteView, {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const viewProps = {
     editor: viewEditor,
     slashMenu: true,
     formattingToolbar: true,
     sideMenu: true,
-  });
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+  return React.createElement(BlockNoteView, viewProps);
 }
 
 function init(): void {
