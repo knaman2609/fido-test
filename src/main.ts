@@ -292,10 +292,30 @@ class NoteManager {
     return "Untitled Note";
   }
 
-  clearPendingSave(): void {
+  flushPendingSave(): void {
     if (this.saveTimeoutId !== null) {
       clearTimeout(this.saveTimeoutId);
       this.saveTimeoutId = null;
+      if (this.editor && this.activeNoteId) {
+        const blocks = this.editor.document;
+        const activeId = this.activeNoteId;
+        try {
+          const note = noteStorage.getNote(activeId);
+          if (note) {
+            const updatedNote: Note = {
+              ...note,
+              content: blocks,
+              title: this.extractTitle(blocks),
+            };
+            noteStorage.saveNote(updatedNote);
+            this.sidebar.refreshNote(updatedNote);
+          }
+        } catch (error) {
+          // eslint-disable-next-line no-console
+          console.error("Failed to save note:", error);
+          this.saveStatus.showError("Failed to save");
+        }
+      }
     }
   }
 }
