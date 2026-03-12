@@ -108,12 +108,26 @@ class NoteSidebar {
     return element;
   }
 
-  private extractPreview(blocks: Block[]): string {
+  private findFirstTextBlock(
+    blocks: Block[],
+    predicate?: (block: Block) => boolean
+  ): string | null {
     for (const block of blocks) {
+      if (predicate && !predicate(block)) {
+        continue;
+      }
       const text = extractTextFromBlock(block);
       if (text.trim()) {
-        return text.slice(0, 60) + (text.length > 60 ? "..." : "");
+        return text.trim();
       }
+    }
+    return null;
+  }
+
+  private extractPreview(blocks: Block[]): string {
+    const text = this.findFirstTextBlock(blocks);
+    if (text) {
+      return text.slice(0, 60) + (text.length > 60 ? "..." : "");
     }
     return "No additional text";
   }
@@ -211,7 +225,7 @@ class NoteManager {
 
   createNewNote(): void {
     const newNote = noteStorage.createNote();
-    this.notes = noteStorage.loadAllNotes();
+    this.notes.push(newNote);
     this.sidebar.renderNotesList(this.notes);
     void this.selectNote(newNote.id);
   }
@@ -259,20 +273,17 @@ class NoteManager {
   }
 
   private extractTitle(blocks: Block[]): string {
-    for (const block of blocks) {
-      if (block.type === "heading") {
-        const text = extractTextFromBlock(block);
-        if (text.trim()) {
-          return text.trim();
-        }
-      }
+    const headingText = this.findFirstTextBlock(
+      blocks,
+      (block) => block.type === "heading"
+    );
+    if (headingText) {
+      return headingText;
     }
 
-    for (const block of blocks) {
-      const text = extractTextFromBlock(block);
-      if (text.trim()) {
-        return text.trim().slice(0, 50) + (text.length > 50 ? "..." : "");
-      }
+    const anyText = this.findFirstTextBlock(blocks);
+    if (anyText) {
+      return anyText.slice(0, 50) + (anyText.length > 50 ? "..." : "");
     }
 
     return "Untitled Note";
