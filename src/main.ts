@@ -233,6 +233,7 @@ class NoteManager {
   }
 
   destroy(): void {
+    this.flushPendingSave();
     if (this.saveTimeoutId !== null) {
       clearTimeout(this.saveTimeoutId);
       this.saveTimeoutId = null;
