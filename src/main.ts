@@ -2,6 +2,7 @@ import { BlockNoteEditor } from "@blocknote/core";
 import { noteStorage } from "./storageService.js";
 import type { Block } from "@blocknote/core";
 import type { Note, NotesCollection } from "./types.js";
+import { extractTextFromBlock } from "./types.js";
 
 const SAVE_DEBOUNCE_MS = 500;
 
