@@ -374,8 +374,13 @@ function EditorApp({ noteManagerRef, initialContent }: EditorAppProps): React.Re
   // BlockNoteView props - using type assertion due to schema type incompatibility
   // between @blocknote/react's useCreateBlockNote and @blocknote/mantine's BlockNoteView.
   // The editor is compatible at runtime; this is a TypeScript generics limitation.
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const BlockNoteViewTyped = BlockNoteView as React.ComponentType<any>;
+  interface BlockNoteViewProps {
+    editor: BlockNoteEditor;
+    slashMenu?: boolean;
+    formattingToolbar?: boolean;
+    sideMenu?: boolean;
+  }
+  const BlockNoteViewTyped = BlockNoteView as React.ComponentType<BlockNoteViewProps>;
   return React.createElement(BlockNoteViewTyped, {
     editor,
     slashMenu: true,
