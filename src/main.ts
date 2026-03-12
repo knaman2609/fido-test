@@ -331,9 +331,10 @@ interface EditorAppProps {
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function EditorApp({ noteManager, initialContent }: EditorAppProps) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment,
+     @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access,
+     @typescript-eslint/no-unsafe-argument */
   const [editor, setEditor] = useState<any>(null);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const editorRef = useRef<any>(null);
 
   useEffect(() => {
@@ -341,26 +342,20 @@ function EditorApp({ noteManager, initialContent }: EditorAppProps) {
       blockSpecs: defaultBlockSpecs,
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     BlockNoteEditor.create({
       initialContent,
       schema,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     }).then((ed: any) => {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       setEditor(ed);
       editorRef.current = ed;
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       noteManager.setEditor(ed);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    }).catch((error: any) => {
+    }).catch((error: unknown) => {
       // eslint-disable-next-line no-console
       console.error("Failed to initialize BlockNote editor:", error);
     });
 
     return () => {
       if (editorRef.current) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
         editorRef.current.destroy();
         editorRef.current = null;
       }
@@ -374,12 +369,14 @@ function EditorApp({ noteManager, initialContent }: EditorAppProps) {
   }
 
   return React.createElement(BlockNoteView, {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     editor: editor,
     slashMenu: true,
     formattingToolbar: true,
     sideMenu: true,
   });
+  /* eslint-enable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment,
+     @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access,
+     @typescript-eslint/no-unsafe-argument */
 }
 
 function init(): void {
