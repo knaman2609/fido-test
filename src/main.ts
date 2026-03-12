@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { BlockNoteEditor } from "@blocknote/core";
 import { BlockNoteView } from "@blocknote/mantine";
@@ -7,6 +7,9 @@ import { noteStorage } from "./storageService.js";
 import type { Block } from "@blocknote/core";
 import type { Note, NotesCollection } from "./types.js";
 import { findFirstTextBlock, findFirstTextBlockPreferHeadings } from "./types.js";
+
+// Type for the BlockNoteEditor instance
+type EditorInstance = BlockNoteEditor;
 
 const SAVE_DEBOUNCE_MS = 500;
 
@@ -336,25 +339,28 @@ interface EditorAppProps {
 
 function EditorApp({ noteManager, initialContent }: EditorAppProps): React.ReactElement | null {
   const [error, setError] = React.useState<string | null>(null);
-  const [editor, setEditor] = React.useState<BlockNoteEditor | null>(null);
+  const [editor, setEditor] = React.useState<EditorInstance | null>(null);
 
   useEffect(() => {
     let isMounted = true;
 
-    BlockNoteEditor.create({ initialContent })
-      .then((ed) => {
+    const initEditor = async (): Promise<void> => {
+      try {
+        const ed = await BlockNoteEditor.create({ initialContent });
         if (isMounted) {
           setEditor(ed);
           noteManager.setEditor(ed);
         }
-      })
-      .catch((err) => {
+      } catch (err) {
         if (isMounted) {
           // eslint-disable-next-line no-console
           console.error("Failed to initialize editor:", err);
           setError("Failed to initialize editor. Please refresh the page.");
         }
-      });
+      }
+    };
+
+    void initEditor();
 
     return () => {
       isMounted = false;
