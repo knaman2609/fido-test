@@ -2,7 +2,7 @@ import { BlockNoteEditor } from "@blocknote/core";
 import { noteStorage } from "./storageService.js";
 import type { Block } from "@blocknote/core";
 import type { Note, NotesCollection } from "./types.js";
-import { extractTextFromBlock } from "./types.js";
+import { findFirstTextBlock } from "./types.js";
 
 const SAVE_DEBOUNCE_MS = 500;
 
@@ -108,24 +108,8 @@ class NoteSidebar {
     return element;
   }
 
-  private findFirstTextBlock(
-    blocks: Block[],
-    predicate?: (block: Block) => boolean
-  ): string | null {
-    for (const block of blocks) {
-      if (predicate && !predicate(block)) {
-        continue;
-      }
-      const text = extractTextFromBlock(block);
-      if (text.trim()) {
-        return text.trim();
-      }
-    }
-    return null;
-  }
-
   private extractPreview(blocks: Block[]): string {
-    const text = this.findFirstTextBlock(blocks);
+    const text = findFirstTextBlock(blocks);
     if (text) {
       return text.slice(0, 60) + (text.length > 60 ? "..." : "");
     }
@@ -273,7 +257,7 @@ class NoteManager {
   }
 
   private extractTitle(blocks: Block[]): string {
-    const headingText = this.findFirstTextBlock(
+    const headingText = findFirstTextBlock(
       blocks,
       (block) => block.type === "heading"
     );
@@ -281,7 +265,7 @@ class NoteManager {
       return headingText;
     }
 
-    const anyText = this.findFirstTextBlock(blocks);
+    const anyText = findFirstTextBlock(blocks);
     if (anyText) {
       return anyText.slice(0, 50) + (anyText.length > 50 ? "..." : "");
     }
