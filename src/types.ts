@@ -12,16 +12,18 @@ export function extractTextFromBlock(block: Block): string {
       if ("text" in c) {
         return String((c as { text: string }).text);
       }
-      const contentType = "type" in c ? c.type : undefined;
-      if (contentType === "link" && "href" in c) {
-        const linkContent = (c as { content?: Array<{ text?: string }> }).content;
-        if (Array.isArray(linkContent)) {
-          return linkContent.map((item) => item.text || "").join("");
+      if ("type" in c) {
+        const contentObj = c as { type: string };
+        if (contentObj.type === "link" && "href" in c) {
+          const linkContent = (c as { content?: Array<{ text?: string }> }).content;
+          if (Array.isArray(linkContent)) {
+            return linkContent.map((item) => item.text || "").join("");
+          }
         }
-      }
-      if (contentType === "mention" && "user" in c) {
-        const mentionUser = (c as { user?: { name?: string } }).user;
-        return mentionUser?.name || "";
+        if (contentObj.type === "mention" && "user" in c) {
+          const mentionUser = (c as { user?: { name?: string } }).user;
+          return mentionUser?.name || "";
+        }
       }
       return "";
     })
