@@ -311,7 +311,7 @@ async function init(): Promise<void> {
   noteManager = new NoteManager(sidebar, saveStatus);
 
   newNoteBtn.addEventListener("click", () => {
-    void noteManager.createNewNote();
+    noteManager.createNewNote();
   });
 
   const initialContent = noteManager.initialize();
