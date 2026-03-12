@@ -332,9 +332,6 @@ interface EditorAppProps {
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function EditorApp({ noteManager, initialContent }: EditorAppProps) {
-  /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment,
-     @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access,
-     @typescript-eslint/no-unsafe-argument */
   const editor = useCreateBlockNote({
     initialContent,
   });
@@ -357,9 +354,6 @@ function EditorApp({ noteManager, initialContent }: EditorAppProps) {
     formattingToolbar: true,
     sideMenu: true,
   });
-  /* eslint-enable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment,
-     @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access,
-     @typescript-eslint/no-unsafe-argument */
 }
 
 function init(): void {
