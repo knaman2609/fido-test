@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { BlockNoteEditor } from "@blocknote/core";
 import { BlockNoteView } from "@blocknote/mantine";
