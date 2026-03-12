@@ -83,7 +83,7 @@ function migrateLegacyDocument(): NotesCollection {
     const parsed = JSON.parse(stored) as unknown;
     if (isValidBlockArray(parsed)) {
       const note: Note = {
-        id: crypto.randomUUID(),
+        id: generateUUID(),
         title: "Untitled Note",
         content: parsed,
         createdAt: Date.now(),
