@@ -137,6 +137,9 @@ class NoteStorageImpl implements NoteStorage {
   }
 
   saveNote(note: Note): void {
+    if (!isValidNote(note)) {
+      throw new Error("Invalid note data");
+    }
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       const updatedNote = { ...note, updatedAt: Date.now() };
