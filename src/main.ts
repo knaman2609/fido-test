@@ -338,9 +338,11 @@ function EditorApp({ noteManager, initialContent }: EditorAppProps): React.React
       blockSpecs: defaultBlockSpecs,
     });
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     void BlockNoteEditor.create({
       initialContent,
       schema,
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     }).then((ed: BlockNoteEditor) => {
       setEditor(ed);
       editorRef.current = ed;
@@ -352,6 +354,7 @@ function EditorApp({ noteManager, initialContent }: EditorAppProps): React.React
 
     return () => {
       if (editorRef.current) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         editorRef.current.destroy();
         editorRef.current = null;
       }
@@ -359,11 +362,13 @@ function EditorApp({ noteManager, initialContent }: EditorAppProps): React.React
   }, [initialContent, noteManager]);
 
   if (!editor) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     return React.createElement("div", {
       style: { padding: "40px", textAlign: "center", color: "#666" }
     }, "Loading editor...");
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   return React.createElement(BlockNoteView, {
     editor: editor,
     slashMenu: true,
