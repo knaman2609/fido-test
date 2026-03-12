@@ -388,7 +388,10 @@ function EditorApp({ noteManagerRef, initialContent }: EditorAppProps): React.Re
     }, "Editor initialization failed. Please refresh the page.");
   }
   return React.createElement(BlockNoteView, {
-    editor: editor as BlockNoteEditor,
+    // Type assertion needed due to schema type incompatibility between
+    // @blocknote/react's useCreateBlockNote and @blocknote/mantine's BlockNoteView.
+    // Runtime validation above ensures the editor has required methods.
+    editor: editor as unknown as BlockNoteEditor,
     slashMenu: true,
     formattingToolbar: true,
     sideMenu: true,
