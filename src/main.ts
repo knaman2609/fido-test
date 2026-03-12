@@ -56,7 +56,7 @@ function getDefaultContent(): Block[] {
   ];
 }
 
-async function init(): Promise<void> {
+function init(): void {
   const editorContainer = document.getElementById("editor");
   const saveStatusElement = document.getElementById("saveStatus");
 
@@ -69,7 +69,7 @@ async function init(): Promise<void> {
 
   let editor: BlockNoteEditor;
   try {
-    editor = await BlockNoteEditor.create({
+    editor = BlockNoteEditor.create({
       initialContent,
     });
   } catch (error) {
