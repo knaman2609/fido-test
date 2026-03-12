@@ -350,6 +350,7 @@ function EditorApp({ noteManager, initialContent }: EditorAppProps) {
   }
 
   return React.createElement(BlockNoteView, {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     editor: editor as any,
     slashMenu: true,
     formattingToolbar: true,
