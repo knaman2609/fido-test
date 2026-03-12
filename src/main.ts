@@ -183,12 +183,14 @@ class NoteManager {
       this.notes = [defaultNote];
     }
 
+    this.activeNoteId = this.notes[0].id;
     this.sidebar.renderNotesList(this.notes);
+    this.sidebar.setActiveNote(this.activeNoteId);
     return this.notes[0]?.content;
   }
 
   selectNote(id: string): void {
-    const note = noteStorage.getNote(id);
+    const note = this.notes.find((n) => n.id === id);
     if (!note) {
       // eslint-disable-next-line no-console
       console.error(`Note with id "${id}" not found`);
@@ -211,6 +213,13 @@ class NoteManager {
     this.notes.push(newNote);
     this.sidebar.renderNotesList(this.notes);
     this.selectNote(newNote.id);
+  }
+
+  destroy(): void {
+    if (this.saveTimeoutId !== null) {
+      clearTimeout(this.saveTimeoutId);
+      this.saveTimeoutId = null;
+    }
   }
 
   setEditor(editor: BlockNoteEditor): void {
@@ -273,6 +282,13 @@ class NoteManager {
     }
 
     return "Untitled Note";
+  }
+
+  clearPendingSave(): void {
+    if (this.saveTimeoutId !== null) {
+      clearTimeout(this.saveTimeoutId);
+      this.saveTimeoutId = null;
+    }
   }
 }
 
