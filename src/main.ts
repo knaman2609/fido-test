@@ -304,7 +304,7 @@ async function init(): Promise<void> {
   let noteManager: NoteManager;
 
   const sidebar = new NoteSidebar(notesListElement, (id: string) => {
-    noteManager.selectNote(id);
+    void noteManager.selectNote(id);
   });
 
   noteManager = new NoteManager(sidebar, saveStatus);
