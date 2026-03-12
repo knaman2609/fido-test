@@ -198,7 +198,7 @@ class NoteManager {
       return;
     }
 
-    this.clearPendingSave();
+    this.flushPendingSave();
     this.activeNoteId = id;
     this.sidebar.setActiveNote(id);
 
