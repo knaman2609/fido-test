@@ -139,20 +139,20 @@ class NoteStorageImpl implements NoteStorage {
   saveNote(note: Note): void {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
+      const updatedNote = { ...note, updatedAt: Date.now() };
       if (!stored) {
-        const updatedNote = { ...note, updatedAt: Date.now() };
         this.saveAllNotes([updatedNote]);
         return;
       }
       const notes = JSON.parse(stored) as NotesCollection;
       const index = notes.findIndex((n) => n.id === note.id);
-      const updatedNote = { ...note, updatedAt: Date.now() };
       if (index >= 0) {
         notes[index] = updatedNote;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
       } else {
         notes.push(updatedNote);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
       }
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
     } catch (e) {
       // eslint-disable-next-line no-console
       console.error("Failed to save note to localStorage:", e);
