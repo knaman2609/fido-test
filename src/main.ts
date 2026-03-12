@@ -372,8 +372,8 @@ function EditorApp({ noteManager, initialContent }: EditorAppProps): React.React
   // match BlockNoteView's generic constraints due to library type definitions.
   // This is a known compatibility issue between @blocknote/react and @blocknote/mantine
   // versions. The runtime behavior is correct.
-  // @ts-expect-error - Type incompatibility between @blocknote/react and @blocknote/mantine
   return React.createElement(BlockNoteView, {
+    // @ts-expect-error - Type incompatibility between @blocknote/react and @blocknote/mantine
     editor,
     slashMenu: true,
     formattingToolbar: true,
