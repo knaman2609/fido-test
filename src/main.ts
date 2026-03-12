@@ -1,4 +1,7 @@
+import React, { useEffect, useRef, useState, useCallback } from "react";
+import { createRoot } from "react-dom/client";
 import { BlockNoteEditor, BlockNoteSchema, defaultBlockSpecs } from "@blocknote/core";
+import { BlockNoteView } from "@blocknote/mantine";
 import { noteStorage } from "./storageService.js";
 import type { Block } from "@blocknote/core";
 import type { Note, NotesCollection } from "./types.js";
@@ -192,7 +195,6 @@ class NoteManager {
   selectNote(id: string): void {
     const note = this.notes.find((n) => n.id === id);
     if (!note) {
-      // eslint-disable-next-line no-console
       console.error(`Note with id "${id}" not found`);
       this.saveStatus.showError("Note not found");
       return;
@@ -217,7 +219,6 @@ class NoteManager {
     try {
       newNote = noteStorage.createNote();
     } catch (error) {
-      // eslint-disable-next-line no-console
       console.error("Failed to create note:", error);
       this.saveStatus.showError("Failed to create note");
       return;
@@ -269,7 +270,6 @@ class NoteManager {
         this.performSave(activeId, blocks);
         this.saveStatus.showSaved();
       } catch (error) {
-        // eslint-disable-next-line no-console
         console.error("Failed to save note:", error);
         this.saveStatus.showError("Failed to save");
       }
@@ -310,7 +310,6 @@ class NoteManager {
         try {
           this.performSave(activeId, blocks);
         } catch (error) {
-          // eslint-disable-next-line no-console
           console.error("Failed to save note:", error);
           this.saveStatus.showError("Failed to save");
           return false;
@@ -319,28 +318,76 @@ class NoteManager {
     }
     return true;
   }
+
+  getActiveNoteId(): string | null {
+    return this.activeNoteId;
+  }
 }
 
-async function init(): Promise<void> {
-  const editorContainer = document.getElementById("editor");
+interface EditorAppProps {
+  noteManager: NoteManager;
+  initialContent: Block[] | undefined;
+}
+
+function EditorApp({ noteManager, initialContent }: EditorAppProps) {
+  const [editor, setEditor] = useState<BlockNoteEditor | null>(null);
+  const editorRef = useRef<BlockNoteEditor | null>(null);
+
+  useEffect(() => {
+    const schema = BlockNoteSchema.create({
+      blockSpecs: defaultBlockSpecs,
+    });
+
+    BlockNoteEditor.create({
+      initialContent,
+      schema,
+    }).then((ed) => {
+      setEditor(ed);
+      editorRef.current = ed;
+      noteManager.setEditor(ed);
+    }).catch((error) => {
+      console.error("Failed to initialize BlockNote editor:", error);
+    });
+
+    return () => {
+      if (editorRef.current) {
+        editorRef.current.destroy();
+        editorRef.current = null;
+      }
+    };
+  }, [initialContent, noteManager]);
+
+  if (!editor) {
+    return React.createElement("div", {
+      style: { padding: "40px", textAlign: "center", color: "#666" }
+    }, "Loading editor...");
+  }
+
+  return React.createElement(BlockNoteView, {
+    editor: editor,
+    slashMenu: true,
+    formattingToolbar: true,
+    sideMenu: true,
+  });
+}
+
+function init(): void {
+  const editorRootElement = document.getElementById("editor-root");
   const saveStatusElement = document.getElementById("saveStatus");
   const notesListElement = document.getElementById("notesList");
   const newNoteBtn = document.getElementById("newNoteBtn");
 
-  if (!editorContainer || !saveStatusElement || !notesListElement || !newNoteBtn) {
+  if (!editorRootElement || !saveStatusElement || !notesListElement || !newNoteBtn) {
     throw new Error("Required DOM elements not found");
   }
 
   const saveStatus = new SaveStatus(saveStatusElement);
 
-  // eslint-disable-next-line prefer-const
-  let noteManager: NoteManager;
-
   const sidebar = new NoteSidebar(notesListElement, (id: string) => {
     noteManager.selectNote(id);
   });
 
-  noteManager = new NoteManager(sidebar, saveStatus);
+  const noteManager = new NoteManager(sidebar, saveStatus);
 
   newNoteBtn.addEventListener("click", () => {
     noteManager.createNewNote();
@@ -348,28 +395,13 @@ async function init(): Promise<void> {
 
   const initialContent = noteManager.initialize();
 
-  const schema = BlockNoteSchema.create({
-    blockSpecs: defaultBlockSpecs,
-  });
-
-  let editor: BlockNoteEditor;
-  try {
-    // eslint-disable-next-line @typescript-eslint/await-thenable
-    editor = await BlockNoteEditor.create({
+  const root = createRoot(editorRootElement);
+  root.render(
+    React.createElement(EditorApp, {
+      noteManager,
       initialContent,
-      schema,
-    });
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error("Failed to initialize BlockNote editor:", error);
-    saveStatus.showError("Failed to initialize editor");
-    editorContainer.innerHTML =
-      '<p style="padding: 20px; color: #f44336;">Failed to initialize editor. Please refresh the page.</p>';
-    return;
-  }
-
-  editor.mount(editorContainer);
-  noteManager.setEditor(editor);
+    })
+  );
 }
 
 if (document.readyState === "loading") {
