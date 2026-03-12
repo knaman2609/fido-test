@@ -224,7 +224,7 @@ class NoteManager {
       this.saveStatus.showError("Failed to create note");
       return;
     }
-    this.notes.push(newNote);
+    this.notes.push(savedNote);
     this.sidebar.renderNotesList(this.notes);
     this.selectNote(newNote.id);
   }
