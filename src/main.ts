@@ -9,6 +9,9 @@ import type { Block } from "@blocknote/core";
 import type { Note, NotesCollection } from "./types.js";
 import { findFirstTextBlock, findFirstTextBlockPreferHeadings } from "./types.js";
 
+// Type alias for the editor instance returned by useCreateBlockNote
+type EditorType = ReturnType<typeof useCreateBlockNote>;
+
 const SAVE_DEBOUNCE_MS = 500;
 
 class SaveStatus {
@@ -339,7 +342,7 @@ function EditorApp({ noteManager, initialContent }: EditorAppProps): React.React
   const [error, setError] = React.useState<string | null>(null);
 
   // Use the official React hook to create the editor
-  const editor = useCreateBlockNote({
+  const editor: EditorType = useCreateBlockNote({
     initialContent,
   });
 
@@ -368,8 +371,11 @@ function EditorApp({ noteManager, initialContent }: EditorAppProps): React.React
     }, "Loading editor...");
   }
 
+  // Use type assertion to satisfy BlockNoteView's generic requirements
+  // The editor from useCreateBlockNote is compatible but TypeScript's strict type checking
+  // doesn't recognize the schema compatibility
   return React.createElement(BlockNoteView, {
-    editor,
+    editor: editor as BlockNoteEditor,
     slashMenu: true,
     formattingToolbar: true,
     sideMenu: true,
