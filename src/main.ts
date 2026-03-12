@@ -349,7 +349,7 @@ function EditorApp({ noteManager, initialContent }: EditorAppProps) {
   }
 
   return React.createElement(BlockNoteView, {
-    editor: editor,
+    editor: editor as BlockNoteEditor,
     slashMenu: true,
     formattingToolbar: true,
     sideMenu: true,
