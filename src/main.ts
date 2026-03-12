@@ -397,6 +397,7 @@ function EditorApp({ noteManagerRef, initialContent }: EditorAppProps): React.Re
 }
 
 let reactRoot: ReturnType<typeof createRoot> | null = null;
+let initCleanup: (() => void) | null = null;
 
 function init(): () => void {
   const editorRootElement = document.getElementById("editor-root");
