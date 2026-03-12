@@ -312,13 +312,14 @@ async function init(): Promise<void> {
 
   const saveStatus = new SaveStatus(saveStatusElement);
 
-  const noteManager: NoteManager;
+  let noteManager: NoteManager;
 
   const sidebar = new NoteSidebar(notesListElement, (id: string) => {
     void noteManager.selectNote(id);
   });
 
   noteManager = new NoteManager(sidebar, saveStatus);
+  // eslint-disable-next-line prefer-const
 
   newNoteBtn.addEventListener("click", () => {
     noteManager.createNewNote();
