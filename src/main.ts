@@ -362,13 +362,11 @@ function EditorApp({ noteManager, initialContent }: EditorAppProps): React.React
   }, [initialContent, noteManager]);
 
   if (!editor) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     return React.createElement("div", {
       style: { padding: "40px", textAlign: "center", color: "#666" }
     }, "Loading editor...");
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   return React.createElement(BlockNoteView, {
     editor: editor,
     slashMenu: true,
