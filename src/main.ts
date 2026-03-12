@@ -268,19 +268,13 @@ class NoteManager {
   }
 
   private extractTitle(blocks: Block[]): string {
-    const headingText = findFirstTextBlock(
-      blocks,
-      (block) => block.type === "heading"
-    );
-    if (headingText) {
-      return headingText;
+    const result = findFirstTextBlockPreferHeadings(blocks);
+    if (result) {
+      if (result.isHeading) {
+        return result.text;
+      }
+      return result.text.slice(0, 50) + (result.text.length > 50 ? "..." : "");
     }
-
-    const anyText = findFirstTextBlock(blocks);
-    if (anyText) {
-      return anyText.slice(0, 50) + (anyText.length > 50 ? "..." : "");
-    }
-
     return "Untitled Note";
   }
 
