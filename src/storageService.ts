@@ -35,6 +35,7 @@ class DocumentStorageImpl implements DocumentStorage {
       }
       return null;
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.error("Failed to load document from localStorage:", e);
       return null;
     }
@@ -44,6 +45,7 @@ class DocumentStorageImpl implements DocumentStorage {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(blocks));
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.error("Failed to save document to localStorage:", e);
       throw new Error("Storage may be full or disabled", { cause: e });
     }

@@ -69,10 +69,12 @@ async function init(): Promise<void> {
 
   let editor: BlockNoteEditor;
   try {
+    // eslint-disable-next-line @typescript-eslint/await-thenable
     editor = await BlockNoteEditor.create({
       initialContent,
     });
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error("Failed to initialize BlockNote editor:", error);
     saveStatus.showError("Failed to initialize editor");
     editorContainer.innerHTML =
@@ -96,6 +98,7 @@ async function init(): Promise<void> {
         documentStorage.save(blocks);
         saveStatus.showSaved();
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error("Failed to save document:", error);
         saveStatus.showError("Failed to save");
       }
