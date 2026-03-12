@@ -303,15 +303,14 @@ async function init(): Promise<void> {
 
   const initialContent = noteManager.initialize();
 
+  const schema = BlockNoteSchema.create();
+
   let editor: BlockNoteEditor;
   try {
     // eslint-disable-next-line @typescript-eslint/await-thenable
     editor = await BlockNoteEditor.create({
       initialContent,
-      schema: {
-        blockSpecs: defaultBlockSpecs,
-      },
-      slashMenuItems: getDefaultSlashMenuItems(),
+      schema,
     });
   } catch (error) {
     // eslint-disable-next-line no-console
