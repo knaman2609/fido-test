@@ -70,6 +70,7 @@ async function init(): Promise<void> {
 
   let editor: BlockNoteEditor;
   try {
+    // eslint-disable-next-line @typescript-eslint/await-thenable
     editor = await BlockNoteEditor.create({
       initialContent,
     });
