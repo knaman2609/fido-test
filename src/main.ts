@@ -292,6 +292,19 @@ class NoteManager {
     return "Untitled Note";
   }
 
+  private performSave(noteId: string, blocks: Block[]): void {
+    const note = noteStorage.getNote(noteId);
+    if (note) {
+      const updatedNote: Note = {
+        ...note,
+        content: blocks,
+        title: this.extractTitle(blocks),
+      };
+      noteStorage.saveNote(updatedNote);
+      this.sidebar.refreshNote(updatedNote);
+    }
+  }
+
   flushPendingSave(): void {
     if (this.saveTimeoutId !== null) {
       clearTimeout(this.saveTimeoutId);
