@@ -371,32 +371,23 @@ function EditorApp({ noteManagerRef, initialContent }: EditorAppProps): React.Re
     }, "Loading editor...");
   }
 
-  // The editor from useCreateBlockNote has a specific schema type that doesn't
-  // match BlockNoteView's generic constraints due to library type definitions.
-  // This is a known compatibility issue between @blocknote/react and @blocknote/mantine
-  // versions. The runtime behavior is correct.
-  // Using type assertion with runtime validation to ensure safety.
-  if (!editor) {
-    return null;
-  }
-  // Runtime validation to ensure editor has required methods before type assertion
-  if (typeof editor.replaceBlocks !== "function" || typeof editor.onChange !== "function") {
-    // eslint-disable-next-line no-console
-    console.error("Editor instance missing required methods");
-    return React.createElement("div", {
-      style: { padding: "40px", textAlign: "center", color: "#f44336" }
-    }, "Editor initialization failed. Please refresh the page.");
-  }
-  // Type assertion through unknown to handle schema type incompatibility
+  // Type wrapper for BlockNoteView editor prop to handle schema type incompatibility
   // between @blocknote/react's useCreateBlockNote and @blocknote/mantine's BlockNoteView.
-  // Runtime validation above ensures the editor has required methods.
-  const typedEditor = editor as unknown as Parameters<typeof BlockNoteView>[0]["editor"];
-  return React.createElement(BlockNoteView, {
-    editor: typedEditor,
+  interface BlockNoteViewEditor {
+    editor: BlockNoteEditor;
+    slashMenu?: boolean;
+    formattingToolbar?: boolean;
+    sideMenu?: boolean;
+  }
+  
+  const viewProps: BlockNoteViewEditor = {
+    editor,
     slashMenu: true,
     formattingToolbar: true,
     sideMenu: true,
-  });
+  };
+  
+  return React.createElement(BlockNoteView, viewProps as unknown as Parameters<typeof BlockNoteView>[0]);
 }
 
 let reactRoot: ReturnType<typeof createRoot> | null = null;
@@ -420,12 +411,15 @@ function init(): () => void {
 
   const saveStatus = new SaveStatus(saveStatusElement);
 
+  // Declare ref first to avoid TDZ in sidebar callback
+  const noteManagerRef: { current: NoteManager } = { current: null as unknown as NoteManager };
+  
   const sidebar = new NoteSidebar(notesListElement, (id: string) => {
     noteManagerRef.current.selectNote(id);
   });
 
   const noteManager = new NoteManager(sidebar, saveStatus);
-  const noteManagerRef = { current: noteManager };
+  noteManagerRef.current = noteManager;
 
   const handleNewNote = (): void => {
     noteManagerRef.current.createNewNote();
@@ -451,6 +445,8 @@ function init(): () => void {
       reactRoot.unmount();
       reactRoot = null;
     }
+    // Reset initCleanup to prevent stale state
+    initCleanup = null;
   };
 }
 
