@@ -372,10 +372,11 @@ function EditorApp({ noteManager, initialContent }: EditorAppProps): React.React
   // match BlockNoteView's generic constraints due to library type definitions.
   // This is a known compatibility issue between @blocknote/react and @blocknote/mantine
   // versions. The runtime behavior is correct, so we use type assertion.
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const viewEditor = editor as unknown as BlockNoteEditor;
+
   return React.createElement(BlockNoteView, {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    editor: editor as any,
+    editor: viewEditor,
     slashMenu: true,
     formattingToolbar: true,
     sideMenu: true,
