@@ -344,6 +344,8 @@ function EditorApp({ noteManagerRef, initialContent }: EditorAppProps): React.Re
   });
 
   // Set up the editor in the note manager when it's ready
+  // noteManagerRef is a stable ref object, so we don't need it in dependencies
+  // The effect only needs to run when editor instance changes
   useEffect(() => {
     if (editor) {
       try {
@@ -354,6 +356,8 @@ function EditorApp({ noteManagerRef, initialContent }: EditorAppProps): React.Re
         setError("Failed to initialize editor. Please refresh the page.");
       }
     }
+    // noteManagerRef is a stable ref - the object reference never changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editor]);
 
   if (error) {
@@ -372,9 +376,17 @@ function EditorApp({ noteManagerRef, initialContent }: EditorAppProps): React.Re
   // match BlockNoteView's generic constraints due to library type definitions.
   // This is a known compatibility issue between @blocknote/react and @blocknote/mantine
   // versions. The runtime behavior is correct.
-  // Using type assertion with validation to ensure runtime safety.
+  // Using type assertion with runtime validation to ensure safety.
   if (!editor) {
     return null;
+  }
+  // Runtime validation to ensure editor has required methods before type assertion
+  if (typeof editor.replaceBlocks !== "function" || typeof editor.onChange !== "function") {
+    // eslint-disable-next-line no-console
+    console.error("Editor instance missing required methods");
+    return React.createElement("div", {
+      style: { padding: "40px", textAlign: "center", color: "#f44336" }
+    }, "Editor initialization failed. Please refresh the page.");
   }
   return React.createElement(BlockNoteView, {
     editor: editor as BlockNoteEditor,
