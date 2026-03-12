@@ -311,6 +311,7 @@ async function init(): Promise<void> {
       schema: {
         blockSpecs: defaultBlockSpecs,
       },
+      slashMenuItems: getDefaultSlashMenuItems(),
     });
   } catch (error) {
     // eslint-disable-next-line no-console
