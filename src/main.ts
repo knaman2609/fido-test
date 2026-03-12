@@ -198,6 +198,7 @@ class NoteManager {
       return;
     }
 
+    this.clearPendingSave();
     this.activeNoteId = id;
     this.sidebar.setActiveNote(id);
 
@@ -209,7 +210,15 @@ class NoteManager {
   }
 
   createNewNote(): void {
-    const newNote = noteStorage.createNote();
+    let newNote: Note;
+    try {
+      newNote = noteStorage.createNote();
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error("Failed to create note:", error);
+      this.saveStatus.showError("Failed to create note");
+      return;
+    }
     const savedNote = noteStorage.getNote(newNote.id);
     if (!savedNote) {
       this.saveStatus.showError("Failed to create note");
