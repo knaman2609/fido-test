@@ -227,7 +227,10 @@ class NoteManager {
 
   setEditor(editor: BlockNoteEditor): void {
     this.editor = editor;
+    this.setupEditorOnChange(editor);
+  }
 
+  private setupEditorOnChange(editor: BlockNoteEditor): void {
     editor.onChange(() => {
       const blocks = editor.document;
       void this.handleSave(blocks);
