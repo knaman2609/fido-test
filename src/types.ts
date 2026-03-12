@@ -1,5 +1,19 @@
 import type { Block } from "@blocknote/core";
 
+export function extractTextFromBlock(block: Block): string {
+  if (!block.content || !Array.isArray(block.content)) {
+    return "";
+  }
+  return block.content
+    .map((c) => {
+      if (typeof c === "object" && c !== null && "text" in c) {
+        return String((c as { text: string }).text);
+      }
+      return "";
+    })
+    .join("");
+}
+
 export interface Note {
   id: string;
   title: string;
