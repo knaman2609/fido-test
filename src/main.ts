@@ -451,8 +451,17 @@ function init(): () => void {
   };
 }
 
+function runInit(): void {
+  // Clean up previous initialization if it exists (for HMR scenarios)
+  if (initCleanup) {
+    initCleanup();
+    initCleanup = null;
+  }
+  initCleanup = init();
+}
+
 if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", () => void init());
+  document.addEventListener("DOMContentLoaded", () => void runInit());
 } else {
-  void init();
+  void runInit();
 }
