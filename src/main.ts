@@ -371,14 +371,15 @@ function EditorApp({ noteManagerRef, initialContent }: EditorAppProps): React.Re
     }, "Loading editor...");
   }
 
-  // BlockNoteView props - using inline object to avoid complex type assertions
-  // The editor from useCreateBlockNote is compatible with BlockNoteView at runtime
+  // BlockNoteView props - using type assertion due to schema type incompatibility
+  // between @blocknote/react's useCreateBlockNote and @blocknote/mantine's BlockNoteView.
+  // The editor is compatible at runtime; this is a TypeScript generics limitation.
   return React.createElement(BlockNoteView, {
-    editor,
+    editor: editor as BlockNoteEditor,
     slashMenu: true,
     formattingToolbar: true,
     sideMenu: true,
-  } as React.ComponentProps<typeof BlockNoteView>);
+  });
 }
 
 let reactRoot: ReturnType<typeof createRoot> | null = null;
