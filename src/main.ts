@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { BlockNoteEditor } from "@blocknote/core";
-import { BlockNoteView } from "@blocknote/mantine";
-import { useCreateBlockNote } from "@blocknote/react";
+import { useCreateBlockNote, BlockNoteViewRaw } from "@blocknote/react";
 
 import { noteStorage } from "./storageService.js";
 import type { Block } from "@blocknote/core";
@@ -368,12 +367,10 @@ function EditorApp({ noteManager, initialContent }: EditorAppProps): React.React
     }, "Loading editor...");
   }
 
-  // The editor from useCreateBlockNote has a specific schema type that doesn't
-  // match BlockNoteView's generic constraints due to library type definitions.
-  // This is a known compatibility issue between @blocknote/react and @blocknote/mantine
-  // versions. The runtime behavior is correct, so we use type assertion.
-  return React.createElement(BlockNoteView, {
-    editor: editor as unknown as BlockNoteEditor,
+  // Use BlockNoteViewRaw from @blocknote/react which has compatible types
+  // with the editor returned by useCreateBlockNote
+  return React.createElement(BlockNoteViewRaw, {
+    editor,
     slashMenu: true,
     formattingToolbar: true,
     sideMenu: true,
