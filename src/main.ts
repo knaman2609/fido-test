@@ -197,7 +197,7 @@ class NoteManager {
     void this.selectNote(this.notes[0].id);
   }
 
-  async selectNote(id: string): Promise<void> {
+  selectNote(id: string): void {
     const note = noteStorage.getNote(id);
     if (!note) {
       return;
@@ -312,14 +312,14 @@ async function init(): Promise<void> {
 
   const saveStatus = new SaveStatus(saveStatusElement);
 
-  let noteManager: NoteManager;
+  const noteManager: NoteManager;
 
   const sidebar = new NoteSidebar(notesListElement, (id: string) => {
-    void noteManager.selectNote(id);
+    noteManager.selectNote(id);
   });
 
-  noteManager = new NoteManager(sidebar, saveStatus);
   // eslint-disable-next-line prefer-const
+  noteManager = new NoteManager(sidebar, saveStatus);
 
   newNoteBtn.addEventListener("click", () => {
     noteManager.createNewNote();
