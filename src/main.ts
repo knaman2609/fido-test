@@ -204,7 +204,6 @@ class NoteManager {
       // This prevents users from accidentally undoing into a different note's content
       this.editor.mount(undefined);
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       const newEditor = BlockNoteEditor.create({
         initialContent: note.content,
       });
