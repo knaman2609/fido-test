@@ -332,6 +332,7 @@ interface EditorAppProps {
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function EditorApp({ noteManager, initialContent }: EditorAppProps) {
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   const editor = useCreateBlockNote({
     initialContent,
   });
@@ -349,11 +350,12 @@ function EditorApp({ noteManager, initialContent }: EditorAppProps) {
   }
 
   return React.createElement(BlockNoteView, {
-    editor: editor as BlockNoteEditor,
+    editor: editor as any,
     slashMenu: true,
     formattingToolbar: true,
     sideMenu: true,
   });
+  /* eslint-enable @typescript-eslint/no-explicit-any */
 }
 
 function init(): void {
