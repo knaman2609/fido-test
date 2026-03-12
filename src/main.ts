@@ -371,20 +371,14 @@ function EditorApp({ noteManager, initialContent }: EditorAppProps): React.React
   // The editor from useCreateBlockNote has a specific schema type that doesn't
   // match BlockNoteView's generic constraints due to library type definitions.
   // This is a known compatibility issue between @blocknote/react and @blocknote/mantine
-  // versions. The runtime behavior is correct, so we use type assertion.
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const viewEditor = editor as BlockNoteEditor;
-
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const viewProps = {
-    editor: viewEditor,
+  // versions. The runtime behavior is correct.
+  // @ts-expect-error - Type incompatibility between @blocknote/react and @blocknote/mantine
+  return React.createElement(BlockNoteView, {
+    editor,
     slashMenu: true,
     formattingToolbar: true,
     sideMenu: true,
-  };
-
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  return React.createElement(BlockNoteView, viewProps);
+  });
 }
 
 function init(): void {
