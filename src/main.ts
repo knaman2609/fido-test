@@ -335,29 +335,15 @@ function EditorApp({ noteManager, initialContent }: EditorAppProps) {
   /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment,
      @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access,
      @typescript-eslint/no-unsafe-argument */
-  const [editor, setEditor] = useState<any>(null);
-  const editorRef = useRef<any>(null);
+  const editor = useCreateBlockNote({
+    initialContent,
+  });
 
   useEffect(() => {
-    const schema = BlockNoteSchema.create({
-      blockSpecs: defaultBlockSpecs,
-    });
-
-    const ed = BlockNoteEditor.create({
-      initialContent,
-      schema,
-    });
-    setEditor(ed);
-    editorRef.current = ed;
-    noteManager.setEditor(ed);
-
-    return () => {
-      if (editorRef.current) {
-        editorRef.current.destroy();
-        editorRef.current = null;
-      }
-    };
-  }, [initialContent, noteManager]);
+    if (editor) {
+      noteManager.setEditor(editor);
+    }
+  }, [editor, noteManager]);
 
   if (!editor) {
     return React.createElement("div", {
