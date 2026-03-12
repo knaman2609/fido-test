@@ -48,13 +48,6 @@ export interface NoteStorage {
   deleteNote(id: string): boolean;
 }
 
-export interface NoteListItem {
-  id: string;
-  title: string;
-  preview: string;
-  updatedAt: number;
-}
-
 export interface SaveStatusElement {
   showSaved(): void;
   showError(message: string): void;
