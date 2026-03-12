@@ -111,10 +111,12 @@ class NoteSidebar {
     for (const block of blocks) {
       if (block.content && Array.isArray(block.content)) {
         const text = block.content
-          .filter((c): c is { type: string; text: string } =>
-            typeof c === "object" && c !== null && "text" in c
-          )
-          .map((c) => c.text)
+          .map((c) => {
+            if (typeof c === "object" && c !== null && "text" in c) {
+              return String((c as { text: string }).text);
+            }
+            return "";
+          })
           .join("");
         if (text.trim()) {
           return text.slice(0, 60) + (text.length > 60 ? "..." : "");
@@ -146,7 +148,8 @@ class NoteSidebar {
     const items = this.container.querySelectorAll(".note-item");
     items.forEach((item) => {
       item.classList.remove("active");
-      if (id && item.dataset.noteId === id) {
+      const noteId = item.getAttribute("data-note-id");
+      if (id && noteId === id) {
         item.classList.add("active");
       }
     });
@@ -191,7 +194,7 @@ class NoteManager {
     }
 
     this.sidebar.renderNotesList(this.notes);
-    this.selectNote(this.notes[0].id);
+    void this.selectNote(this.notes[0].id);
   }
 
   async selectNote(id: string): Promise<void> {
@@ -204,7 +207,7 @@ class NoteManager {
     this.sidebar.setActiveNote(id);
 
     if (this.editor) {
-      await this.editor.replaceBlocks(
+      this.editor.replaceBlocks(
         this.editor.document,
         note.content
       );
@@ -227,7 +230,7 @@ class NoteManager {
     });
   }
 
-  private async handleSave(blocks: Block[]): Promise<void> {
+  private handleSave(blocks: Block[]): void {
     if (!this.activeNoteId) {
       return;
     }
@@ -238,9 +241,10 @@ class NoteManager {
 
     this.saveStatus.showSaving();
 
+    const activeId = this.activeNoteId;
     this.saveTimeoutId = window.setTimeout(() => {
       try {
-        const note = noteStorage.getNote(this.activeNoteId!);
+        const note = noteStorage.getNote(activeId);
         if (note) {
           const updatedNote: Note = {
             ...note,
@@ -263,10 +267,12 @@ class NoteManager {
     for (const block of blocks) {
       if (block.type === "heading" && block.content) {
         const text = block.content
-          .filter((c): c is { type: string; text: string } =>
-            typeof c === "object" && c !== null && "text" in c
-          )
-          .map((c) => c.text)
+          .map((c) => {
+            if (typeof c === "object" && c !== null && "text" in c) {
+              return String((c as { text: string }).text);
+            }
+            return "";
+          })
           .join("");
         if (text.trim()) {
           return text.trim();
@@ -277,10 +283,12 @@ class NoteManager {
     for (const block of blocks) {
       if (block.content && Array.isArray(block.content)) {
         const text = block.content
-          .filter((c): c is { type: string; text: string } =>
-            typeof c === "object" && c !== null && "text" in c
-          )
-          .map((c) => c.text)
+          .map((c) => {
+            if (typeof c === "object" && c !== null && "text" in c) {
+              return String((c as { text: string }).text);
+            }
+            return "";
+          })
           .join("");
         if (text.trim()) {
           return text.trim().slice(0, 50) + (text.length > 50 ? "..." : "");
@@ -304,7 +312,7 @@ async function init(): Promise<void> {
 
   const saveStatus = new SaveStatus(saveStatusElement);
 
-  let noteManager: NoteManager;
+  const noteManager: NoteManager;
 
   const sidebar = new NoteSidebar(notesListElement, (id: string) => {
     void noteManager.selectNote(id);
