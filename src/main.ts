@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { BlockNoteEditor } from "@blocknote/core";
-import { BlockNoteView } from "@blocknote/mantine";
+
 import { useCreateBlockNote, BlockNoteViewRaw } from "@blocknote/react";
 
 import { noteStorage } from "./storageService.js";
