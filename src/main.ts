@@ -192,6 +192,9 @@ class NoteManager {
   selectNote(id: string): void {
     const note = noteStorage.getNote(id);
     if (!note) {
+      // eslint-disable-next-line no-console
+      console.error(`Note with id "${id}" not found`);
+      this.saveStatus.showError("Note not found");
       return;
     }
 
