@@ -187,7 +187,7 @@ class NoteManager {
     return this.notes[0]?.content;
   }
 
-  selectNote(id: string): void {
+  async selectNote(id: string): Promise<void> {
     const note = noteStorage.getNote(id);
     if (!note) {
       // eslint-disable-next-line no-console
@@ -200,11 +200,21 @@ class NoteManager {
     this.sidebar.setActiveNote(id);
 
     if (this.editor) {
-      this.editor.replaceBlocks(
-        this.editor.document,
-        note.content
-      );
-      this.editor.clearUndoHistory();
+      // Destroy the old editor and create a new one to clear undo history
+      // This prevents users from accidentally undoing into a different note's content
+      this.editor.destroy();
+
+      const newEditor = await BlockNoteEditor.create({
+        initialContent: note.content,
+      });
+
+      const editorContainer = document.getElementById("editor");
+      if (editorContainer) {
+        newEditor.mount(editorContainer);
+      }
+
+      this.editor = newEditor;
+      this.setupEditorOnChange(newEditor);
     }
   }
 
