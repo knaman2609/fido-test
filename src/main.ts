@@ -339,8 +339,8 @@ interface EditorAppProps {
 
 function EditorApp({ noteManager, initialContent }: EditorAppProps): React.ReactElement | null {
   const [error, setError] = React.useState<string | null>(null);
-  // Use the specific BlockNoteEditor type from the create() method
-  const [editor, setEditor] = React.useState<BlockNoteEditor | null>(null);
+  // Use the specific editor type that matches what BlockNoteEditor.create() returns
+  const [editor, setEditor] = React.useState<CreatedEditor | null>(null);
 
   useEffect(() => {
     let isMounted = true;
