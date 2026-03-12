@@ -347,7 +347,7 @@ function EditorApp({ noteManagerRef, initialContent }: EditorAppProps): React.Re
   // noteManagerRef is a stable ref object, so we don't need it in dependencies
   // The effect only needs to run when editor instance changes
   useEffect(() => {
-    if (editor) {
+    if (editor && noteManagerRef.current) {
       try {
         noteManagerRef.current.setEditor(editor);
       } catch (err) {
