@@ -14,6 +14,22 @@ export function extractTextFromBlock(block: Block): string {
     .join("");
 }
 
+export function findFirstTextBlock(
+  blocks: Block[],
+  predicate?: (block: Block) => boolean
+): string | null {
+  for (const block of blocks) {
+    if (predicate && !predicate(block)) {
+      continue;
+    }
+    const text = extractTextFromBlock(block);
+    if (text.trim()) {
+      return text.trim();
+    }
+  }
+  return null;
+}
+
 export interface Note {
   id: string;
   title: string;
