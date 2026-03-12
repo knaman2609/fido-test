@@ -262,17 +262,8 @@ class NoteManager {
     const activeId = this.activeNoteId;
     this.saveTimeoutId = window.setTimeout(() => {
       try {
-        const note = noteStorage.getNote(activeId);
-        if (note) {
-          const updatedNote: Note = {
-            ...note,
-            content: blocks,
-            title: this.extractTitle(blocks),
-          };
-          noteStorage.saveNote(updatedNote);
-          this.sidebar.refreshNote(updatedNote);
-          this.saveStatus.showSaved();
-        }
+        this.performSave(activeId, blocks);
+        this.saveStatus.showSaved();
       } catch (error) {
         // eslint-disable-next-line no-console
         console.error("Failed to save note:", error);
