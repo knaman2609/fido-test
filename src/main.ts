@@ -342,11 +342,11 @@ function EditorApp({ noteManager, initialContent }: EditorAppProps): React.React
     void BlockNoteEditor.create({
       initialContent,
       schema,
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     }).then((ed: BlockNoteEditor) => {
       setEditor(ed);
       editorRef.current = ed;
       noteManager.setEditor(ed);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     }).catch((error: unknown) => {
       // eslint-disable-next-line no-console
       console.error("Failed to initialize BlockNote editor:", error);
