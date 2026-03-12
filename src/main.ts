@@ -2,14 +2,12 @@ import React, { useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { BlockNoteEditor } from "@blocknote/core";
 import { BlockNoteView } from "@blocknote/mantine";
+import { useCreateBlockNote } from "@blocknote/react";
 
 import { noteStorage } from "./storageService.js";
 import type { Block } from "@blocknote/core";
 import type { Note, NotesCollection } from "./types.js";
 import { findFirstTextBlock, findFirstTextBlockPreferHeadings } from "./types.js";
-
-// Extract the editor type from the create method's return type
-type CreatedEditor = ReturnType<typeof BlockNoteEditor.create> extends Promise<infer T> ? T : never;
 
 const SAVE_DEBOUNCE_MS = 500;
 
@@ -339,36 +337,24 @@ interface EditorAppProps {
 
 function EditorApp({ noteManager, initialContent }: EditorAppProps): React.ReactElement | null {
   const [error, setError] = React.useState<string | null>(null);
-  // Use the specific editor type that matches what BlockNoteEditor.create() returns
-  const [editor, setEditor] = React.useState<CreatedEditor | null>(null);
 
+  // Use the official React hook to create the editor
+  const editor = useCreateBlockNote({
+    initialContent,
+  });
+
+  // Set up the editor in the note manager when it's ready
   useEffect(() => {
-    let isMounted = true;
-
-    const initEditor = async (): Promise<void> => {
+    if (editor) {
       try {
-        // BlockNoteEditor.create returns a Promise but ESLint can't detect it
-        // eslint-disable-next-line @typescript-eslint/await-thenable
-        const ed = await BlockNoteEditor.create({ initialContent });
-        if (isMounted) {
-          setEditor(ed);
-          noteManager.setEditor(ed);
-        }
+        noteManager.setEditor(editor);
       } catch (err) {
-        if (isMounted) {
-          // eslint-disable-next-line no-console
-          console.error("Failed to initialize editor:", err);
-          setError("Failed to initialize editor. Please refresh the page.");
-        }
+        // eslint-disable-next-line no-console
+        console.error("Failed to set up editor:", err);
+        setError("Failed to initialize editor. Please refresh the page.");
       }
-    };
-
-    void initEditor();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [initialContent, noteManager]);
+    }
+  }, [editor, noteManager]);
 
   if (error) {
     return React.createElement("div", {
