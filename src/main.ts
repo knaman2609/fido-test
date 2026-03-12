@@ -336,7 +336,7 @@ interface EditorAppProps {
 }
 
 function EditorApp({ noteManagerRef, initialContent }: EditorAppProps): React.ReactElement | null {
-  const [error, setError] = React.useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   // Use the official React hook to create the editor
   const editor = useCreateBlockNote({
