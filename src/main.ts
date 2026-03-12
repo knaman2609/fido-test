@@ -1,4 +1,4 @@
-import { BlockNoteEditor, BlockNoteSchema, defaultBlockSpecs } from "@blocknote/core";
+import { BlockNoteEditor, defaultBlockSpecs } from "@blocknote/core";
 import { noteStorage } from "./storageService.js";
 import type { Block } from "@blocknote/core";
 import type { Note, NotesCollection } from "./types.js";
@@ -303,16 +303,14 @@ async function init(): Promise<void> {
 
   const initialContent = noteManager.initialize();
 
-  const schema = BlockNoteSchema.create({
-    blockSpecs: defaultBlockSpecs,
-  });
-
   let editor: BlockNoteEditor;
   try {
     // eslint-disable-next-line @typescript-eslint/await-thenable
     editor = await BlockNoteEditor.create({
       initialContent,
-      schema,
+      schema: {
+        blockSpecs: defaultBlockSpecs,
+      },
     });
   } catch (error) {
     // eslint-disable-next-line no-console
