@@ -177,7 +177,7 @@ class NoteManager {
     this.saveStatus = saveStatus;
   }
 
-  initialize(): void {
+  initialize(): Block[] | undefined {
     this.notes = noteStorage.loadAllNotes();
 
     if (this.notes.length === 0) {
@@ -186,7 +186,7 @@ class NoteManager {
     }
 
     this.sidebar.renderNotesList(this.notes);
-    void this.selectNote(this.notes[0].id);
+    return this.notes[0]?.content;
   }
 
   selectNote(id: string): void {
