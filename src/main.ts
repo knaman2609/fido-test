@@ -301,11 +301,10 @@ async function init(): Promise<void> {
     noteManager.createNewNote();
   });
 
+  const initialContent = noteManager.initialize();
+
   let editor: BlockNoteEditor;
   try {
-    const notes = noteStorage.loadAllNotes();
-    const initialContent = notes.length > 0 ? notes[0].content : undefined;
-
     // eslint-disable-next-line @typescript-eslint/await-thenable
     editor = await BlockNoteEditor.create({
       initialContent,
@@ -321,7 +320,6 @@ async function init(): Promise<void> {
 
   editor.mount(editorContainer);
   noteManager.setEditor(editor);
-  noteManager.initialize();
 }
 
 if (document.readyState === "loading") {
