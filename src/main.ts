@@ -204,6 +204,7 @@ class NoteManager {
         this.editor.document,
         note.content
       );
+      this.editor.clearUndoHistory();
     }
   }
 
