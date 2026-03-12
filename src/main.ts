@@ -222,7 +222,7 @@ class NoteManager {
     const newNote = noteStorage.createNote();
     this.notes.push(newNote);
     this.sidebar.renderNotesList(this.notes);
-    void this.selectNote(newNote.id);
+    await this.selectNote(newNote.id);
   }
 
   setEditor(editor: BlockNoteEditor): void {
@@ -304,7 +304,7 @@ async function init(): Promise<void> {
   let noteManager: NoteManager;
 
   const sidebar = new NoteSidebar(notesListElement, (id: string) => {
-    noteManager.selectNote(id);
+    void noteManager.selectNote(id);
   });
 
   noteManager = new NoteManager(sidebar, saveStatus);
