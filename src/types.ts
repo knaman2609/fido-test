@@ -13,14 +13,14 @@ export function extractTextFromBlock(block: Block): string {
         return String((c as { text: string }).text);
       }
       if ("type" in c) {
-        const contentObj = c as { type: string };
-        if (contentObj.type === "link" && "href" in c) {
+        const type = (c as { type: string }).type;
+        if (type === "link" && "href" in c) {
           const linkContent = (c as { content?: Array<{ text?: string }> }).content;
           if (Array.isArray(linkContent)) {
             return linkContent.map((item) => item.text || "").join("");
           }
         }
-        if (contentObj.type === "mention" && "user" in c) {
+        if (type === "mention" && "user" in c) {
           const mentionUser = (c as { user?: { name?: string } }).user;
           return mentionUser?.name || "";
         }

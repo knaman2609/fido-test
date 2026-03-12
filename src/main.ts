@@ -1,4 +1,4 @@
-import { BlockNoteEditor, BlockNoteSchema } from "@blocknote/core";
+import { BlockNoteEditor, BlockNoteSchema, defaultBlockSpecs } from "@blocknote/core";
 import { noteStorage } from "./storageService.js";
 import type { Block } from "@blocknote/core";
 import type { Note, NotesCollection } from "./types.js";
@@ -303,7 +303,9 @@ async function init(): Promise<void> {
 
   const initialContent = noteManager.initialize();
 
-  const schema = BlockNoteSchema.create();
+  const schema = BlockNoteSchema.create({
+    blockSpecs: defaultBlockSpecs,
+  });
 
   let editor: BlockNoteEditor;
   try {
