@@ -196,6 +196,7 @@ class NoteManager {
   selectNote(id: string): void {
     const note = this.notes.find((n) => n.id === id);
     if (!note) {
+      // eslint-disable-next-line no-console
       console.error(`Note with id "${id}" not found`);
       this.saveStatus.showError("Note not found");
       return;
@@ -220,6 +221,7 @@ class NoteManager {
     try {
       newNote = noteStorage.createNote();
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error("Failed to create note:", error);
       this.saveStatus.showError("Failed to create note");
       return;
@@ -271,6 +273,7 @@ class NoteManager {
         this.performSave(activeId, blocks);
         this.saveStatus.showSaved();
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error("Failed to save note:", error);
         this.saveStatus.showError("Failed to save");
       }
@@ -311,6 +314,7 @@ class NoteManager {
         try {
           this.performSave(activeId, blocks);
         } catch (error) {
+          // eslint-disable-next-line no-console
           console.error("Failed to save note:", error);
           this.saveStatus.showError("Failed to save");
           return false;
