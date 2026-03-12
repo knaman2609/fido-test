@@ -150,7 +150,7 @@ class NoteStorageImpl implements NoteStorage {
 
   createNote(): Note {
     const note: Note = {
-      id: crypto.randomUUID(),
+      id: generateUUID(),
       title: "New Note",
       content: getDefaultContent(),
       createdAt: Date.now(),
