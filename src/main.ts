@@ -329,7 +329,7 @@ interface EditorAppProps {
   initialContent: Block[] | undefined;
 }
 
-function EditorApp({ noteManager, initialContent }: EditorAppProps) {
+function EditorApp({ noteManager, initialContent }: EditorAppProps): React.ReactElement | null {
   const [editor, setEditor] = useState<BlockNoteEditor | null>(null);
   const editorRef = useRef<BlockNoteEditor | null>(null);
 
@@ -338,14 +338,15 @@ function EditorApp({ noteManager, initialContent }: EditorAppProps) {
       blockSpecs: defaultBlockSpecs,
     });
 
-    BlockNoteEditor.create({
+    void BlockNoteEditor.create({
       initialContent,
       schema,
-    }).then((ed) => {
+    }).then((ed: BlockNoteEditor) => {
       setEditor(ed);
       editorRef.current = ed;
       noteManager.setEditor(ed);
-    }).catch((error) => {
+    }).catch((error: unknown) => {
+      // eslint-disable-next-line no-console
       console.error("Failed to initialize BlockNote editor:", error);
     });
 
