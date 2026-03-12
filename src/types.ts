@@ -19,8 +19,7 @@ export function extractTextFromBlock(block: Block): string {
           if (Array.isArray(linkContent)) {
             return linkContent.map((item) => item.text || "").join("");
           }
-        }
-        if (type === "mention" && "user" in c) {
+        } else if (type === "mention" && "user" in c) {
           const mentionUser = (c as { user?: { name?: string } }).user;
           return mentionUser?.name || "";
         }
