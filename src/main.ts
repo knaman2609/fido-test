@@ -342,17 +342,13 @@ function EditorApp({ noteManager, initialContent }: EditorAppProps) {
       blockSpecs: defaultBlockSpecs,
     });
 
-    BlockNoteEditor.create({
+    const ed = BlockNoteEditor.create({
       initialContent,
       schema,
-    }).then((ed: any) => {
-      setEditor(ed);
-      editorRef.current = ed;
-      noteManager.setEditor(ed);
-    }).catch((error: unknown) => {
-      // eslint-disable-next-line no-console
-      console.error("Failed to initialize BlockNote editor:", error);
     });
+    setEditor(ed);
+    editorRef.current = ed;
+    noteManager.setEditor(ed);
 
     return () => {
       if (editorRef.current) {
