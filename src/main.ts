@@ -69,7 +69,7 @@ async function init(): Promise<void> {
 
   let editor: BlockNoteEditor;
   try {
-    editor = BlockNoteEditor.create({
+    editor = await BlockNoteEditor.create({
       initialContent,
     });
   } catch (error) {
