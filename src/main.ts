@@ -334,10 +334,8 @@ interface EditorAppProps {
   initialContent: Block[] | undefined;
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-function EditorApp({ noteManager, initialContent }: EditorAppProps) {
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  const editor = useCreateBlockNote({
+function EditorApp({ noteManager, initialContent }: EditorAppProps): React.ReactElement | null {
+  const editor: BlockNoteEditor | null = useCreateBlockNote({
     initialContent,
   });
 
@@ -354,13 +352,11 @@ function EditorApp({ noteManager, initialContent }: EditorAppProps) {
   }
 
   return React.createElement(BlockNoteView, {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    editor: editor as any,
+    editor,
     slashMenu: true,
     formattingToolbar: true,
     sideMenu: true,
   });
-  /* eslint-enable @typescript-eslint/no-explicit-any */
 }
 
 function init(): void {
