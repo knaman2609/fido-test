@@ -99,14 +99,12 @@ const App: FC<AppProps> = ({ storageKey = DEFAULT_STORAGE_KEY }) => {
   useEffect(() => {
     if (!editor) return;
 
-    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-
     const unsubscribe = editor.onChange?.(() => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current);
       }
 
-      timeoutRef.current = setTimeout(() => {
+      saveTimeoutRef.current = setTimeout(() => {
         try {
           const content = editor.document;
           localStorage.setItem(storageKey, JSON.stringify(content));
@@ -122,8 +120,8 @@ const App: FC<AppProps> = ({ storageKey = DEFAULT_STORAGE_KEY }) => {
     });
 
     return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current);
       }
       if (unsubscribe) {
         unsubscribe();
