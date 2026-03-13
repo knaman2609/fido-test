@@ -1,5 +1,7 @@
 import { create } from 'zustand';
 
+const STORAGE_KEY = 'theme';
+
 type Theme = 'light' | 'dark';
 
 interface ThemeState {
@@ -12,7 +14,7 @@ const getInitialTheme = (): Theme => {
   if (typeof window === 'undefined') return 'light';
   
   try {
-    const stored = localStorage.getItem('theme') as Theme | null;
+    const stored = localStorage.getItem(STORAGE_KEY) as Theme | null;
     if (stored && (stored === 'light' || stored === 'dark')) {
       return stored;
     }
@@ -30,7 +32,7 @@ export const useThemeStore = create<ThemeState>((set) => ({
     set((state) => {
       const newTheme = state.theme === 'light' ? 'dark' : 'light';
       try {
-        localStorage.setItem('theme', newTheme);
+        localStorage.setItem(STORAGE_KEY, newTheme);
       } catch {
         // localStorage not available (e.g., Safari private mode)
       }
@@ -40,7 +42,7 @@ export const useThemeStore = create<ThemeState>((set) => ({
   
   setTheme: (theme) => {
     try {
-      localStorage.setItem('theme', theme);
+      localStorage.setItem(STORAGE_KEY, theme);
     } catch {
       // localStorage not available (e.g., Safari private mode)
     }
