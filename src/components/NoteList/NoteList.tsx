@@ -1,7 +1,8 @@
 import React from 'react';
 import type { Note } from '@/types/note';
 import { NoteItem } from '@/components/NoteItem/NoteItem';
-import './NoteList.css';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { cn } from '@/lib/utils';
 
 interface NoteListProps {
   notes: Note[];
@@ -18,23 +19,32 @@ export const NoteList: React.FC<NoteListProps> = ({
 }) => {
   if (notes.length === 0) {
     return (
-      <div className="note-list note-list--empty">
-        <p className="note-list__empty-text">No notes found</p>
+      <div
+        className={cn(
+          "flex-1 flex items-center justify-center",
+          "min-h-[200px]"
+        )}
+      >
+        <p className={cn("text-sm text-muted-foreground text-center")}>
+          No notes found
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="note-list">
-      {notes.map(note => (
-        <NoteItem
-          key={note.id}
-          note={note}
-          isSelected={note.id === selectedNoteId}
-          onSelect={onSelectNote}
-          onDelete={onDeleteNote}
-        />
-      ))}
-    </div>
+    <ScrollArea className={cn("flex-1 py-2")}>
+      <div className={cn("px-2")}>
+        {notes.map(note => (
+          <NoteItem
+            key={note.id}
+            note={note}
+            isSelected={note.id === selectedNoteId}
+            onSelect={onSelectNote}
+            onDelete={onDeleteNote}
+          />
+        ))}
+      </div>
+    </ScrollArea>
   );
 };
