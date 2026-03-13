@@ -11,9 +11,13 @@ interface ThemeState {
 const getInitialTheme = (): Theme => {
   if (typeof window === 'undefined') return 'light';
   
-  const stored = localStorage.getItem('theme') as Theme | null;
-  if (stored && (stored === 'light' || stored === 'dark')) {
-    return stored;
+  try {
+    const stored = localStorage.getItem('theme') as Theme | null;
+    if (stored && (stored === 'light' || stored === 'dark')) {
+      return stored;
+    }
+  } catch {
+    // localStorage not available (e.g., Safari private mode)
   }
   
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
@@ -25,13 +29,21 @@ export const useThemeStore = create<ThemeState>((set) => ({
   toggleTheme: () => {
     set((state) => {
       const newTheme = state.theme === 'light' ? 'dark' : 'light';
-      localStorage.setItem('theme', newTheme);
+      try {
+        localStorage.setItem('theme', newTheme);
+      } catch {
+        // localStorage not available (e.g., Safari private mode)
+      }
       return { theme: newTheme };
     });
   },
   
   setTheme: (theme) => {
-    localStorage.setItem('theme', theme);
+    try {
+      localStorage.setItem('theme', theme);
+    } catch {
+      // localStorage not available (e.g., Safari private mode)
+    }
     set({ theme });
   },
 }));
