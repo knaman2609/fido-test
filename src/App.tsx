@@ -61,7 +61,7 @@ function AppContent() {
     setSearchQuery,
   } = useNotes();
 
-  const handleNoteChange = useCallback((content: Parameters<typeof updateNote>[1]) => {
+  const handleNoteChange = useCallback((content: BlockNoteBlock[]) => {
     if (selectedNote) {
       updateNote(selectedNote.id, content);
     }
