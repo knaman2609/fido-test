@@ -2,6 +2,7 @@ import React from 'react';
 import { Plus } from 'lucide-react';
 import { SearchBar } from '@/components/SearchBar/SearchBar';
 import { NoteList } from '@/components/NoteList/NoteList';
+import { ThemeToggle } from '@/components/ThemeToggle/ThemeToggle';
 import type { Note } from '@/types/note';
 import './Sidebar.css';
 
