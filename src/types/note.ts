@@ -1,10 +1,10 @@
-export interface BlockNoteBlock {
+export type BlockNoteBlock = {
   id: string;
   type: string;
   props: Record<string, unknown>;
   content: Array<{ type: string; text: string; styles?: Record<string, unknown> }> | string;
   children: BlockNoteBlock[];
-}
+};
 
 export interface Note {
   id: string;
