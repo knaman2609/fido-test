@@ -1,4 +1,4 @@
-import { Component, type ErrorInfo, type ReactNode } from 'react';
+import { Component, type ErrorInfo, type ReactNode, useCallback } from 'react';
 import { useNotes } from './hooks/useNotes';
 import { Sidebar } from './components/Sidebar';
 import { NoteEditor } from './components/NoteEditor';
