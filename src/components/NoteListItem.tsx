@@ -41,7 +41,7 @@ export const NoteListItem: FC<NoteListItemProps> = ({
       <div className="note-list-item-actions">
         <button
           className="note-list-item-pin"
-          onClick={onPin}
+          onClick={onPin ? (e) => { e.stopPropagation(); onPin(e); } : undefined}
           aria-label={note.isPinned ? 'Unpin note' : 'Pin note'}
           title={note.isPinned ? 'Unpin note' : 'Pin note'}
         >
