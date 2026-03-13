@@ -129,18 +129,12 @@ export function formatDate(timestamp: number): string {
 
 export function createDefaultNote(): Note {
   const now = Date.now();
-  const content: BlockNoteBlock[] = [
-    {
-      type: 'paragraph',
-      content: 'Start typing...',
-    },
-  ];
 
   return {
     id: generateId(),
     title: 'Untitled',
-    preview: 'Start typing...',
-    content,
+    preview: '',
+    content: [],
     createdAt: now,
     updatedAt: now,
   };
