@@ -1,18 +1,18 @@
 import React, { useEffect, useRef } from 'react';
-import { Milkdown, useEditor } from '@milkdown/react';
-import { defaultValueCtx, Editor, rootCtx } from '@milkdown/core';
+import { Editor, rootCtx, defaultValueCtx } from '@milkdown/core';
 import { commonmark } from '@milkdown/preset-commonmark';
 import { gfm } from '@milkdown/preset-gfm';
 import { nord } from '@milkdown/theme-nord';
 import { history } from '@milkdown/plugin-history';
 import { listener, listenerCtx } from '@milkdown/plugin-listener';
+import { MilkdownProvider, Milkdown, useEditor } from '@milkdown/react';
 
 interface MilkdownEditorProps {
   content: string;
   onChange: (content: string) => void;
 }
 
-export const MilkdownEditor: React.FC<MilkdownEditorProps> = ({
+const MilkdownEditorInner: React.FC<MilkdownEditorProps> = ({
   content,
   onChange,
 }) => {
@@ -46,4 +46,12 @@ export const MilkdownEditor: React.FC<MilkdownEditorProps> = ({
   }, []);
 
   return <Milkdown />;
+};
+
+export const MilkdownEditor: React.FC<MilkdownEditorProps> = (props) => {
+  return (
+    <MilkdownProvider>
+      <MilkdownEditorInner {...props} />
+    </MilkdownProvider>
+  );
 };
