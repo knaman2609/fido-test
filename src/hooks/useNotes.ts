@@ -62,12 +62,7 @@ export function useNotes(): UseNotesReturn {
       id: generateId(),
       title: 'Untitled',
       preview: '',
-      content: [
-        {
-          type: 'paragraph',
-          content: '',
-        },
-      ],
+      content: [],
       createdAt: now,
       updatedAt: now,
     };
