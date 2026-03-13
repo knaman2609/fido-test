@@ -57,7 +57,9 @@ export function extractTitle(content: BlockNoteBlock[]): string {
       return firstBlock.content.trim() || 'Untitled';
     }
     if (Array.isArray(firstBlock.content)) {
-      const text = firstBlock.content.map((c) => c.text).join('');
+      const text = firstBlock.content
+        .map((c) => (typeof c === 'string' ? c : 'text' in c ? c.text : ''))
+        .join('');
       return text.trim() || 'Untitled';
     }
   }
@@ -67,7 +69,9 @@ export function extractTitle(content: BlockNoteBlock[]): string {
     if (typeof firstBlock.content === 'string') {
       text = firstBlock.content;
     } else if (Array.isArray(firstBlock.content)) {
-      text = firstBlock.content.map((c) => c.text).join('');
+      text = firstBlock.content
+        .map((c) => (typeof c === 'string' ? c : 'text' in c ? c.text : ''))
+        .join('');
     }
     text = text.trim();
     if (text) {
@@ -90,7 +94,9 @@ export function extractPreview(content: BlockNoteBlock[]): string {
       if (typeof block.content === 'string') {
         text = block.content;
       } else if (Array.isArray(block.content)) {
-        text = block.content.map((c) => c.text).join('');
+        text = block.content
+          .map((c) => (typeof c === 'string' ? c : 'text' in c ? c.text : ''))
+          .join('');
       }
       previewText += text + ' ';
     }
