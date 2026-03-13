@@ -32,6 +32,7 @@ const App: FC = () => {
       <main className="app__main">
         {selectedNote ? (
           <Editor
+            key={selectedNote.id}
             note={selectedNote}
             onUpdateNote={updateNote}
             onDeleteNote={deleteNote}
