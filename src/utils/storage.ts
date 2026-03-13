@@ -1,4 +1,4 @@
-import type { Note, StorageData, BlockContent } from '../types/note';
+import type { Note, StorageData, BlockNoteBlock } from '../types/note';
 
 export const STORAGE_KEY = 'apple-notes-data';
 
@@ -47,7 +47,7 @@ export function loadLastSelectedNoteId(): string | undefined {
   return undefined;
 }
 
-export function extractTitle(content: BlockContent[]): string {
+export function extractTitle(content: BlockNoteBlock[]): string {
   if (content.length === 0) return 'Untitled';
 
   const firstBlock = content[0];
@@ -78,7 +78,7 @@ export function extractTitle(content: BlockContent[]): string {
   return 'Untitled';
 }
 
-export function extractPreview(content: BlockContent[]): string {
+export function extractPreview(content: BlockNoteBlock[]): string {
   if (content.length === 0) return '';
 
   let previewText = '';
@@ -129,7 +129,7 @@ export function formatDate(timestamp: number): string {
 
 export function createDefaultNote(): Note {
   const now = Date.now();
-  const content: BlockContent[] = [
+  const content: BlockNoteBlock[] = [
     {
       type: 'paragraph',
       content: 'Start typing...',
