@@ -1,8 +1,9 @@
 import { Component, type ErrorInfo, type ReactNode, useCallback } from 'react';
 import { useNotes } from './hooks/useNotes';
+import { useTheme } from './hooks/useTheme';
 import { Sidebar } from './components/Sidebar';
 import { NoteEditor } from './components/NoteEditor';
-import type { BlockNoteBlock } from './types/note';
+import type { BlockNoteBlock, Theme } from './types/note';
 import '@blocknote/react/style.css';
 import './App.css';
 
@@ -54,12 +55,17 @@ function AppContent() {
     selectedNoteId,
     selectedNote,
     searchQuery,
+    pinnedNotes,
+    groupedNotes,
     createNote,
     updateNote,
     deleteNote,
     selectNote,
     setSearchQuery,
+    pinNote,
   } = useNotes();
+
+  const { theme, isDark, setTheme, toggleTheme } = useTheme();
 
   const handleNoteChange = useCallback((content: BlockNoteBlock[]) => {
     if (selectedNote) {
@@ -71,12 +77,19 @@ function AppContent() {
     <div className="app">
       <Sidebar
         notes={filteredNotes}
+        pinnedNotes={pinnedNotes}
+        groupedNotes={groupedNotes}
         selectedNoteId={selectedNoteId}
         searchQuery={searchQuery}
+        theme={theme}
+        isDark={isDark}
         onSearchChange={setSearchQuery}
         onNoteSelect={selectNote}
         onNewNote={createNote}
         onDeleteNote={deleteNote}
+        onPinNote={pinNote}
+        onThemeChange={setTheme}
+        onToggleTheme={toggleTheme}
       />
       <ErrorBoundary>
         <NoteEditor note={selectedNote} onChange={handleNoteChange} />
