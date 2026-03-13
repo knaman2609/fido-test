@@ -63,7 +63,7 @@ export const NoteItem: React.FC<NoteItemProps> = memo(({
       <Button
         variant="ghost"
         size="icon"
-        className="h-7 w-7 opacity-0 group-hover:opacity-100 transition-opacity shrink-0"
+        className="h-7 w-7 opacity-0 group-hover:opacity-100 transition-opacity shrink-0 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
         onClick={handleDelete}
         aria-label="Delete note"
       >
