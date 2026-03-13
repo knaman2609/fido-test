@@ -57,6 +57,7 @@ export const EditorToolbar: FC<EditorToolbarProps> = ({ editor }) => {
     <div className="editor-toolbar">
       <div className="toolbar-group">
         <button
+          type="button"
           className="toolbar-btn"
           onClick={() => insertBlock('heading', { level: 1 })}
           title="Title"
@@ -64,6 +65,7 @@ export const EditorToolbar: FC<EditorToolbarProps> = ({ editor }) => {
           <span className="toolbar-btn-text">Title</span>
         </button>
         <button
+          type="button"
           className="toolbar-btn"
           onClick={() => insertBlock('heading', { level: 2 })}
           title="Heading"
@@ -71,6 +73,7 @@ export const EditorToolbar: FC<EditorToolbarProps> = ({ editor }) => {
           <span className="toolbar-btn-text">Heading</span>
         </button>
         <button
+          type="button"
           className="toolbar-btn"
           onClick={() => insertBlock('paragraph')}
           title="Body"
@@ -81,6 +84,7 @@ export const EditorToolbar: FC<EditorToolbarProps> = ({ editor }) => {
       <div className="toolbar-divider"></div>
       <div className="toolbar-group">
         <button
+          type="button"
           className={`toolbar-btn icon-btn ${isBoldActive() ? 'active' : ''}`}
           onClick={toggleBold}
           title="Bold"
@@ -91,6 +95,7 @@ export const EditorToolbar: FC<EditorToolbarProps> = ({ editor }) => {
           </svg>
         </button>
         <button
+          type="button"
           className={`toolbar-btn icon-btn ${isItalicActive() ? 'active' : ''}`}
           onClick={toggleItalic}
           title="Italic"
@@ -102,6 +107,7 @@ export const EditorToolbar: FC<EditorToolbarProps> = ({ editor }) => {
           </svg>
         </button>
         <button
+          type="button"
           className={`toolbar-btn icon-btn ${isUnderlineActive() ? 'active' : ''}`}
           onClick={toggleUnderline}
           title="Underline"
@@ -112,6 +118,7 @@ export const EditorToolbar: FC<EditorToolbarProps> = ({ editor }) => {
           </svg>
         </button>
         <button
+          type="button"
           className={`toolbar-btn icon-btn ${isStrikeActive() ? 'active' : ''}`}
           onClick={toggleStrike}
           title="Strikethrough"
@@ -126,6 +133,7 @@ export const EditorToolbar: FC<EditorToolbarProps> = ({ editor }) => {
       <div className="toolbar-divider"></div>
       <div className="toolbar-group">
         <button
+          type="button"
           className="toolbar-btn icon-btn"
           onClick={() => insertBlock('checkListItem')}
           title="Checklist"
@@ -136,6 +144,7 @@ export const EditorToolbar: FC<EditorToolbarProps> = ({ editor }) => {
           </svg>
         </button>
         <button
+          type="button"
           className="toolbar-btn icon-btn"
           onClick={() => insertBlock('bulletListItem')}
           title="Bulleted List"
@@ -150,6 +159,7 @@ export const EditorToolbar: FC<EditorToolbarProps> = ({ editor }) => {
           </svg>
         </button>
         <button
+          type="button"
           className="toolbar-btn icon-btn"
           onClick={() => insertBlock('numberedListItem')}
           title="Numbered List"
