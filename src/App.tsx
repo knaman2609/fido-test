@@ -1,12 +1,51 @@
-import type { FC } from 'react';
+import type { FC, Component, ErrorInfo, ReactNode } from 'react';
 import { BlockNoteViewRaw, useCreateBlockNote } from '@blocknote/react';
 import { useEffect } from 'react';
 import '@blocknote/react/style.css';
 import './App.css';
 
-const STORAGE_KEY = 'blocknote-document';
+interface AppProps {
+  storageKey?: string;
+}
 
-const App: FC = () => {
+interface ErrorBoundaryProps {
+  children: ReactNode;
+}
+
+interface ErrorBoundaryState {
+  hasError: boolean;
+}
+
+class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props: ErrorBoundaryProps) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(): ErrorBoundaryState {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
+    console.error('BlockNote editor error:', error, errorInfo);
+  }
+
+  render(): ReactNode {
+    if (this.state.hasError) {
+      return (
+        <div className="app">
+          <p>Something went wrong with the editor. Please refresh the page.</p>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
+const DEFAULT_STORAGE_KEY = 'blocknote-document';
+
+const App: FC<AppProps> = ({ storageKey = DEFAULT_STORAGE_KEY }) => {
   const editor = useCreateBlockNote({
     initialContent: [
       {
@@ -26,18 +65,18 @@ const App: FC = () => {
 
     const loadContent = async () => {
       try {
-        const saved = localStorage.getItem(STORAGE_KEY);
+        const saved = localStorage.getItem(storageKey);
         if (saved) {
           const parsed = JSON.parse(saved);
           editor.replaceBlocks(editor.document, parsed);
         }
-      } catch {
-        // Use default content if parsing fails
+      } catch (error) {
+        console.warn('Failed to load content from localStorage:', error);
       }
     };
 
     loadContent();
-  }, [editor]);
+  }, [editor, storageKey]);
 
   useEffect(() => {
     if (!editor) return;
@@ -45,9 +84,9 @@ const App: FC = () => {
     const unsubscribe = editor.onChange?.(() => {
       try {
         const content = editor.document;
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(content));
-      } catch {
-        // localStorage may be blocked in privacy mode
+        localStorage.setItem(storageKey, JSON.stringify(content));
+      } catch (error) {
+        console.warn('Failed to save content to localStorage:', error);
       }
     });
 
@@ -56,7 +95,7 @@ const App: FC = () => {
         unsubscribe();
       }
     };
-  }, [editor]);
+  }, [editor, storageKey]);
 
   if (!editor) {
     return null;
@@ -64,7 +103,9 @@ const App: FC = () => {
 
   return (
     <div className="app">
-      <BlockNoteViewRaw editor={editor} />
+      <ErrorBoundary>
+        <BlockNoteViewRaw editor={editor} />
+      </ErrorBoundary>
     </div>
   );
 };
