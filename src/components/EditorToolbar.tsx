@@ -8,7 +8,7 @@ interface EditorToolbarProps {
 export const EditorToolbar: FC<EditorToolbarProps> = ({ editor }) => {
   if (!editor) return null;
 
-  const insertBlock = (type: string, props?: Record<string, unknown>) => {
+  const insertBlock = (type: 'paragraph' | 'heading' | 'bulletListItem' | 'numberedListItem' | 'checkListItem', props?: Record<string, unknown>) => {
     const currentBlock = editor.getTextCursorPosition().block;
     editor.insertBlocks(
       [{ type, props }],
@@ -17,13 +17,40 @@ export const EditorToolbar: FC<EditorToolbarProps> = ({ editor }) => {
     );
   };
 
-  const toggleStyle = (style: string) => {
-    editor.toggleStyles({ [style]: true } as Record<string, boolean>);
+  const toggleBold = () => {
+    editor.toggleStyles({ bold: true });
   };
 
-  const isStyleActive = (style: string): boolean => {
+  const toggleItalic = () => {
+    editor.toggleStyles({ italic: true });
+  };
+
+  const toggleUnderline = () => {
+    editor.toggleStyles({ underline: true });
+  };
+
+  const toggleStrike = () => {
+    editor.toggleStyles({ strike: true });
+  };
+
+  const isBoldActive = (): boolean => {
     const styles = editor.getActiveStyles();
-    return styles[style] === true;
+    return styles.bold === true;
+  };
+
+  const isItalicActive = (): boolean => {
+    const styles = editor.getActiveStyles();
+    return styles.italic === true;
+  };
+
+  const isUnderlineActive = (): boolean => {
+    const styles = editor.getActiveStyles();
+    return styles.underline === true;
+  };
+
+  const isStrikeActive = (): boolean => {
+    const styles = editor.getActiveStyles();
+    return styles.strike === true;
   };
 
   return (
@@ -54,8 +81,8 @@ export const EditorToolbar: FC<EditorToolbarProps> = ({ editor }) => {
       <div className="toolbar-divider"></div>
       <div className="toolbar-group">
         <button
-          className={`toolbar-btn icon-btn ${isStyleActive('bold') ? 'active' : ''}`}
-          onClick={() => toggleStyle('bold')}
+          className={`toolbar-btn icon-btn ${isBoldActive() ? 'active' : ''}`}
+          onClick={toggleBold}
           title="Bold"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -64,8 +91,8 @@ export const EditorToolbar: FC<EditorToolbarProps> = ({ editor }) => {
           </svg>
         </button>
         <button
-          className={`toolbar-btn icon-btn ${isStyleActive('italic') ? 'active' : ''}`}
-          onClick={() => toggleStyle('italic')}
+          className={`toolbar-btn icon-btn ${isItalicActive() ? 'active' : ''}`}
+          onClick={toggleItalic}
           title="Italic"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -75,8 +102,8 @@ export const EditorToolbar: FC<EditorToolbarProps> = ({ editor }) => {
           </svg>
         </button>
         <button
-          className={`toolbar-btn icon-btn ${isStyleActive('underline') ? 'active' : ''}`}
-          onClick={() => toggleStyle('underline')}
+          className={`toolbar-btn icon-btn ${isUnderlineActive() ? 'active' : ''}`}
+          onClick={toggleUnderline}
           title="Underline"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -85,8 +112,8 @@ export const EditorToolbar: FC<EditorToolbarProps> = ({ editor }) => {
           </svg>
         </button>
         <button
-          className={`toolbar-btn icon-btn ${isStyleActive('strike') ? 'active' : ''}`}
-          onClick={() => toggleStyle('strike')}
+          className={`toolbar-btn icon-btn ${isStrikeActive() ? 'active' : ''}`}
+          onClick={toggleStrike}
           title="Strikethrough"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

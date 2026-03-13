@@ -3,7 +3,7 @@ import { useNotes } from './hooks/useNotes';
 import { useTheme } from './hooks/useTheme';
 import { Sidebar } from './components/Sidebar';
 import { NoteEditor } from './components/NoteEditor';
-import type { BlockNoteBlock, Theme } from './types/note';
+import type { BlockNoteBlock } from './types/note';
 import '@blocknote/react/style.css';
 import './App.css';
 
