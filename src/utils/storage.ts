@@ -1,6 +1,7 @@
-import type { Note, StorageData, BlockNoteBlock } from '../types/note';
+import type { Note, StorageData, BlockNoteBlock, Theme } from '../types/note';
 
 export const STORAGE_KEY = 'apple-notes-data';
+export const THEME_STORAGE_KEY = 'apple-notes-theme';
 
 export function generateId(): string {
   return `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
@@ -143,5 +144,89 @@ export function createDefaultNote(): Note {
     content: [],
     createdAt: now,
     updatedAt: now,
+    isPinned: false,
   };
+}
+
+export function loadTheme(): Theme {
+  try {
+    const saved = localStorage.getItem(THEME_STORAGE_KEY);
+    if (saved && ['light', 'dark', 'system'].includes(saved)) {
+      return saved as Theme;
+    }
+  } catch (error) {
+    console.warn('Failed to load theme from localStorage:', error);
+  }
+  return 'system';
+}
+
+export function saveTheme(theme: Theme): void {
+  try {
+    localStorage.setItem(THEME_STORAGE_KEY, theme);
+  } catch (error) {
+    console.warn('Failed to save theme to localStorage:', error);
+  }
+}
+
+export function formatFullDate(timestamp: number): string {
+  const date = new Date(timestamp);
+  return date.toLocaleDateString([], {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+  });
+}
+
+export function getWordCount(content: BlockNoteBlock[]): number {
+  let text = '';
+  for (const block of content) {
+    if (block.content) {
+      if (typeof block.content === 'string') {
+        text += block.content + ' ';
+      } else if (Array.isArray(block.content)) {
+        text += block.content
+          .map((c) => (typeof c === 'string' ? c : 'text' in c ? c.text : ''))
+          .join('') + ' ';
+      }
+    }
+  }
+  return text.trim().split(/\s+/).filter(word => word.length > 0).length;
+}
+
+export function groupNotesByDate(notes: Note[]): Record<string, Note[]> {
+  const groups: Record<string, Note[]> = {};
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
+  const lastWeek = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+  const lastMonth = new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000);
+
+  for (const note of notes) {
+    const noteDate = new Date(note.updatedAt);
+    const noteDay = new Date(noteDate.getFullYear(), noteDate.getMonth(), noteDate.getDate());
+
+    let groupKey: string;
+
+    if (noteDay.getTime() === today.getTime()) {
+      groupKey = 'Today';
+    } else if (noteDay.getTime() === yesterday.getTime()) {
+      groupKey = 'Yesterday';
+    } else if (noteDay.getTime() > lastWeek.getTime()) {
+      groupKey = 'Previous 7 Days';
+    } else if (noteDay.getTime() > lastMonth.getTime()) {
+      groupKey = 'Previous 30 Days';
+    } else {
+      groupKey = noteDate.toLocaleDateString([], { month: 'long', year: 'numeric' });
+    }
+
+    if (!groups[groupKey]) {
+      groups[groupKey] = [];
+    }
+    groups[groupKey].push(note);
+  }
+
+  return groups;
 }
