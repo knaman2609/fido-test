@@ -1,16 +1,16 @@
-export interface BlockContent {
+export interface BlockNoteBlock {
+  id: string;
   type: string;
-  props?: Record<string, unknown>;
-  content?: string | Array<{ type: string; text: string }>;
-  children?: BlockContent[];
-  [key: string]: unknown;
+  props: Record<string, unknown>;
+  content: Array<{ type: string; text: string; styles?: Record<string, unknown> }> | string;
+  children: BlockNoteBlock[];
 }
 
 export interface Note {
   id: string;
   title: string;
   preview: string;
-  content: BlockContent[];
+  content: BlockNoteBlock[];
   createdAt: number;
   updatedAt: number;
 }
