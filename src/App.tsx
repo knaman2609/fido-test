@@ -60,6 +60,8 @@ const App: FC<AppProps> = ({ storageKey = DEFAULT_STORAGE_KEY }) => {
     ],
   });
 
+  const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
   useEffect(() => {
     if (!editor) return;
 
