@@ -3,6 +3,7 @@ export interface BlockContent {
   props?: Record<string, unknown>;
   content?: string | Array<{ type: string; text: string }>;
   children?: BlockContent[];
+  [key: string]: unknown;
 }
 
 export interface Note {
