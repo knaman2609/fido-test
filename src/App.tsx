@@ -1,8 +1,7 @@
 import type { FC } from 'react';
-import { BlockNoteView } from '@blocknote/mantine';
-import { useCreateBlockNote } from '@blocknote/react';
+import { BlockNoteViewRaw, useCreateBlockNote } from '@blocknote/react';
 import { useEffect } from 'react';
-import '@blocknote/mantine/style.css';
+import '@blocknote/react/style.css';
 import './App.css';
 
 const STORAGE_KEY = 'blocknote-document';
@@ -63,7 +62,7 @@ const App: FC = () => {
 
   return (
     <div className="app">
-      <BlockNoteView editor={editor} />
+      <BlockNoteViewRaw editor={editor} />
     </div>
   );
 };
