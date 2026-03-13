@@ -1,6 +1,7 @@
 import React from 'react';
 import { Search, X } from 'lucide-react';
-import './SearchBar.css';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
 interface SearchBarProps {
   value: string;
@@ -17,23 +18,25 @@ export const SearchBar: React.FC<SearchBarProps> = ({ value, onChange }) => {
   };
 
   return (
-    <div className="search-bar">
-      <Search className="search-bar__icon" size={16} />
-      <input
+    <div className="relative flex items-center">
+      <Search className="absolute left-3 h-4 w-4 text-muted-foreground pointer-events-none" />
+      <Input
         type="text"
-        className="search-bar__input"
         placeholder="Search"
         value={value}
         onChange={handleChange}
+        className="pl-9 pr-8"
       />
       {value && (
-        <button
-          className="search-bar__clear"
+        <Button
+          variant="ghost"
+          size="icon"
+          className="absolute right-1 h-6 w-6"
           onClick={handleClear}
           aria-label="Clear search"
         >
-          <X size={14} />
-        </button>
+          <X className="h-3 w-3" />
+        </Button>
       )}
     </div>
   );
