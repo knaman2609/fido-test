@@ -1,6 +1,6 @@
 import { Component, type FC, type ErrorInfo, type ReactNode } from 'react';
 import { BlockNoteViewRaw, useCreateBlockNote } from '@blocknote/react';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import '@blocknote/react/style.css';
 import './App.css';
 
@@ -68,10 +68,22 @@ const App: FC<AppProps> = ({ storageKey = DEFAULT_STORAGE_KEY }) => {
         const saved = localStorage.getItem(storageKey);
         if (saved) {
           const parsed = JSON.parse(saved);
-          if (Array.isArray(parsed)) {
-            editor.replaceBlocks(editor.document, parsed);
+          if (
+            Array.isArray(parsed) &&
+            parsed.every(
+              (b) =>
+                b &&
+                typeof b === 'object' &&
+                typeof b.type === 'string' &&
+                b.type.length > 0
+            )
+          ) {
+            editor.replaceBlocks(
+              editor.document.map((b) => b.id),
+              parsed
+            );
           } else {
-            console.warn('Invalid saved data format: expected array');
+            console.warn('Invalid saved data format: expected array of blocks with type property');
           }
         }
       } catch (error) {
@@ -85,21 +97,32 @@ const App: FC<AppProps> = ({ storageKey = DEFAULT_STORAGE_KEY }) => {
   useEffect(() => {
     if (!editor) return;
 
+    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
     const unsubscribe = editor.onChange?.(() => {
-      try {
-        const content = editor.document;
-        localStorage.setItem(storageKey, JSON.stringify(content));
-      } catch (error) {
-        if (error instanceof Error && error.name === 'QuotaExceededError') {
-          console.error('Document too large to save locally. Storage quota exceeded.');
-          alert('Document is too large to save locally. Please reduce content or export manually.');
-        } else {
-          console.warn('Failed to save content to localStorage:', error);
-        }
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
       }
+
+      timeoutRef.current = setTimeout(() => {
+        try {
+          const content = editor.document;
+          localStorage.setItem(storageKey, JSON.stringify(content));
+        } catch (error) {
+          if (error instanceof Error && error.name === 'QuotaExceededError') {
+            console.error('Document too large to save locally. Storage quota exceeded.');
+            alert('Document is too large to save locally. Please reduce content or export manually.');
+          } else {
+            console.warn('Failed to save content to localStorage:', error);
+          }
+        }
+      }, 500);
     });
 
     return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
       if (unsubscribe) {
         unsubscribe();
       }
