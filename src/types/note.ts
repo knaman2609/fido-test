@@ -9,9 +9,13 @@ export interface Note {
   content: BlockNoteBlock[];
   createdAt: number;
   updatedAt: number;
+  isPinned?: boolean;
 }
+
+export type Theme = 'light' | 'dark' | 'system';
 
 export interface StorageData {
   notes: Note[];
   lastSelectedNoteId?: string;
+  theme?: Theme;
 }
