@@ -80,18 +80,34 @@ async function init(): Promise<void> {
   editor.mount(editorContainer);
 
   let saveTimeoutId: number | null = null;
+  let pendingBlocks: Block[] | null = null;
+
+  function flushSave(): void {
+    if (saveTimeoutId !== null && pendingBlocks !== null) {
+      clearTimeout(saveTimeoutId);
+      saveTimeoutId = null;
+      try {
+        documentStorage.save(pendingBlocks);
+      } catch (error) {
+        console.error("Failed to save on unload:", error);
+      }
+      pendingBlocks = null;
+    }
+  }
 
   function handleSave(blocks: Block[]): void {
     if (saveTimeoutId !== null) {
       clearTimeout(saveTimeoutId);
     }
 
+    pendingBlocks = blocks;
     saveStatus.showSaving();
 
     saveTimeoutId = window.setTimeout(() => {
       try {
         documentStorage.save(blocks);
         saveStatus.showSaved();
+        pendingBlocks = null;
       } catch (error) {
         const message = error instanceof Error ? error.message : "Unknown error";
         saveStatus.showError(message);
@@ -103,12 +119,25 @@ async function init(): Promise<void> {
     const blocks = editor.document;
     handleSave(blocks);
   });
+
+  window.addEventListener("beforeunload", () => {
+    flushSave();
+  });
+}
+
+function handleInitError(error: unknown): void {
+  console.error("Failed to initialize editor:", error);
+  const saveStatus = document.getElementById("save-status");
+  if (saveStatus !== null) {
+    saveStatus.textContent = "Error: Failed to initialize editor";
+    saveStatus.className = "save-status error";
+  }
 }
 
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", () => {
-    void init();
+    init().catch(handleInitError);
   });
 } else {
-  void init();
+  init().catch(handleInitError);
 }
