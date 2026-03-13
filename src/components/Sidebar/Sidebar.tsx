@@ -2,8 +2,10 @@ import React from 'react';
 import { Plus } from 'lucide-react';
 import { SearchBar } from '@/components/SearchBar/SearchBar';
 import { NoteList } from '@/components/NoteList/NoteList';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
+import { cn } from '@/lib/utils';
 import type { Note } from '@/types/note';
-import './Sidebar.css';
 
 interface SidebarProps {
   notes: Note[];
@@ -25,15 +27,21 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onAddNote,
 }) => {
   return (
-    <aside className="sidebar">
-      <div className="sidebar__header">
-        <button className="sidebar__new-btn" onClick={onAddNote}>
+    <aside
+      className={cn(
+        "flex flex-col w-80 min-w-[320px] h-screen",
+        "bg-sidebar border-r border-border",
+        "max-md:w-full max-md:min-w-full max-md:border-r-0"
+      )}
+    >
+      <div className={cn("p-4 flex flex-col gap-3 border-b border-border")}>
+        <Button onClick={onAddNote} className={cn("w-full gap-2")}>
           <Plus size={18} />
           <span>New Note</span>
-        </button>
+        </Button>
         <SearchBar value={searchQuery} onChange={onSearchChange} />
       </div>
-      <div className="sidebar__content">
+      <div className={cn("flex-1 overflow-hidden flex flex-col")}>
         <NoteList
           notes={notes}
           selectedNoteId={selectedNoteId}
@@ -41,8 +49,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
           onDeleteNote={onDeleteNote}
         />
       </div>
-      <div className="sidebar__footer">
-        <span className="sidebar__count">
+      <Separator />
+      <div className={cn("px-4 py-3 text-center")}>
+        <span className={cn("text-sm text-muted-foreground")}>
           {notes.length} {notes.length === 1 ? 'note' : 'notes'}
         </span>
       </div>
