@@ -33,3 +33,11 @@
 .note-list::-webkit-scrollbar-thumb:hover {
   background-color: rgba(0, 0, 0, 0.25);
 }
+
+[data-theme="dark"] .note-list::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="dark"] .note-list::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
