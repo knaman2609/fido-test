@@ -49,9 +49,10 @@ export function loadLastSelectedNoteId(): string | undefined {
 }
 
 export function extractTitle(content: BlockNoteBlock[]): string {
-  if (content.length === 0) return 'Untitled';
+  if (!Array.isArray(content) || content.length === 0) return 'Untitled';
 
   const firstBlock = content[0];
+  if (!firstBlock || typeof firstBlock !== 'object') return 'Untitled';
 
   if (firstBlock.type === 'heading' && firstBlock.content) {
     if (typeof firstBlock.content === 'string') {
@@ -59,7 +60,13 @@ export function extractTitle(content: BlockNoteBlock[]): string {
     }
     if (Array.isArray(firstBlock.content)) {
       const text = firstBlock.content
-        .map((c) => (typeof c === 'string' ? c : 'text' in c ? c.text : ''))
+        .map((c) => {
+          if (typeof c === 'string') return c;
+          if (c && typeof c === 'object' && 'text' in c && typeof c.text === 'string') {
+            return c.text;
+          }
+          return '';
+        })
         .join('');
       return text.trim() || 'Untitled';
     }
@@ -71,7 +78,13 @@ export function extractTitle(content: BlockNoteBlock[]): string {
       text = firstBlock.content;
     } else if (Array.isArray(firstBlock.content)) {
       text = firstBlock.content
-        .map((c) => (typeof c === 'string' ? c : 'text' in c ? c.text : ''))
+        .map((c) => {
+          if (typeof c === 'string') return c;
+          if (c && typeof c === 'object' && 'text' in c && typeof c.text === 'string') {
+            return c.text;
+          }
+          return '';
+        })
         .join('');
     }
     text = text.trim();
@@ -84,19 +97,27 @@ export function extractTitle(content: BlockNoteBlock[]): string {
 }
 
 export function extractPreview(content: BlockNoteBlock[]): string {
-  if (content.length === 0) return '';
+  if (!Array.isArray(content) || content.length === 0) return '';
 
   let previewText = '';
   const blocksToCheck = content.slice(0, 3);
 
   for (const block of blocksToCheck) {
+    if (!block || typeof block !== 'object') continue;
+    
     if (block.content) {
       let text = '';
       if (typeof block.content === 'string') {
         text = block.content;
       } else if (Array.isArray(block.content)) {
         text = block.content
-          .map((c) => (typeof c === 'string' ? c : 'text' in c ? c.text : ''))
+          .map((c) => {
+            if (typeof c === 'string') return c;
+            if (c && typeof c === 'object' && 'text' in c && typeof c.text === 'string') {
+              return c.text;
+            }
+            return '';
+          })
           .join('');
       }
       previewText += text + ' ';
