@@ -113,7 +113,16 @@ const App: FC<AppProps> = ({ storageKey = DEFAULT_STORAGE_KEY }) => {
   return (
     <div className="app">
       <ErrorBoundary>
-        <BlockNoteViewRaw editor={editor} />
+        <BlockNoteViewRaw
+          editor={editor}
+          sideMenu={false}
+          formattingToolbar={false}
+          linkToolbar={false}
+          slashMenu={false}
+          emojiPicker={false}
+          filePanel={false}
+          tableHandles={false}
+        />
       </ErrorBoundary>
     </div>
   );
