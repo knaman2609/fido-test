@@ -1,45 +1,51 @@
-import type { FC } from 'react';
-import { Sidebar } from '@/components/Sidebar/Sidebar';
-import { Editor } from '@/components/Editor/Editor';
-import { EmptyState } from '@/components/EmptyState/EmptyState';
-import { useNotes } from '@/hooks/useNotes';
+import { useEffect, useCallback } from 'react';
+import { useCreateBlockNote } from "@blocknote/react";
+import { BlockNoteView } from "@blocknote/mantine";
+import { type BlockNoteEditor } from "@blocknote/core";
+import "@blocknote/mantine/style.css";
 import './App.css';
 
-const App: FC = () => {
-  const {
-    filteredNotes,
-    selectedNote,
-    selectedNoteId,
-    searchQuery,
-    addNote,
-    updateNote,
-    deleteNote,
-    selectNote,
-    setSearchQuery,
-  } = useNotes();
+const LOCAL_STORAGE_KEY = "blocknote-document";
+
+function App() {
+  const loadInitialContent = useCallback(() => {
+    try {
+      const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
+      if (saved) {
+        return JSON.parse(saved);
+      }
+    } catch (e) {
+      console.error("Failed to load content from localStorage", e);
+    }
+    return undefined;
+  }, []);
+
+  const editor = useCreateBlockNote({
+    initialContent: loadInitialContent(),
+  });
+
+  useEffect(() => {
+    if (!editor) return;
+
+    const saveContent = () => {
+      try {
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(editor.document));
+      } catch (e) {
+        console.error("Failed to save content to localStorage", e);
+      }
+    };
+
+    const unsubscribe = editor.onChange(saveContent);
+    return () => unsubscribe();
+  }, [editor]);
+
+  if (!editor) {
+    return null;
+  }
 
   return (
     <div className="app">
-      <Sidebar
-        notes={filteredNotes}
-        selectedNoteId={selectedNoteId}
-        searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
-        onSelectNote={selectNote}
-        onDeleteNote={deleteNote}
-        onAddNote={addNote}
-      />
-      <main className="app__main">
-        {selectedNote ? (
-          <Editor
-            note={selectedNote}
-            onUpdateNote={updateNote}
-            onDeleteNote={deleteNote}
-          />
-        ) : (
-          <EmptyState onCreateNote={addNote} />
-        )}
-      </main>
+      <BlockNoteView editor={editor} />
     </div>
   );
 }
