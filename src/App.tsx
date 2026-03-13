@@ -68,7 +68,11 @@ const App: FC<AppProps> = ({ storageKey = DEFAULT_STORAGE_KEY }) => {
         const saved = localStorage.getItem(storageKey);
         if (saved) {
           const parsed = JSON.parse(saved);
-          editor.replaceBlocks(editor.document, parsed);
+          if (Array.isArray(parsed)) {
+            editor.replaceBlocks(editor.document, parsed);
+          } else {
+            console.warn('Invalid saved data format: expected array');
+          }
         }
       } catch (error) {
         console.warn('Failed to load content from localStorage:', error);
@@ -86,7 +90,12 @@ const App: FC<AppProps> = ({ storageKey = DEFAULT_STORAGE_KEY }) => {
         const content = editor.document;
         localStorage.setItem(storageKey, JSON.stringify(content));
       } catch (error) {
-        console.warn('Failed to save content to localStorage:', error);
+        if (error instanceof Error && error.name === 'QuotaExceededError') {
+          console.error('Document too large to save locally. Storage quota exceeded.');
+          alert('Document is too large to save locally. Please reduce content or export manually.');
+        } else {
+          console.warn('Failed to save content to localStorage:', error);
+        }
       }
     });
 
