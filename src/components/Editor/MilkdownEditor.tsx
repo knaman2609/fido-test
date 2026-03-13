@@ -6,9 +6,6 @@ import { gfm } from '@milkdown/preset-gfm';
 import { nord } from '@milkdown/theme-nord';
 import { history } from '@milkdown/plugin-history';
 import { listener, listenerCtx } from '@milkdown/plugin-listener';
-import { prism } from '@milkdown/plugin-prism';
-
-import 'prismjs/themes/prism.css';
 
 interface MilkdownEditorProps {
   content: string;
@@ -45,8 +42,7 @@ export const MilkdownEditor: React.FC<MilkdownEditorProps> = ({
       .use(commonmark)
       .use(gfm)
       .use(history)
-      .use(listener)
-      .use(prism);
+      .use(listener);
   }, []);
 
   return <Milkdown />;
