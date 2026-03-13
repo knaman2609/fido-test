@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import type { Note, BlockContent } from '../types/note';
+import type { Note, BlockNoteBlock } from '../types/note';
 import {
   loadNotes,
   saveNotes,
@@ -17,7 +17,7 @@ export interface UseNotesReturn {
   searchQuery: string;
   filteredNotes: Note[];
   createNote: () => void;
-  updateNote: (id: string, content: BlockContent[]) => void;
+  updateNote: (id: string, content: BlockNoteBlock[]) => void;
   deleteNote: (id: string) => void;
   selectNote: (id: string) => void;
   setSearchQuery: (query: string) => void;
@@ -77,7 +77,7 @@ export function useNotes(): UseNotesReturn {
     setSearchQuery('');
   }, []);
 
-  const updateNote = useCallback((id: string, content: BlockContent[]) => {
+  const updateNote = useCallback((id: string, content: BlockNoteBlock[]) => {
     setNotes((prev) => {
       const noteIndex = prev.findIndex((n) => n.id === id);
       if (noteIndex === -1) return prev;
@@ -90,11 +90,7 @@ export function useNotes(): UseNotesReturn {
         updatedAt: Date.now(),
       };
 
-      const newNotes = [...prev];
-      newNotes.splice(noteIndex, 1);
-      newNotes.unshift(updatedNote);
-
-      return newNotes;
+      return [updatedNote, ...prev.slice(0, noteIndex), ...prev.slice(noteIndex + 1)];
     });
   }, []);
 
