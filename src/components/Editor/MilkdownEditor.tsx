@@ -13,7 +13,12 @@ interface MilkdownEditorProps {
   noteId: string;
 }
 
-const MilkdownEditorInner: React.FC<MilkdownEditorProps> = ({
+interface MilkdownEditorInnerProps {
+  content: string;
+  onChange: (content: string) => void;
+}
+
+const MilkdownEditorInner: React.FC<MilkdownEditorInnerProps> = ({
   content,
   onChange,
 }) => {
