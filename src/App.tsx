@@ -1,47 +1,60 @@
 import type { FC } from 'react';
-import { Sidebar } from '@/components/Sidebar/Sidebar';
-import { Editor } from '@/components/Editor/Editor';
-import { EmptyState } from '@/components/EmptyState/EmptyState';
-import { useNotes } from '@/hooks/useNotes';
+import { BlockNoteView } from '@blocknote/react';
+import { useBlockNote } from '@blocknote/react';
+import { useEffect } from 'react';
+import '@blocknote/react/style.css';
 import './App.css';
 
+const STORAGE_KEY = 'blocknote-document';
+
+const defaultContent = [
+  {
+    type: 'heading',
+    props: { level: 1 },
+    content: [{ type: 'text', text: 'Welcome to BlockNote' }],
+  },
+  {
+    type: 'paragraph',
+    content: [{ type: 'text', text: 'Start typing to create your document...' }],
+  },
+];
+
 const App: FC = () => {
-  const {
-    filteredNotes,
-    selectedNote,
-    selectedNoteId,
-    searchQuery,
-    addNote,
-    updateNote,
-    deleteNote,
-    selectNote,
-    setSearchQuery,
-  } = useNotes();
+  const editor = useBlockNote({
+    initialContent: defaultContent,
+    onEditorContentChange: (editor) => {
+      try {
+        const content = editor.topLevelBlocks;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(content));
+      } catch {
+        // localStorage may be blocked in privacy mode
+      }
+    },
+  });
+
+  useEffect(() => {
+    if (!editor) return;
+
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        editor.replaceBlocks(editor.topLevelBlocks, parsed);
+      }
+    } catch {
+      // Use default content if parsing fails
+    }
+  }, [editor]);
+
+  if (!editor) {
+    return null;
+  }
 
   return (
     <div className="app">
-      <Sidebar
-        notes={filteredNotes}
-        selectedNoteId={selectedNoteId}
-        searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
-        onSelectNote={selectNote}
-        onDeleteNote={deleteNote}
-        onAddNote={addNote}
-      />
-      <main className="app__main">
-        {selectedNote ? (
-          <Editor
-            note={selectedNote}
-            onUpdateNote={updateNote}
-            onDeleteNote={deleteNote}
-          />
-        ) : (
-          <EmptyState onCreateNote={addNote} />
-        )}
-      </main>
+      <BlockNoteView editor={editor} />
     </div>
   );
-}
+};
 
 export default App;
