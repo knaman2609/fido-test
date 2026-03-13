@@ -60,6 +60,12 @@ function AppContent() {
     setSearchQuery,
   } = useNotes();
 
+  const handleNoteChange = useCallback((content: Parameters<typeof updateNote>[1]) => {
+    if (selectedNote) {
+      updateNote(selectedNote.id, content);
+    }
+  }, [selectedNote, updateNote]);
+
   return (
     <div className="app">
       <Sidebar
@@ -72,11 +78,7 @@ function AppContent() {
         onDeleteNote={deleteNote}
       />
       <ErrorBoundary>
-        <NoteEditor note={selectedNote} onChange={(content) => {
-          if (selectedNote) {
-            updateNote(selectedNote.id, content);
-          }
-        }} />
+        <NoteEditor note={selectedNote} onChange={handleNoteChange} />
       </ErrorBoundary>
     </div>
   );
