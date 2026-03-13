@@ -10,6 +10,7 @@ import { MilkdownProvider, Milkdown, useEditor } from '@milkdown/react';
 interface MilkdownEditorProps {
   content: string;
   onChange: (content: string) => void;
+  noteId: string;
 }
 
 const MilkdownEditorInner: React.FC<MilkdownEditorProps> = ({
@@ -48,9 +49,9 @@ const MilkdownEditorInner: React.FC<MilkdownEditorProps> = ({
   return <Milkdown />;
 };
 
-export const MilkdownEditor: React.FC<MilkdownEditorProps> = (props) => {
+export const MilkdownEditor: React.FC<MilkdownEditorProps> = ({ noteId, ...props }) => {
   return (
-    <MilkdownProvider>
+    <MilkdownProvider key={noteId}>
       <MilkdownEditorInner {...props} />
     </MilkdownProvider>
   );

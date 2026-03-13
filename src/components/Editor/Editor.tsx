@@ -39,7 +39,7 @@ export const Editor: React.FC<EditorProps> = ({
         </button>
       </div>
       <div className="editor__content">
-        <MilkdownEditor content={note.content} onChange={handleChange} />
+        <MilkdownEditor noteId={note.id} content={note.content} onChange={handleChange} />
       </div>
     </div>
   );
