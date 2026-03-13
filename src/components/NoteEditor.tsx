@@ -1,17 +1,17 @@
 import { type FC, useEffect, useRef } from 'react';
 import { BlockNoteViewRaw, useCreateBlockNote } from '@blocknote/react';
-import type { Note, BlockContent } from '../types/note';
+import type { Note } from '../types/note';
 
 interface NoteEditorProps {
   note: Note | null;
-  onChange: (content: BlockContent[]) => void;
+  onChange: (content: Record<string, unknown>[]) => void;
 }
 
 export const NoteEditor: FC<NoteEditorProps> = ({ note, onChange }) => {
-  const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const editor = useCreateBlockNote({
-    initialContent: note?.content || [
+    initialContent: note?.content as Record<string, unknown>[] || [
       {
         type: 'paragraph',
         content: '',
@@ -27,7 +27,7 @@ export const NoteEditor: FC<NoteEditorProps> = ({ note, onChange }) => {
         if (note.content && note.content.length > 0) {
           editor.replaceBlocks(
             editor.document.map((b) => b.id),
-            note.content
+            note.content as Record<string, unknown>[]
           );
         } else {
           editor.replaceBlocks(
@@ -58,7 +58,7 @@ export const NoteEditor: FC<NoteEditorProps> = ({ note, onChange }) => {
 
       saveTimeoutRef.current = setTimeout(() => {
         try {
-          const content = editor.document as BlockContent[];
+          const content = editor.document as Record<string, unknown>[];
           onChange(content);
         } catch (error) {
           console.warn('Failed to save note content:', error);
