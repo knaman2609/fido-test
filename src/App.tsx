@@ -2,6 +2,7 @@ import { Component, type ErrorInfo, type ReactNode, useCallback } from 'react';
 import { useNotes } from './hooks/useNotes';
 import { Sidebar } from './components/Sidebar';
 import { NoteEditor } from './components/NoteEditor';
+import type { BlockNoteBlock } from './types/note';
 import '@blocknote/react/style.css';
 import './App.css';
 
