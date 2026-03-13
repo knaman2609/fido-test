@@ -1,51 +1,45 @@
 import { type FC, useEffect, useRef } from 'react';
 import { BlockNoteViewRaw, useCreateBlockNote } from '@blocknote/react';
-import type { Note, BlockContent } from '../types/note';
+import type { Note, BlockNoteBlock } from '../types/note';
 
 interface NoteEditorProps {
   note: Note | null;
-  onChange: (content: BlockContent[]) => void;
+  onChange: (content: BlockNoteBlock[]) => void;
 }
 
 export const NoteEditor: FC<NoteEditorProps> = ({ note, onChange }) => {
   const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const editor = useCreateBlockNote({
-    initialContent: (note?.content as unknown as Record<string, unknown>[]) || [
-      {
-        type: 'paragraph',
-        content: '',
-      },
-    ],
+    initialContent: note?.content?.length ? note.content : undefined,
   });
 
   useEffect(() => {
     if (!editor || !note) return;
 
-    const loadContent = async () => {
+    const currentContent = editor.document;
+    const newContent = note.content;
+
+    const hasContentChanged = () => {
+      if (currentContent.length !== newContent.length) return true;
+      return currentContent.some((block, index) => {
+        const newBlock = newContent[index];
+        if (!newBlock) return true;
+        return block.type !== newBlock.type ||
+               JSON.stringify(block.content) !== JSON.stringify(newBlock.content);
+      });
+    };
+
+    if (hasContentChanged()) {
       try {
-        if (note.content && note.content.length > 0) {
-          editor.replaceBlocks(
-            editor.document.map((b) => b.id),
-            note.content as unknown as Record<string, unknown>[]
-          );
-        } else {
-          editor.replaceBlocks(
-            editor.document.map((b) => b.id),
-            [
-              {
-                type: 'paragraph',
-                content: '',
-              },
-            ]
-          );
-        }
+        editor.replaceBlocks(
+          editor.document.map((b) => b.id),
+          newContent
+        );
       } catch (error) {
         console.warn('Failed to load note content:', error);
       }
-    };
-
-    loadContent();
+    }
   }, [editor, note?.id]);
 
   useEffect(() => {
@@ -58,7 +52,7 @@ export const NoteEditor: FC<NoteEditorProps> = ({ note, onChange }) => {
 
       saveTimeoutRef.current = setTimeout(() => {
         try {
-          const content = editor.document as unknown as BlockContent[];
+          const content = editor.document as BlockNoteBlock[];
           onChange(content);
         } catch (error) {
           console.warn('Failed to save note content:', error);
