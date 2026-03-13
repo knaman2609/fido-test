@@ -1,17 +1,80 @@
 :root {
+  /* Light mode colors - Apple Notes style */
   --editor-bg: #ffffff;
   --text-primary: #1c1c1e;
   --text-secondary: #8e8e93;
   --accent-blue: #007aff;
+  --accent-orange: #ff9500;
+  --accent-green: #34c759;
+  --accent-red: #ff3b30;
   --border-color: #c6c6c8;
   
   /* Sidebar variables */
   --sidebar-bg: #f5f5f7;
   --sidebar-border: #d1d1d6;
   --note-item-hover: rgba(0, 0, 0, 0.04);
-  --note-item-selected: rgba(0, 122, 255, 0.1);
+  --note-item-selected: rgba(0, 122, 255, 0.12);
+  --note-item-selected-border: rgba(0, 122, 255, 0.3);
   --search-bg: rgba(120, 120, 128, 0.12);
   --search-bg-focus: rgba(120, 120, 128, 0.2);
+  
+  /* Section headers */
+  --section-header-color: #6e6e73;
+  --section-header-bg: rgba(0, 0, 0, 0.03);
+  
+  /* Toolbar */
+  --toolbar-bg: rgba(255, 255, 255, 0.85);
+  --toolbar-border: rgba(0, 0, 0, 0.1);
+  --toolbar-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  
+  /* Metadata */
+  --metadata-color: #8e8e93;
+  --metadata-border: rgba(0, 0, 0, 0.06);
+  
+  /* Pin indicator */
+  --pin-color: #ff9500;
+  
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-medium: 250ms ease;
+  --transition-slow: 350ms ease;
+}
+
+[data-theme="dark"] {
+  /* Dark mode colors - Apple Notes style */
+  --editor-bg: #000000;
+  --text-primary: #ffffff;
+  --text-secondary: #8e8e93;
+  --accent-blue: #0a84ff;
+  --accent-orange: #ff9f0a;
+  --accent-green: #30d158;
+  --accent-red: #ff453a;
+  --border-color: #38383a;
+  
+  /* Sidebar variables */
+  --sidebar-bg: #1c1c1e;
+  --sidebar-border: #2c2c2e;
+  --note-item-hover: rgba(255, 255, 255, 0.06);
+  --note-item-selected: rgba(10, 132, 255, 0.15);
+  --note-item-selected-border: rgba(10, 132, 255, 0.4);
+  --search-bg: rgba(120, 120, 128, 0.24);
+  --search-bg-focus: rgba(120, 120, 128, 0.32);
+  
+  /* Section headers */
+  --section-header-color: #98989d;
+  --section-header-bg: rgba(255, 255, 255, 0.05);
+  
+  /* Toolbar */
+  --toolbar-bg: rgba(30, 30, 30, 0.85);
+  --toolbar-border: rgba(255, 255, 255, 0.1);
+  --toolbar-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  
+  /* Metadata */
+  --metadata-color: #8e8e93;
+  --metadata-border: rgba(255, 255, 255, 0.08);
+  
+  /* Pin indicator */
+  --pin-color: #ff9f0a;
 }
 
 * {
@@ -31,6 +94,7 @@ body {
   background-color: var(--editor-bg);
   color: var(--text-primary);
   line-height: 1.5;
+  transition: background-color var(--transition-medium), color var(--transition-medium);
 }
 
 #root {
@@ -47,5 +111,38 @@ input {
 }
 
 ::selection {
-  background-color: rgba(0, 122, 255, 0.3);
+  background-color: var(--accent-blue);
+  color: white;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--text-secondary);
+  border-radius: 4px;
+  opacity: 0.3;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  opacity: 0.5;
+}
+
+/* BlockNote dark mode overrides */
+[data-theme="dark"] .bn-container {
+  --bn-colors-editor-background: var(--editor-bg);
+  --bn-colors-editor-text: var(--text-primary);
+  --bn-colors-menu-background: var(--sidebar-bg);
+  --bn-colors-menu-text: var(--text-primary);
+  --bn-colors-tooltip-background: var(--sidebar-bg);
+  --bn-colors-tooltip-text: var(--text-primary);
+  --bn-colors-hovered-text: var(--text-primary);
+  --bn-colors-selected-text: var(--text-primary);
 }
