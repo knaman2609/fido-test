@@ -3,7 +3,7 @@ import { useNotesStore } from '@/store/notesStore';
 
 export const useNotes = () => {
   const store = useNotesStore();
-  const updateTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const updateTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const updateNoteWithDebounce = useCallback(
     (id: string, content: string) => {

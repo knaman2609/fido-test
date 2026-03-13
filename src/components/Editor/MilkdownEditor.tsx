@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { Milkdown, useEditor, useInstance } from '@milkdown/react';
+import { Milkdown, useEditor } from '@milkdown/react';
 import { defaultValueCtx, Editor, rootCtx } from '@milkdown/core';
 import { commonmark } from '@milkdown/preset-commonmark';
 import { gfm } from '@milkdown/preset-gfm';
@@ -35,7 +35,7 @@ export const MilkdownEditor: React.FC<MilkdownEditorProps> = ({
       .config((ctx) => {
         ctx.set(rootCtx, root);
         ctx.set(defaultValueCtx, contentRef.current);
-        ctx.get(listenerCtx).markdownUpdated((ctx, markdown, prevMarkdown) => {
+        ctx.get(listenerCtx).markdownUpdated((_ctx, markdown, prevMarkdown) => {
           if (markdown !== prevMarkdown) {
             onChangeRef.current(markdown);
           }
