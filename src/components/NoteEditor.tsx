@@ -1,6 +1,8 @@
 import { type FC, useEffect, useRef } from 'react';
 import { BlockNoteViewRaw, useCreateBlockNote } from '@blocknote/react';
 import type { Note, BlockNoteBlock } from '../types/note';
+import { EditorToolbar } from './EditorToolbar';
+import { NoteMetadata } from './NoteMetadata';
 
 interface NoteEditorProps {
   note: Note | null;
@@ -74,7 +76,17 @@ export const NoteEditor: FC<NoteEditorProps> = ({ note, onChange }) => {
     return (
       <div className="editor-container empty">
         <div className="empty-editor">
-          <p>Select a note to start editing</p>
+          <div className="empty-editor-icon">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+          </div>
+          <p className="empty-editor-title">Select a note to view</p>
+          <p className="empty-editor-subtitle">Choose a note from the sidebar or create a new one</p>
         </div>
       </div>
     );
@@ -86,16 +98,24 @@ export const NoteEditor: FC<NoteEditorProps> = ({ note, onChange }) => {
 
   return (
     <div className="editor-container">
-      <BlockNoteViewRaw
-        editor={editor}
-        sideMenu={true}
-        formattingToolbar={true}
-        linkToolbar={true}
-        slashMenu={true}
-        emojiPicker={true}
-        filePanel={true}
-        tableHandles={true}
-      />
+      <div className="editor-header">
+        <NoteMetadata note={note} />
+      </div>
+      <div className="editor-toolbar-wrapper">
+        <EditorToolbar editor={editor} />
+      </div>
+      <div className="editor-content">
+        <BlockNoteViewRaw
+          editor={editor}
+          sideMenu={true}
+          formattingToolbar={false}
+          linkToolbar={true}
+          slashMenu={true}
+          emojiPicker={true}
+          filePanel={true}
+          tableHandles={true}
+        />
+      </div>
     </div>
   );
 };
