@@ -19,8 +19,10 @@ const App: FC = () => {
     setSearchQuery,
   } = useNotes();
 
+  const { theme } = useThemeStore();
+
   return (
-    <div className="app">
+    <div className="app" data-theme={theme}>
       <Sidebar
         notes={filteredNotes}
         selectedNoteId={selectedNoteId}
