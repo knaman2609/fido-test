@@ -8,6 +8,7 @@ import {
   extractTitle,
   extractPreview,
   createDefaultNote,
+  groupNotesByDate,
 } from '../utils/storage';
 
 export interface UseNotesReturn {
@@ -16,11 +17,15 @@ export interface UseNotesReturn {
   selectedNote: Note | null;
   searchQuery: string;
   filteredNotes: Note[];
+  pinnedNotes: Note[];
+  unpinnedNotes: Note[];
+  groupedNotes: Record<string, Note[]>;
   createNote: () => void;
   updateNote: (id: string, content: BlockNoteBlock[]) => void;
   deleteNote: (id: string) => void;
   selectNote: (id: string) => void;
   setSearchQuery: (query: string) => void;
+  pinNote: (id: string) => void;
 }
 
 export function useNotes(): UseNotesReturn {
@@ -65,6 +70,7 @@ export function useNotes(): UseNotesReturn {
       content: [],
       createdAt: now,
       updatedAt: now,
+      isPinned: false,
     };
 
     setNotes((prev) => [newNote, ...prev]);
@@ -121,16 +127,44 @@ export function useNotes(): UseNotesReturn {
     setSelectedNoteId(id);
   }, []);
 
+  const pinNote = useCallback((id: string) => {
+    setNotes((prev) =>
+      prev.map((note) =>
+        note.id === id ? { ...note, isPinned: !note.isPinned } : note
+      )
+    );
+  }, []);
+
+  const sortedNotes = useMemo(() => {
+    return [...notes].sort((a, b) => {
+      if (a.isPinned && !b.isPinned) return -1;
+      if (!a.isPinned && b.isPinned) return 1;
+      return b.updatedAt - a.updatedAt;
+    });
+  }, [notes]);
+
   const filteredNotes = useMemo(() => {
-    if (!searchQuery.trim()) return notes;
+    if (!searchQuery.trim()) return sortedNotes;
 
     const query = searchQuery.toLowerCase();
-    return notes.filter(
+    return sortedNotes.filter(
       (note) =>
         note.title.toLowerCase().includes(query) ||
         note.preview.toLowerCase().includes(query)
     );
-  }, [notes, searchQuery]);
+  }, [sortedNotes, searchQuery]);
+
+  const pinnedNotes = useMemo(() => {
+    return filteredNotes.filter((note) => note.isPinned);
+  }, [filteredNotes]);
+
+  const unpinnedNotes = useMemo(() => {
+    return filteredNotes.filter((note) => !note.isPinned);
+  }, [filteredNotes]);
+
+  const groupedNotes = useMemo(() => {
+    return groupNotesByDate(unpinnedNotes);
+  }, [unpinnedNotes]);
 
   const selectedNote = useMemo(() => {
     return notes.find((n) => n.id === selectedNoteId) || null;
@@ -142,10 +176,14 @@ export function useNotes(): UseNotesReturn {
     selectedNote,
     searchQuery,
     filteredNotes,
+    pinnedNotes,
+    unpinnedNotes,
+    groupedNotes,
     createNote,
     updateNote,
     deleteNote,
     selectNote,
     setSearchQuery,
+    pinNote,
   };
 }
