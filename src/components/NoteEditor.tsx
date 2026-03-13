@@ -88,13 +88,13 @@ export const NoteEditor: FC<NoteEditorProps> = ({ note, onChange }) => {
     <div className="editor-container">
       <BlockNoteViewRaw
         editor={editor}
-        sideMenu={false}
-        formattingToolbar={false}
-        linkToolbar={false}
-        slashMenu={false}
-        emojiPicker={false}
-        filePanel={false}
-        tableHandles={false}
+        sideMenu={true}
+        formattingToolbar={true}
+        linkToolbar={true}
+        slashMenu={true}
+        emojiPicker={true}
+        filePanel={true}
+        tableHandles={true}
       />
     </div>
   );
