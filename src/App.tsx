@@ -5,7 +5,7 @@ import { EmptyState } from '@/components/EmptyState/EmptyState';
 import { useNotes } from '@/hooks/useNotes';
 import './App.css';
 
-function App() {
+const App: FC = () => {
   const {
     filteredNotes,
     selectedNote,
