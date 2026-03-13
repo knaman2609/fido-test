@@ -231,13 +231,13 @@
   top: 4px;
   width: 18px;
   height: 18px;
-  border: 2px solid hsl(var(--muted-foreground));
+  border: 2px solid var(--color-muted-foreground);
   border-radius: 4px;
 }
 
 .milkdown .task-list-item[data-checked="true"]::before {
-  background-color: hsl(var(--primary));
-  border-color: hsl(var(--primary));
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
 }
 
 .milkdown .task-list-item[data-checked="true"]::after {
