@@ -1,10 +1,6 @@
-export type BlockNoteBlock = {
-  id: string;
-  type: string;
-  props: Record<string, unknown>;
-  content: Array<{ type: string; text: string; styles?: Record<string, unknown> }> | string;
-  children: BlockNoteBlock[];
-};
+import type { PartialBlock } from '@blocknote/core';
+
+export type BlockNoteBlock = PartialBlock;
 
 export interface Note {
   id: string;
