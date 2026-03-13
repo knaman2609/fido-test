@@ -27,13 +27,17 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     console.error('Editor error:', error, errorInfo);
   }
 
+  handleReset = (): void => {
+    this.setState({ hasError: false });
+  };
+
   render(): ReactNode {
     if (this.state.hasError) {
       return (
         <div className="app">
           <div className="error-fallback">
             <p>Something went wrong with the editor.</p>
-            <button onClick={() => window.location.reload()}>Refresh Page</button>
+            <button onClick={this.handleReset}>Try Again</button>
           </div>
         </div>
       );
