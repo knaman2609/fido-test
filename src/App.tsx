@@ -1,4 +1,4 @@
-import type { FC, Component, ErrorInfo, ReactNode } from 'react';
+import { Component, type FC, type ErrorInfo, type ReactNode } from 'react';
 import { BlockNoteViewRaw, useCreateBlockNote } from '@blocknote/react';
 import { useEffect } from 'react';
 import '@blocknote/react/style.css';
