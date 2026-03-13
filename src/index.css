@@ -182,7 +182,7 @@
 }
 
 .milkdown a {
-  color: hsl(var(--primary));
+  color: var(--color-primary);
   text-decoration: none;
 }
 
@@ -192,7 +192,7 @@
 
 .milkdown hr {
   border: none;
-  border-top: 1px solid hsl(var(--border));
+  border-top: 1px solid var(--color-border);
   margin: 24px 0;
 }
 
