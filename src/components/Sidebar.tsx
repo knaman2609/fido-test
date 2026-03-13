@@ -101,6 +101,7 @@ export const Sidebar: FC<SidebarProps> = ({
             type="text"
             className="search-input"
             placeholder="Search"
+            aria-label="Search notes"
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
           />
