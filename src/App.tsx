@@ -12,11 +12,11 @@ const App: FC = () => {
       {
         type: 'heading',
         props: { level: 1 },
-        content: [{ type: 'text', text: 'Welcome to BlockNote' }],
+        content: 'Welcome to BlockNote',
       },
       {
         type: 'paragraph',
-        content: [{ type: 'text', text: 'Start typing to create your document...' }],
+        content: 'Start typing to create your document...',
       },
     ],
   });
@@ -42,7 +42,7 @@ const App: FC = () => {
   useEffect(() => {
     if (!editor) return;
 
-    const unsubscribe = editor.onChange(() => {
+    const unsubscribe = editor.onChange?.(() => {
       try {
         const content = editor.document;
         localStorage.setItem(STORAGE_KEY, JSON.stringify(content));
@@ -52,7 +52,9 @@ const App: FC = () => {
     });
 
     return () => {
-      unsubscribe();
+      if (unsubscribe) {
+        unsubscribe();
+      }
     };
   }, [editor]);
 
