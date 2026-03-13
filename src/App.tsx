@@ -3,7 +3,7 @@ import { Sidebar } from '@/components/Sidebar/Sidebar';
 import { Editor } from '@/components/Editor/Editor';
 import { EmptyState } from '@/components/EmptyState/EmptyState';
 import { useNotes } from '@/hooks/useNotes';
-import './App.css';
+import { cn } from '@/lib/utils';
 
 const App: FC = () => {
   const {
@@ -19,7 +19,7 @@ const App: FC = () => {
   } = useNotes();
 
   return (
-    <div className="app">
+    <div className={cn("flex h-screen w-screen overflow-hidden")}>
       <Sidebar
         notes={filteredNotes}
         selectedNoteId={selectedNoteId}
@@ -29,7 +29,7 @@ const App: FC = () => {
         onDeleteNote={deleteNote}
         onAddNote={addNote}
       />
-      <main className="app__main">
+      <main className={cn("flex-1 min-w-0 overflow-hidden")}>
         {selectedNote ? (
           <Editor
             key={selectedNote.id}
