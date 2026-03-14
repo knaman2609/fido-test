@@ -22,6 +22,15 @@ const App: FC = () => {
   } = useNotes();
 
   const { theme } = useThemeStore();
+  const { hasEnteredApp } = useLandingStore();
+
+  if (!hasEnteredApp) {
+    return (
+      <div className="app" data-theme={theme}>
+        <LandingPage />
+      </div>
+    );
+  }
 
   return (
     <div className="app" data-theme={theme}>
