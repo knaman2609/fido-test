@@ -1,9 +1,9 @@
 import { create } from 'zustand';
 
-const STORAGE_KEY = 'hasVisited';
+const STORAGE_KEY = 'has-entered-app';
 
 interface LandingState {
-  hasVisited: boolean;
+  hasEnteredApp: boolean;
   enterApp: () => void;
   resetLanding: () => void;
 }
@@ -20,7 +20,7 @@ const getInitialState = (): boolean => {
 };
 
 export const useLandingStore = create<LandingState>((set) => ({
-  hasVisited: getInitialState(),
+  hasEnteredApp: getInitialState(),
 
   enterApp: () => {
     try {
@@ -28,7 +28,7 @@ export const useLandingStore = create<LandingState>((set) => ({
     } catch {
       // localStorage not available
     }
-    set({ hasVisited: true });
+    set({ hasEnteredApp: true });
   },
 
   resetLanding: () => {
@@ -37,6 +37,6 @@ export const useLandingStore = create<LandingState>((set) => ({
     } catch {
       // localStorage not available
     }
-    set({ hasVisited: false });
+    set({ hasEnteredApp: false });
   },
 }));
