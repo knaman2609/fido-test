@@ -248,7 +248,8 @@
 
 .landing-page__feature-card {
   padding: 1.5rem;
-  background: rgba(var(--sidebar-bg), 0.5);
+  background: var(--sidebar-bg);
+  opacity: 0.9;
   backdrop-filter: blur(10px);
   border-radius: 16px;
   border: 1px solid var(--border-color);
