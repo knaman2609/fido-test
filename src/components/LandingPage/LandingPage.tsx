@@ -107,7 +107,7 @@ export const LandingPage: React.FC = () => {
 
       <footer className="landing-page__footer">
         <p className="landing-page__footer-text">
-          Press <kbd>Cmd</kbd> + <kbd>K</kbd> to search • <kbd>Cmd</kbd> + <kbd>N</kbd> for new note
+          A clean, minimal notes experience
         </p>
       </footer>
     </div>
