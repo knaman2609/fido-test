@@ -1,11 +1,14 @@
 .landing-page {
   min-height: 100vh;
+  width: 100%;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
   position: relative;
   overflow-x: hidden;
   background-color: var(--editor-bg);
   color: var(--text-primary);
+  box-sizing: border-box;
 }
 
 .landing-page__gradient-bg {
@@ -64,9 +67,11 @@
   gap: 4rem;
   align-items: center;
   max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
   padding: 4rem 2rem;
   min-height: 60vh;
+  box-sizing: border-box;
 }
 
 .landing-page__hero-content {
@@ -123,6 +128,8 @@
 
 .landing-page__preview {
   animation: fadeInUp 0.6s ease-out 0.2s both;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .landing-page__preview-window {
@@ -134,6 +141,7 @@
   overflow: hidden;
   transform: perspective(1000px) rotateY(-5deg) rotateX(2deg);
   transition: transform 0.3s ease;
+  max-width: 100%;
 }
 
 .landing-page__preview-window:hover {
