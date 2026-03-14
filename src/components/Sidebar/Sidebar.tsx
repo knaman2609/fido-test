@@ -1,8 +1,9 @@
 import React from 'react';
-import { Plus } from 'lucide-react';
+import { Plus, ArrowLeft } from 'lucide-react';
 import { SearchBar } from '@/components/SearchBar/SearchBar';
 import { NoteList } from '@/components/NoteList/NoteList';
 import { ThemeToggle } from '@/components/ThemeToggle/ThemeToggle';
+import { useLandingStore } from '@/store/landingStore';
 import type { Note } from '@/types/note';
 import './Sidebar.css';
 
@@ -25,6 +26,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onDeleteNote,
   onAddNote,
 }) => {
+  const { resetLanding } = useLandingStore();
+
   return (
     <aside className="sidebar">
       <div className="sidebar__header">
@@ -32,7 +35,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <Plus size={18} />
           <span>New Note</span>
         </button>
-        <SearchBar value={searchQuery} onChange={onSearchChange} />
+        <div className="sidebar__search-row">
+          <button
+            className="sidebar__back-btn"
+            onClick={resetLanding}
+            aria-label="Back to landing page"
+            title="Back to landing page"
+          >
+            <ArrowLeft size={18} />
+          </button>
+          <SearchBar value={searchQuery} onChange={onSearchChange} />
+        </div>
       </div>
       <div className="sidebar__content">
         <NoteList
