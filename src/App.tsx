@@ -11,15 +11,6 @@ import './App.css';
 const App: FC = () => {
   const { theme } = useThemeStore();
   const { hasEnteredApp } = useLandingStore();
-
-  if (!hasEnteredApp) {
-    return (
-      <div className="app" data-theme={theme}>
-        <LandingPage />
-      </div>
-    );
-  }
-
   const {
     filteredNotes,
     selectedNote,
@@ -31,6 +22,14 @@ const App: FC = () => {
     selectNote,
     setSearchQuery,
   } = useNotes();
+
+  if (!hasEnteredApp) {
+    return (
+      <div className="app" data-theme={theme}>
+        <LandingPage />
+      </div>
+    );
+  }
 
   return (
     <div className="app" data-theme={theme}>
