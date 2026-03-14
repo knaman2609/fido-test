@@ -1,6 +1,5 @@
 import { create } from 'zustand';
-
-const STORAGE_KEY = 'has-entered-app';
+import { persist } from 'zustand/middleware';
 
 interface LandingState {
   hasEnteredApp: boolean;
@@ -8,35 +7,22 @@ interface LandingState {
   resetLanding: () => void;
 }
 
-const getInitialState = (): boolean => {
-  if (typeof window === 'undefined') return false;
+export const useLandingStore = create<LandingState>()(
+  persist(
+    (set) => ({
+      hasEnteredApp: false,
 
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    return stored === 'true';
-  } catch {
-    return false;
-  }
-};
+      enterApp: () => {
+        set({ hasEnteredApp: true });
+      },
 
-export const useLandingStore = create<LandingState>((set) => ({
-  hasEnteredApp: getInitialState(),
-
-  enterApp: () => {
-    try {
-      localStorage.setItem(STORAGE_KEY, 'true');
-    } catch {
-      // localStorage not available
+      resetLanding: () => {
+        set({ hasEnteredApp: false });
+      },
+    }),
+    {
+      name: 'has-entered-app',
+      partialize: (state) => ({ hasEnteredApp: state.hasEnteredApp }),
     }
-    set({ hasEnteredApp: true });
-  },
-
-  resetLanding: () => {
-    try {
-      localStorage.removeItem(STORAGE_KEY);
-    } catch {
-      // localStorage not available
-    }
-    set({ hasEnteredApp: false });
-  },
-}));
+  )
+);
