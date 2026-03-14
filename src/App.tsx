@@ -2,8 +2,10 @@ import type { FC } from 'react';
 import { Sidebar } from '@/components/Sidebar/Sidebar';
 import { Editor } from '@/components/Editor/Editor';
 import { EmptyState } from '@/components/EmptyState/EmptyState';
+import { LandingPage } from '@/components/LandingPage/LandingPage';
 import { useNotes } from '@/hooks/useNotes';
 import { useThemeStore } from '@/store/themeStore';
+import { useLandingStore } from '@/store/landingStore';
 import './App.css';
 
 const App: FC = () => {
