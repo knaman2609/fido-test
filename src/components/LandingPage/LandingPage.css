@@ -248,9 +248,7 @@
 
 .landing-page__feature-card {
   padding: 1.5rem;
-  background: var(--sidebar-bg);
-  opacity: 0.9;
-  backdrop-filter: blur(10px);
+  background-color: color-mix(in srgb, var(--sidebar-bg), transparent 10%);
   border-radius: 16px;
   border: 1px solid var(--border-color);
   transition: all 0.2s ease;
