@@ -58,7 +58,7 @@ export const LandingPage: React.FC = () => {
             </button>
           </div>
 
-          <div className="landing-page__preview">
+          <div className="landing-page__preview" aria-hidden="true">
             <div className="landing-page__preview-window">
               <div className="landing-page__preview-header">
                 <div className="landing-page__preview-dots">
