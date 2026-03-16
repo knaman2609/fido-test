@@ -45,13 +45,18 @@ const howItWorksSteps = [
   },
 ];
 
+const isMac = typeof navigator !== 'undefined' && navigator.platform.toLowerCase().includes('mac');
+const modKey = isMac ? '⌘' : 'Ctrl';
+const shiftKey = isMac ? '⇧' : 'Shift';
+const deleteKey = isMac ? '⌫' : 'Del';
+
 const shortcuts = [
-  { keys: ['⌘', 'N'], action: 'New Note' },
-  { keys: ['⌘', 'F'], action: 'Search' },
-  { keys: ['⌘', '⌫'], action: 'Delete Note' },
-  { keys: ['⌘', 'E'], action: 'Edit Title' },
-  { keys: ['⌘', 'K'], action: 'Command Palette' },
-  { keys: ['⌘', '⇧', 'T'], action: 'Toggle Theme' },
+  { keys: [modKey, 'N'], action: 'New Note' },
+  { keys: [modKey, 'F'], action: 'Search' },
+  { keys: [modKey, deleteKey], action: 'Delete Note' },
+  { keys: [modKey, 'E'], action: 'Edit Title' },
+  { keys: [modKey, 'K'], action: 'Command Palette' },
+  { keys: [modKey, shiftKey, 'T'], action: 'Toggle Theme' },
 ];
 
 const stats = [
@@ -75,7 +80,7 @@ const useScrollAnimation = (options?: IntersectionObserverInit) => {
 
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
-  }, []);
+  }, [options]);
 
   return { ref, isVisible };
 };
