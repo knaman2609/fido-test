@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { FileText, Moon, Search, Sparkles, ArrowRight, Zap, Keyboard, FolderOpen, Type, Command, Plus, Trash2, Edit3, Layers, Clock, Shield } from 'lucide-react';
+import { FileText, Moon, Search, Sparkles, ArrowRight, Zap, Keyboard, FolderOpen, Type, Plus, Layers, Clock, Shield } from 'lucide-react';
 import { useLandingStore } from '@/store/landingStore';
 import { ThemeToggle } from '@/components/ThemeToggle/ThemeToggle';
 import './LandingPage.css';
