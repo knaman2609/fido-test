@@ -56,7 +56,7 @@
   height: 300px;
   background: linear-gradient(135deg, rgba(88, 86, 214, 0.25), rgba(0, 122, 255, 0.15));
   top: 50%;
-  right: -50px;
+  right: 0;
   animation: float-orb 25s ease-in-out infinite reverse;
 }
 
