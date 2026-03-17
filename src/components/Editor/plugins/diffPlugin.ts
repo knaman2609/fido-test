@@ -59,18 +59,36 @@ class DiffBlockView {
   dom: HTMLElement;
   root: Root;
   content: string;
+  isDiffMode: boolean;
 
-  constructor(node: Node) {
+  constructor(node: Node, isDiffMode: boolean = true) {
     this.dom = document.createElement('div');
     this.dom.className = 'milkdown-diff-block';
     this.content = node.textContent;
+    this.isDiffMode = isDiffMode;
     this.root = createRoot(this.dom);
     this.render();
   }
 
+  setDiffMode(isDiffMode: boolean) {
+    if (this.isDiffMode !== isDiffMode) {
+      this.isDiffMode = isDiffMode;
+      this.render();
+    }
+  }
+
   render() {
-    const element = React.createElement(DiffBlock, { content: this.content });
-    this.root.render(element);
+    if (this.isDiffMode) {
+      const element = React.createElement(DiffBlock, { content: this.content });
+      this.root.render(element);
+    } else {
+      const element = React.createElement(
+        'pre',
+        { className: 'diff-block-plain' },
+        React.createElement('code', { className: 'language-diff' }, this.content)
+      );
+      this.root.render(element);
+    }
   }
 
   update(node: Node) {
