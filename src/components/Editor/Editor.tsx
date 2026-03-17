@@ -35,6 +35,7 @@ export const Editor: React.FC<EditorProps> = ({
         </div>
         <div className="editor__mode-toggle">
           <button
+            type="button"
             className={`editor__mode-btn ${isDiffMode ? 'active' : ''}`}
             onClick={() => setDiffMode(true)}
             aria-label="Diff mode"
@@ -44,6 +45,7 @@ export const Editor: React.FC<EditorProps> = ({
             <span>Diff</span>
           </button>
           <button
+            type="button"
             className={`editor__mode-btn ${!isDiffMode ? 'active' : ''}`}
             onClick={() => setDiffMode(false)}
             aria-label="Markdown mode"

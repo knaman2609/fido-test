@@ -37,6 +37,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </button>
         <div className="sidebar__search-row">
           <button
+            type="button"
             className="sidebar__back-btn"
             onClick={resetLanding}
             aria-label="Back to landing page"
