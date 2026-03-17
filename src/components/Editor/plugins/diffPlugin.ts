@@ -106,11 +106,12 @@ class DiffBlockView {
   }
 }
 
-export const diffBlockView = $view(diffBlockSchema, () => {
+export const diffBlockView = $view(diffBlockSchema, (ctx) => {
   const nodeView: NodeViewConstructor = (node) => {
-    return new DiffBlockView(node);
+    const isDiffMode = ctx.get(diffModeCtx.key);
+    return new DiffBlockView(node, isDiffMode);
   };
   return nodeView;
 });
 
-export const diffPlugin = [diffBlockSchema, diffBlockView];
+export const diffPlugin = [diffModeCtx, diffBlockSchema, diffBlockView];
