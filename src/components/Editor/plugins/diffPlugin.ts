@@ -7,6 +7,14 @@ import { DiffBlock } from '../components/DiffBlock';
 
 export const diffModeCtx = $ctx<boolean, 'diffMode'>(true, 'diffMode');
 
+const activeDiffBlockViews = new Set<DiffBlockView>();
+
+export function updateAllDiffBlockViews(isDiffMode: boolean) {
+  activeDiffBlockViews.forEach((view) => {
+    view.setDiffMode(isDiffMode);
+  });
+}
+
 export const diffBlockSchema = $node('diffBlock', () => ({
   content: 'text*',
   group: 'block',
