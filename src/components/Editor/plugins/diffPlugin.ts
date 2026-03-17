@@ -76,6 +76,7 @@ class DiffBlockView {
     this.isDiffMode = isDiffMode;
     this.root = createRoot(this.dom);
     this.render();
+    activeDiffBlockViews.add(this);
   }
 
   setDiffMode(isDiffMode: boolean) {
