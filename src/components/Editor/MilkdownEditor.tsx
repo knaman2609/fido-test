@@ -22,6 +22,7 @@ const MilkdownEditorInner: React.FC<MilkdownEditorProps> = ({
   const onChangeRef = useRef(onChange);
   const contentRef = useRef(content);
   const isDiffModeRef = useRef(isDiffMode);
+  const { getInstance } = useInstance();
 
   useEffect(() => {
     onChangeRef.current = onChange;
@@ -34,6 +35,14 @@ const MilkdownEditorInner: React.FC<MilkdownEditorProps> = ({
   useEffect(() => {
     isDiffModeRef.current = isDiffMode;
   }, [isDiffMode]);
+
+  useEffect(() => {
+    const instance = getInstance();
+    if (instance) {
+      instance.ctx.set(diffModeCtx.key, isDiffMode);
+      updateAllDiffBlockViews(isDiffMode);
+    }
+  }, [isDiffMode, getInstance]);
 
   useEditor((root) => {
     return Editor.make()
