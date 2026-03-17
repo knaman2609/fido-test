@@ -22,7 +22,7 @@ const MilkdownEditorInner: React.FC<MilkdownEditorProps> = ({
   const onChangeRef = useRef(onChange);
   const contentRef = useRef(content);
   const isDiffModeRef = useRef(isDiffMode);
-  const { getInstance } = useInstance();
+  const [, getInstance] = useInstance();
 
   useEffect(() => {
     onChangeRef.current = onChange;
