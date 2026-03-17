@@ -1,9 +1,11 @@
-import { $node, $view } from '@milkdown/utils';
+import { $node, $view, $ctx } from '@milkdown/utils';
 import type { Node } from '@milkdown/prose/model';
 import type { NodeViewConstructor } from '@milkdown/prose/view';
 import { createRoot, type Root } from 'react-dom/client';
 import React from 'react';
 import { DiffBlock } from '../components/DiffBlock';
+
+export const diffModeCtx = $ctx<boolean, 'diffMode'>(true, 'diffMode');
 
 export const diffBlockSchema = $node('diffBlock', () => ({
   content: 'text*',
