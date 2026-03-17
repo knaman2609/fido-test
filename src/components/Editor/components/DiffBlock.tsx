@@ -35,10 +35,11 @@ export const DiffBlock: React.FC<DiffBlockProps> = ({ content }) => {
   return (
     <div className="diff-block" data-theme={theme}>
       <FileDiff
-        oldContent={oldContent}
-        newContent={newContent}
-        filename="diff"
-        theme={theme === 'dark' ? 'dark' : 'light'}
+        oldFile={{ name: 'old', contents: oldContent }}
+        newFile={{ name: 'new', contents: newContent }}
+        options={{
+          themeType: theme === 'dark' ? 'dark' : 'light',
+        }}
       />
     </div>
   );
