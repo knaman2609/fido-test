@@ -112,6 +112,7 @@ class DiffBlockView {
 
   destroy() {
     this.root.unmount();
+    activeDiffBlockViews.delete(this);
   }
 }
 
