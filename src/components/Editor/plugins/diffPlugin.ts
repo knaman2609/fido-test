@@ -6,7 +6,6 @@ import React from 'react';
 import { DiffBlock } from '../components/DiffBlock';
 
 export const diffModeCtx = $ctx<boolean, 'diffMode'>(true, 'diffMode');
-export const diffModeSlice = diffModeCtx.slice;
 
 export const diffBlockSchema = $node('diffBlock', () => ({
   content: 'text*',
