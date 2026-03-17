@@ -255,3 +255,19 @@
     font-size: 18px;
   }
 }
+
+.milkdown-diff-block {
+  margin: 16px 0;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+
+.milkdown-diff-block .diff-block {
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+}
+
+.milkdown-diff-block pre {
+  margin: 0;
+  border-radius: 0;
+}
