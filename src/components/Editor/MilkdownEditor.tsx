@@ -17,9 +17,11 @@ interface MilkdownEditorProps {
 const MilkdownEditorInner: React.FC<MilkdownEditorProps> = ({
   content,
   onChange,
+  isDiffMode,
 }) => {
   const onChangeRef = useRef(onChange);
   const contentRef = useRef(content);
+  const isDiffModeRef = useRef(isDiffMode);
 
   useEffect(() => {
     onChangeRef.current = onChange;
@@ -29,11 +31,16 @@ const MilkdownEditorInner: React.FC<MilkdownEditorProps> = ({
     contentRef.current = content;
   }, [content]);
 
+  useEffect(() => {
+    isDiffModeRef.current = isDiffMode;
+  }, [isDiffMode]);
+
   useEditor((root) => {
     return Editor.make()
       .config((ctx) => {
         ctx.set(rootCtx, root);
         ctx.set(defaultValueCtx, contentRef.current);
+        ctx.set(diffModeCtx, isDiffModeRef.current);
         ctx.get(listenerCtx).markdownUpdated((_ctx, markdown, prevMarkdown) => {
           if (markdown !== prevMarkdown) {
             onChangeRef.current(markdown);
