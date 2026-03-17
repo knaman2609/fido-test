@@ -134,7 +134,7 @@
 
 .landing-page__hero {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 4rem;
   align-items: center;
   max-width: 1200px;
@@ -250,7 +250,7 @@
 
 .landing-page__preview-content {
   display: grid;
-  grid-template-columns: 180px 1fr;
+  grid-template-columns: 180px minmax(0, 1fr);
   height: 280px;
 }
 
@@ -356,7 +356,7 @@
 
 .landing-page__steps {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 2rem;
   position: relative;
 }
@@ -442,7 +442,7 @@
 
 .landing-page__features-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1.5rem;
 }
 
@@ -522,7 +522,7 @@
 
 .landing-page__stats-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 2rem;
   max-width: 1000px;
   margin: 0 auto;
@@ -575,7 +575,7 @@
 
 .landing-page__shortcuts-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1rem;
 }
 
@@ -718,7 +718,7 @@
   }
 
   .landing-page__features-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .landing-page__steps {
@@ -731,11 +731,11 @@
   }
 
   .landing-page__stats-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .landing-page__shortcuts-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -785,7 +785,7 @@
   }
 
   .landing-page__stats-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1rem;
   }
 
