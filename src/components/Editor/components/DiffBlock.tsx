@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
-import { FileDiff, parseDiffFromFile, type FileDiffMetadata } from '@pierre/diffs/react';
+import { FileDiff, type FileDiffMetadata } from '@pierre/diffs/react';
+import { parseDiffFromFile } from '@pierre/diffs';
 import { useThemeStore } from '../../../store/themeStore';
 
 interface DiffBlockProps {
