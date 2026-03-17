@@ -6,6 +6,7 @@ import { nord } from '@milkdown/theme-nord';
 import { history } from '@milkdown/plugin-history';
 import { listener, listenerCtx } from '@milkdown/plugin-listener';
 import { MilkdownProvider, Milkdown, useEditor } from '@milkdown/react';
+import { diffPlugin } from './plugins/diffPlugin';
 
 interface MilkdownEditorProps {
   content: string;
