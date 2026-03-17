@@ -45,7 +45,7 @@ const howItWorksSteps = [
   },
 ];
 
-const isMac = typeof navigator !== 'undefined' && /mac/i.test(navigator.userAgent);
+const isMac = typeof navigator !== 'undefined' && typeof navigator.userAgent !== 'undefined' && /mac/i.test(navigator.userAgent);
 const modKey = isMac ? '⌘' : 'Ctrl';
 const shiftKey = isMac ? '⇧' : 'Shift';
 const deleteKey = isMac ? '⌫' : 'Del';
