@@ -43,6 +43,49 @@
   color: #ff3b30;
 }
 
+.editor__mode-toggle {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  background-color: rgba(120, 120, 128, 0.12);
+  border-radius: 8px;
+}
+
+.editor__mode-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.editor__mode-btn:hover {
+  color: var(--text-primary);
+}
+
+.editor__mode-btn.active {
+  background-color: var(--editor-bg);
+  color: var(--accent-blue);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] .editor__mode-toggle {
+  background-color: rgba(120, 120, 128, 0.24);
+}
+
+[data-theme="dark"] .editor__mode-btn.active {
+  background-color: rgba(60, 60, 67, 0.8);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
 .editor__content {
   flex: 1;
   overflow-y: auto;
