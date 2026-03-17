@@ -1,6 +1,7 @@
 import { $node, $view } from '@milkdown/utils';
-import { Node } from '@milkdown/prose/model';
-import { createRoot } from 'react-dom/client';
+import type { Node } from '@milkdown/prose/model';
+import type { NodeViewConstructor } from '@milkdown/prose/view';
+import { createRoot, type Root } from 'react-dom/client';
 import { DiffBlock } from '../components/DiffBlock';
 
 export const diffBlockSchema = $node('diffBlock', () => ({
@@ -51,29 +52,43 @@ export const diffBlockSchema = $node('diffBlock', () => ({
   },
 }));
 
-export const diffBlockView = $view(diffBlockSchema, (ctx) => {
-  return (node: Node, view, getPos) => {
-    const dom = document.createElement('div');
-    dom.className = 'milkdown-diff-block';
+class DiffBlockView {
+  dom: HTMLElement;
+  root: Root;
+  content: string;
 
-    const content = node.textContent;
+  constructor(node: Node) {
+    this.dom = document.createElement('div');
+    this.dom.className = 'milkdown-diff-block';
+    this.content = node.textContent;
+    this.root = createRoot(this.dom);
+    this.render();
+  }
 
-    const root = createRoot(dom);
-    root.render(DiffBlock({ content }));
+  render() {
+    this.root.render(DiffBlock({ content: this.content }));
+  }
 
-    return {
-      dom,
-      update: (updatedNode: Node) => {
-        if (updatedNode.type.name !== 'diffBlock') return false;
-        const newContent = updatedNode.textContent;
-        root.render(DiffBlock({ content: newContent }));
-        return true;
-      },
-      destroy: () => {
-        root.unmount();
-      },
-    };
+  update(node: Node) {
+    if (node.type.name !== 'diffBlock') return false;
+    const newContent = node.textContent;
+    if (newContent !== this.content) {
+      this.content = newContent;
+      this.render();
+    }
+    return true;
+  }
+
+  destroy() {
+    this.root.unmount();
+  }
+}
+
+export const diffBlockView = $view(diffBlockSchema, () => {
+  const nodeView: NodeViewConstructor = (node) => {
+    return new DiffBlockView(node);
   };
+  return nodeView;
 });
 
 export const diffPlugin = [diffBlockSchema, diffBlockView];
