@@ -40,7 +40,7 @@ const MilkdownEditorInner: React.FC<MilkdownEditorProps> = ({
       .config((ctx) => {
         ctx.set(rootCtx, root);
         ctx.set(defaultValueCtx, contentRef.current);
-        ctx.set(diffModeSlice, isDiffModeRef.current);
+        ctx.set(diffModeCtx.key, isDiffModeRef.current);
         ctx.get(listenerCtx).markdownUpdated((_ctx, markdown, prevMarkdown) => {
           if (markdown !== prevMarkdown) {
             onChangeRef.current(markdown);
