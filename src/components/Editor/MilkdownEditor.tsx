@@ -5,8 +5,8 @@ import { gfm } from '@milkdown/preset-gfm';
 import { nord } from '@milkdown/theme-nord';
 import { history } from '@milkdown/plugin-history';
 import { listener, listenerCtx } from '@milkdown/plugin-listener';
-import { MilkdownProvider, Milkdown, useEditor } from '@milkdown/react';
-import { diffPlugin, diffModeCtx } from './plugins/diffPlugin';
+import { MilkdownProvider, Milkdown, useEditor, useInstance } from '@milkdown/react';
+import { diffPlugin, diffModeCtx, updateAllDiffBlockViews } from './plugins/diffPlugin';
 
 interface MilkdownEditorProps {
   content: string;
