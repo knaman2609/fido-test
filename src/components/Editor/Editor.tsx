@@ -17,6 +17,8 @@ export const Editor: React.FC<EditorProps> = ({
   onUpdateNote,
   onDeleteNote,
 }) => {
+  const { isDiffMode, setDiffMode } = useEditorStore();
+
   const handleChange = (content: string) => {
     onUpdateNote(note.id, content);
   };
@@ -31,6 +33,26 @@ export const Editor: React.FC<EditorProps> = ({
         <div className="editor__meta">
           <span className="editor__date">{formatFullDate(note.updatedAt)}</span>
         </div>
+        <div className="editor__mode-toggle">
+          <button
+            className={`editor__mode-btn ${isDiffMode ? 'active' : ''}`}
+            onClick={() => setDiffMode(true)}
+            aria-label="Diff mode"
+            title="Diff mode"
+          >
+            <Code2 size={16} />
+            <span>Diff</span>
+          </button>
+          <button
+            className={`editor__mode-btn ${!isDiffMode ? 'active' : ''}`}
+            onClick={() => setDiffMode(false)}
+            aria-label="Markdown mode"
+            title="Markdown mode"
+          >
+            <FileCode size={16} />
+            <span>Markdown</span>
+          </button>
+        </div>
         <button
           className="editor__delete-btn"
           onClick={handleDelete}
@@ -40,7 +62,7 @@ export const Editor: React.FC<EditorProps> = ({
         </button>
       </div>
       <div className="editor__content">
-        <MilkdownEditor content={note.content} onChange={handleChange} />
+        <MilkdownEditor content={note.content} onChange={handleChange} isDiffMode={isDiffMode} />
       </div>
     </div>
   );
