@@ -2,6 +2,7 @@ import { $node, $view } from '@milkdown/utils';
 import type { Node } from '@milkdown/prose/model';
 import type { NodeViewConstructor } from '@milkdown/prose/view';
 import { createRoot, type Root } from 'react-dom/client';
+import React from 'react';
 import { DiffBlock } from '../components/DiffBlock';
 
 export const diffBlockSchema = $node('diffBlock', () => ({
@@ -66,7 +67,8 @@ class DiffBlockView {
   }
 
   render() {
-    this.root.render(DiffBlock({ content: this.content }));
+    const element = React.createElement(DiffBlock, { content: this.content });
+    this.root.render(element);
   }
 
   update(node: Node) {
