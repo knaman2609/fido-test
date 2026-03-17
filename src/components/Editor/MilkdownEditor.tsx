@@ -43,7 +43,8 @@ const MilkdownEditorInner: React.FC<MilkdownEditorProps> = ({
       .use(commonmark)
       .use(gfm)
       .use(history)
-      .use(listener);
+      .use(listener)
+      .use(diffPlugin);
   }, []);
 
   return <Milkdown />;
