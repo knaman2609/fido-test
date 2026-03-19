@@ -1,28 +1,22 @@
-# Apple Notes Editor
+# BlockNote Editor
 
-A clean, minimal note-taking application inspired by Apple Notes, built with React, TypeScript, and Milkdown for rich markdown editing.
+A clean, minimal single-document editor built with React, TypeScript, and BlockNote for a modern block-based editing experience.
 
 ## Features
 
-- **Create, edit, and delete notes** - Manage your notes with an intuitive interface
-- **Rich text editing** - Markdown support via Milkdown editor
-- **Real-time search** - Quickly find notes with instant search functionality
-- **Dark/Light theme toggle** - Switch between themes for comfortable viewing
-- **Landing page** - Welcoming first-time user experience
-- **Sidebar navigation** - Organized note list with easy navigation
+- **Block-based editing** - Modern Notion-like editing experience with BlockNote
+- **Rich text support** - Headings, lists, paragraphs, and more
+- **Auto-save** - Content is automatically saved to localStorage
+- **Persistent state** - Document content persists between sessions
 - **Responsive design** - Works across different screen sizes
-- **Persistent state** - Notes and preferences are saved between sessions
 
 ## Tech Stack
 
 - **React 18.2.0** - UI library
 - **TypeScript 5.0.0** - Type-safe JavaScript
 - **Vite 5.4.0** - Fast build tool and dev server
-- **Milkdown 7.3.0** - Markdown editor framework
-- **Zustand 4.4.0** - Lightweight state management
+- **BlockNote 0.15.0** - Block-based editor framework
 - **Lucide React** - Beautiful icon library
-- **date-fns** - Date formatting utilities
-- **uuid** - Unique identifier generation
 
 ## Prerequisites
 
@@ -34,7 +28,7 @@ A clean, minimal note-taking application inspired by Apple Notes, built with Rea
 1. Clone the repository:
    ```bash
    git clone <repository-url>
-   cd apple-notes-editor
+   cd blocknote-editor
    ```
 
 2. Install dependencies:
@@ -63,38 +57,22 @@ A clean, minimal note-taking application inspired by Apple Notes, built with Rea
 ```
 src/
 ├── components/          # React components
-│   ├── Editor/         # Note editor components
-│   ├── Sidebar/        # Sidebar navigation
-│   ├── NoteList/       # List of notes display
-│   ├── NoteItem/       # Individual note item
-│   ├── SearchBar/      # Search functionality
-│   ├── ThemeToggle/    # Dark/light mode toggle
-│   ├── LandingPage/    # Welcome screen
-│   └── EmptyState/     # Empty state display
-├── store/              # Zustand state stores
-│   ├── notesStore.ts   # Notes state management
-│   ├── themeStore.ts   # Theme state management
-│   └── landingStore.ts # Landing page state
-├── hooks/              # Custom React hooks
-│   └── useNotes.ts     # Notes-related hooks
-├── types/              # TypeScript type definitions
-│   └── note.ts         # Note type definitions
-├── utils/              # Utility functions
-│   └── date.ts         # Date formatting utilities
-├── App.tsx             # Main application component
-├── App.css             # Application styles
-├── index.css           # Global styles
-└── main.tsx            # Application entry point
+│   └── BlockNoteEditor/ # Main BlockNote editor component
+├── hooks/               # Custom React hooks
+│   └── useLocalStorage.ts # Generic localStorage hook
+├── utils/               # Utility functions
+│   └── storage.ts       # Storage utilities
+├── App.tsx              # Main application component
+├── App.css              # Application styles
+├── index.css            # Global styles
+└── main.tsx             # Application entry point
 ```
 
 ## Usage
 
-1. **Creating a Note**: Click the new note button in the sidebar to create a new note
-2. **Editing**: Click on any note in the sidebar to open it in the editor
-3. **Searching**: Use the search bar to filter notes by title or content
-4. **Deleting**: Delete notes using the delete option in the note list
-5. **Theme Toggle**: Switch between light and dark modes using the theme toggle button
-6. **Markdown Support**: Use standard Markdown syntax in the editor for rich formatting
+1. **Editing**: Start typing in the editor to create your document
+2. **Auto-save**: Your content is automatically saved to localStorage
+3. **Block Types**: Use the slash menu (type `/`) to insert different block types
 
 ## License
 
