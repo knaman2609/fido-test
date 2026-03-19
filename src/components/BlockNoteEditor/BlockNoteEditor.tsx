@@ -1,5 +1,5 @@
 import { useEffect, useCallback } from 'react';
-import { BlockNoteEditor as BlockNoteCoreEditor, PartialBlock } from '@blocknote/core';
+import { PartialBlock } from '@blocknote/core';
 import { useCreateBlockNote } from '@blocknote/react';
 import { BlockNoteView } from '@blocknote/mantine';
 import '@blocknote/mantine/style.css';
@@ -65,7 +65,9 @@ export function BlockNoteEditor() {
 
     const unsubscribe = editor.onChange(handleChange);
     return () => {
-      unsubscribe();
+      if (unsubscribe) {
+        unsubscribe();
+      }
     };
   }, [editor, handleChange]);
 
