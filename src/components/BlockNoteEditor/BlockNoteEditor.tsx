@@ -3,9 +3,10 @@ import { PartialBlock } from '@blocknote/core';
 import { useCreateBlockNote } from '@blocknote/react';
 import { BlockNoteView } from '@blocknote/mantine';
 import '@blocknote/mantine/style.css';
+import { loadFromLocalStorage, saveToLocalStorage } from '../../utils/storage';
 import './BlockNoteEditor.css';
 
-const STORAGE_KEY = 'blocknote-doc';
+const DEFAULT_STORAGE_KEY = 'blocknote-doc';
 
 const defaultContent: PartialBlock[] = [
   {
@@ -19,36 +20,12 @@ const defaultContent: PartialBlock[] = [
   },
 ];
 
-function loadFromLocalStorage(): PartialBlock[] | null {
-  try {
-    const item = window.localStorage.getItem(STORAGE_KEY);
-    if (item) {
-      const parsed = JSON.parse(item);
-      if (parsed && Array.isArray(parsed.content)) {
-        return parsed.content;
-      }
-    }
-  } catch (error) {
-    console.warn('Error loading from localStorage:', error);
-  }
-  return null;
+interface BlockNoteEditorProps {
+  storageKey?: string;
 }
 
-function saveToLocalStorage(content: PartialBlock[]) {
-  try {
-    const data = {
-      version: 1,
-      content,
-      lastModified: new Date().toISOString(),
-    };
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-  } catch (error) {
-    console.warn('Error saving to localStorage:', error);
-  }
-}
-
-export function BlockNoteEditor() {
-  const initialContent = loadFromLocalStorage() || defaultContent;
+export function BlockNoteEditor({ storageKey = DEFAULT_STORAGE_KEY }: BlockNoteEditorProps) {
+  const initialContent = loadFromLocalStorage(storageKey) || defaultContent;
 
   const editor = useCreateBlockNote({
     initialContent,
@@ -56,9 +33,9 @@ export function BlockNoteEditor() {
 
   const handleChange = useCallback(() => {
     if (editor) {
-      saveToLocalStorage(editor.document);
+      saveToLocalStorage(storageKey, editor.document);
     }
-  }, [editor]);
+  }, [editor, storageKey]);
 
   useEffect(() => {
     if (!editor) return;
