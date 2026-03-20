@@ -2,18 +2,25 @@
   height: 100%;
   width: 100%;
   overflow-y: auto;
-  background-color: var(--editor-bg, #ffffff);
+  background-color: var(--editor-bg, #fff0f5);
+}
+
+.blocknote-editor .bn-editor {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(255, 105, 180, 0.15);
+  padding: 40px;
 }
 
 .blocknote-editor .bn-container {
   min-height: 100%;
   padding: 40px 20px;
+  background-color: transparent;
 }
 
 .blocknote-editor .bn-editor {
   max-width: 800px;
   margin: 0 auto;
-  padding: 0;
 }
 
 .blocknote-loading {
@@ -22,7 +29,7 @@
   justify-content: center;
   height: 100%;
   width: 100%;
-  color: var(--text-secondary, #8e8e93);
+  color: var(--accent-pink, #ff69b4);
   font-size: 16px;
 }
 
@@ -33,5 +40,6 @@
 
   .blocknote-editor .bn-editor {
     max-width: 100%;
+    padding: 24px;
   }
 }
