@@ -26,15 +26,22 @@ interface BlockNoteEditorProps {
 
 export function BlockNoteEditor({ storageKey = DEFAULT_STORAGE_KEY }: BlockNoteEditorProps) {
   const initialContent = useMemo(() => loadFromLocalStorage(storageKey) || DEFAULT_CONTENT, [storageKey]);
+  const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const editor = useCreateBlockNote({
     initialContent,
   });
 
   const handleChange = useCallback(() => {
-    if (editor) {
-      saveToLocalStorage(storageKey, editor.document);
+    if (!editor) return;
+
+    if (saveTimeoutRef.current) {
+      clearTimeout(saveTimeoutRef.current);
     }
+
+    saveTimeoutRef.current = setTimeout(() => {
+      saveToLocalStorage(storageKey, editor.document);
+    }, 500);
   }, [editor, storageKey]);
 
   useEffect(() => {
