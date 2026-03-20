@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useMemo } from 'react';
 import { PartialBlock } from '@blocknote/core';
 import { useCreateBlockNote } from '@blocknote/react';
 import { BlockNoteView } from '@blocknote/mantine';
@@ -8,7 +8,7 @@ import './BlockNoteEditor.css';
 
 const DEFAULT_STORAGE_KEY = 'blocknote-doc';
 
-const defaultContent: PartialBlock[] = [
+const DEFAULT_CONTENT: PartialBlock[] = [
   {
     type: 'heading',
     props: { level: 1 },
@@ -25,7 +25,7 @@ interface BlockNoteEditorProps {
 }
 
 export function BlockNoteEditor({ storageKey = DEFAULT_STORAGE_KEY }: BlockNoteEditorProps) {
-  const initialContent = loadFromLocalStorage(storageKey) || defaultContent;
+  const initialContent = useMemo(() => loadFromLocalStorage(storageKey) || DEFAULT_CONTENT, [storageKey]);
 
   const editor = useCreateBlockNote({
     initialContent,
