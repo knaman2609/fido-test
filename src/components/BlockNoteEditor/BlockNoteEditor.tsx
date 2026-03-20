@@ -58,6 +58,17 @@ export function BlockNoteEditor({ storageKey = DEFAULT_STORAGE_KEY }: BlockNoteE
     };
   }, [editor, handleChange]);
 
+  useEffect(() => {
+    if (!editor) return;
+
+    const newContent = loadFromLocalStorage(storageKey);
+    if (newContent) {
+      editor.replaceBlocks(editor.document, newContent);
+    } else {
+      editor.replaceBlocks(editor.document, DEFAULT_CONTENT);
+    }
+  }, [storageKey, editor]);
+
   if (!editor) {
     return <div className="blocknote-loading">Loading editor...</div>;
   }
