@@ -8,6 +8,9 @@ export interface StoredDocument {
 
 export function loadFromLocalStorage(key: string): PartialBlock[] | null {
   try {
+    if (typeof window === 'undefined' || !window.localStorage) {
+      return null;
+    }
     const item = window.localStorage.getItem(key);
     if (item) {
       const parsed: StoredDocument = JSON.parse(item);
@@ -23,6 +26,9 @@ export function loadFromLocalStorage(key: string): PartialBlock[] | null {
 
 export function saveToLocalStorage(key: string, content: PartialBlock[]) {
   try {
+    if (typeof window === 'undefined' || !window.localStorage) {
+      return;
+    }
     const data: StoredDocument = {
       version: 1,
       content,
