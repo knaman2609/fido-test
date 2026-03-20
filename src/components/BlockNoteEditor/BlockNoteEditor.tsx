@@ -52,6 +52,9 @@ export function BlockNoteEditor({ storageKey = DEFAULT_STORAGE_KEY }: BlockNoteE
       if (unsubscribe) {
         unsubscribe();
       }
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current);
+      }
     };
   }, [editor, handleChange]);
 
