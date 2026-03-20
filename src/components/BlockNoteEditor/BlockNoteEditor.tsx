@@ -3,7 +3,7 @@ import { PartialBlock } from '@blocknote/core';
 import { useCreateBlockNote } from '@blocknote/react';
 import { BlockNoteView } from '@blocknote/mantine';
 import '@blocknote/mantine/style.css';
-import { loadFromLocalStorage, saveToLocalStorage } from '../../utils/storage';
+import { loadFromLocalStorage, saveToLocalStorage } from '@/utils/storage';
 import './BlockNoteEditor.css';
 
 const DEFAULT_STORAGE_KEY = 'blocknote-doc';
