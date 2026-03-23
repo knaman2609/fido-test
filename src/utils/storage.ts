@@ -6,6 +6,21 @@ export interface StoredDocument {
   lastModified: string;
 }
 
+function isValidPartialBlock(item: unknown): item is PartialBlock {
+  if (typeof item !== 'object' || item === null) {
+    return false;
+  }
+  const block = item as Record<string, unknown>;
+  return typeof block.type === 'string' && block.type.length > 0;
+}
+
+function isValidPartialBlockArray(content: unknown): content is PartialBlock[] {
+  if (!Array.isArray(content)) {
+    return false;
+  }
+  return content.every(isValidPartialBlock);
+}
+
 export function loadFromLocalStorage(key: string): PartialBlock[] | null {
   try {
     if (typeof window === 'undefined' || !window.localStorage) {
@@ -14,7 +29,7 @@ export function loadFromLocalStorage(key: string): PartialBlock[] | null {
     const item = window.localStorage.getItem(key);
     if (item) {
       const parsed: StoredDocument = JSON.parse(item);
-      if (parsed && Array.isArray(parsed.content)) {
+      if (parsed && isValidPartialBlockArray(parsed.content)) {
         return parsed.content;
       }
     }
