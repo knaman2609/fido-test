@@ -55,8 +55,8 @@ export function BlockNoteEditor({ storageKey = DEFAULT_STORAGE_KEY }: BlockNoteE
         unsubscribe();
       }
       if (saveTimeoutRef.current) {
-        saveToLocalStorage(storageKey, editor.document);
         clearTimeout(saveTimeoutRef.current);
+        saveToLocalStorage(storageKey, editor.document);
       }
     };
   }, [editor, handleChange]);
