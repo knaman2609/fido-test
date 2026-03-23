@@ -64,10 +64,10 @@ export function BlockNoteEditor({ storageKey = DEFAULT_STORAGE_KEY }: BlockNoteE
   useEffect(() => {
     if (!editor) return;
 
-    if (isFirstRenderRef.current) {
-      isFirstRenderRef.current = false;
+    if (loadedStorageKeyRef.current === storageKey) {
       return;
     }
+    loadedStorageKeyRef.current = storageKey;
 
     try {
       const newContent = loadFromLocalStorage(storageKey);
