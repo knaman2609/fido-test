@@ -34,7 +34,7 @@
     padding: 20px 16px;
   }
 
-  .blocknote-editor-wrapper > [data-content-editable-root] {
+  .blocknote-editor-wrapper .bn-editor {
     max-width: 100%;
     padding: 24px;
   }
