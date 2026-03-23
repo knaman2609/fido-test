@@ -78,7 +78,11 @@ export function BlockNoteEditor({ storageKey = DEFAULT_STORAGE_KEY }: BlockNoteE
       }
     } catch (error) {
       console.warn('Error loading content from localStorage:', error);
-      editor.replaceBlocks(editor.document, DEFAULT_CONTENT);
+      try {
+        editor.replaceBlocks(editor.document, DEFAULT_CONTENT);
+      } catch (fallbackError) {
+        console.error('Failed to load fallback content:', fallbackError);
+      }
     }
   }, [storageKey, editor]);
 
