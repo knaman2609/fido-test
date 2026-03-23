@@ -92,7 +92,9 @@ export function BlockNoteEditor({ storageKey = DEFAULT_STORAGE_KEY }: BlockNoteE
 
   return (
     <div className="blocknote-editor">
-      <BlockNoteView editor={editor} theme="light" />
+      <div className="blocknote-editor-wrapper">
+        <BlockNoteView editor={editor} theme="light" />
+      </div>
     </div>
   );
 }
