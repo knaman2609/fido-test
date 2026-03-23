@@ -7,6 +7,7 @@ import { loadFromLocalStorage, saveToLocalStorage } from '@/utils/storage';
 import './BlockNoteEditor.css';
 
 const DEFAULT_STORAGE_KEY = 'blocknote-doc';
+const SAVE_DEBOUNCE_MS = 500;
 
 const DEFAULT_CONTENT: PartialBlock[] = [
   {
