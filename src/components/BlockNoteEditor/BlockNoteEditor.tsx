@@ -69,10 +69,15 @@ export function BlockNoteEditor({ storageKey = DEFAULT_STORAGE_KEY }: BlockNoteE
       return;
     }
 
-    const newContent = loadFromLocalStorage(storageKey);
-    if (newContent) {
-      editor.replaceBlocks(editor.document, newContent);
-    } else {
+    try {
+      const newContent = loadFromLocalStorage(storageKey);
+      if (newContent) {
+        editor.replaceBlocks(editor.document, newContent);
+      } else {
+        editor.replaceBlocks(editor.document, DEFAULT_CONTENT);
+      }
+    } catch (error) {
+      console.warn('Error loading content from localStorage:', error);
       editor.replaceBlocks(editor.document, DEFAULT_CONTENT);
     }
   }, [storageKey, editor]);
