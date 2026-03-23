@@ -43,7 +43,7 @@ export function BlockNoteEditor({ storageKey = DEFAULT_STORAGE_KEY }: BlockNoteE
 
     saveTimeoutRef.current = setTimeout(() => {
       saveToLocalStorage(storageKey, editor.document);
-    }, 500);
+    }, SAVE_DEBOUNCE_MS);
   }, [editor, storageKey]);
 
   useEffect(() => {
