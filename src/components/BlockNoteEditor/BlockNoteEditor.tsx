@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useMemo, useRef } from 'react';
+import { useEffect, useCallback, useMemo, useRef, useState } from 'react';
 import { PartialBlock } from '@blocknote/core';
 import { useCreateBlockNote } from '@blocknote/react';
 import { BlockNoteView } from '@blocknote/mantine';
@@ -27,6 +27,7 @@ interface BlockNoteEditorProps {
 export function BlockNoteEditor({ storageKey = DEFAULT_STORAGE_KEY }: BlockNoteEditorProps) {
   const initialContent = useMemo(() => loadFromLocalStorage(storageKey) || DEFAULT_CONTENT, [storageKey]);
   const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isFirstRenderRef = useRef(true);
 
   const editor = useCreateBlockNote({
     initialContent,
@@ -53,6 +54,7 @@ export function BlockNoteEditor({ storageKey = DEFAULT_STORAGE_KEY }: BlockNoteE
         unsubscribe();
       }
       if (saveTimeoutRef.current) {
+        saveToLocalStorage(storageKey, editor.document);
         clearTimeout(saveTimeoutRef.current);
       }
     };
@@ -60,6 +62,11 @@ export function BlockNoteEditor({ storageKey = DEFAULT_STORAGE_KEY }: BlockNoteE
 
   useEffect(() => {
     if (!editor) return;
+
+    if (isFirstRenderRef.current) {
+      isFirstRenderRef.current = false;
+      return;
+    }
 
     const newContent = loadFromLocalStorage(storageKey);
     if (newContent) {
@@ -70,7 +77,7 @@ export function BlockNoteEditor({ storageKey = DEFAULT_STORAGE_KEY }: BlockNoteE
   }, [storageKey, editor]);
 
   if (!editor) {
-    return <div className="blocknote-loading">Loading editor...</div>;
+    return <div className="blocknote-loading" role="status" aria-live="polite">Loading editor...</div>;
   }
 
   return (
