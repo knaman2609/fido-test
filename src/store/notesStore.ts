@@ -55,6 +55,13 @@ const sampleNotes: Note[] = [
     createdAt: new Date(Date.now() - 259200000),
     updatedAt: new Date(Date.now() - 172800000),
   },
+  {
+    id: uuidv4(),
+    title: 'Test Document',
+    content: '# Test Document\n\nThis is a **test document** to demonstrate the editor features.\n\n## Formatting Examples\n\n- **Bold text** for emphasis\n- *Italic text* for style\n- `inline code` for snippets\n\n### Lists\n\n1. Numbered items\n2. For ordered steps\n3. Easy to follow\n\n> Blockquote for important notes\n\n---\n\nFeel free to edit this document!',
+    createdAt: new Date(Date.now() - 345600000),
+    updatedAt: new Date(Date.now() - 259200000),
+  },
 ];
 
 export const useNotesStore = create<NotesState>((set, get) => ({
