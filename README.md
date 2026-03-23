@@ -58,8 +58,6 @@ A clean, minimal single-document editor built with React, TypeScript, and BlockN
 src/
 ├── components/          # React components
 │   └── BlockNoteEditor/ # Main BlockNote editor component
-├── hooks/               # Custom React hooks
-│   └── useLocalStorage.ts # Generic localStorage hook
 ├── utils/               # Utility functions
 │   └── storage.ts       # Storage utilities
 ├── App.tsx              # Main application component
