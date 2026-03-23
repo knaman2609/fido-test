@@ -7,32 +7,14 @@ export interface StoredDocument {
 }
 
 function isValidPartialBlock(item: unknown): item is PartialBlock {
+  // Minimal validation: must be a non-null object with a string 'type' property
+  // PartialBlock can contain many additional properties (id, children, complex inline content)
+  // that we don't strictly validate to avoid rejecting valid documents
   if (typeof item !== 'object' || item === null) {
     return false;
   }
   const block = item as Record<string, unknown>;
-  
-  // Validate required 'type' property
-  if (typeof block.type !== 'string' || block.type.length === 0) {
-    return false;
-  }
-  
-  // Validate optional 'props' property if present
-  if (block.props !== undefined) {
-    if (typeof block.props !== 'object' || block.props === null) {
-      return false;
-    }
-  }
-  
-  // Validate optional 'content' property if present
-  if (block.content !== undefined) {
-    // Content can be string, array of inline content, or undefined
-    if (typeof block.content !== 'string' && !Array.isArray(block.content)) {
-      return false;
-    }
-  }
-  
-  return true;
+  return typeof block.type === 'string' && block.type.length > 0;
 }
 
 function isValidPartialBlockArray(content: unknown): content is PartialBlock[] {
