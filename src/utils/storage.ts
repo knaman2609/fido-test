@@ -7,14 +7,16 @@ export interface StoredDocument {
 }
 
 function isValidPartialBlock(item: unknown): item is PartialBlock {
-  // Minimal validation: must be a non-null object with a string 'type' property
-  // PartialBlock can contain many additional properties (id, children, complex inline content)
-  // that we don't strictly validate to avoid rejecting valid documents
+  // Permissive validation: must be a non-null object with a string 'type' property
+  // PartialBlock can contain additional properties (id, children, complex inline content)
+  // We intentionally do minimal validation to avoid rejecting valid BlockNote documents
+  // that may have evolved with new properties in future versions
   if (typeof item !== 'object' || item === null) {
     return false;
   }
   const block = item as Record<string, unknown>;
-  return typeof block.type === 'string' && block.type.length > 0;
+  // Only validate that type exists and is a string - accept any other properties
+  return typeof block.type === 'string';
 }
 
 function isValidPartialBlockArray(content: unknown): content is PartialBlock[] {
