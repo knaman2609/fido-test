@@ -5,13 +5,12 @@
   background-color: var(--editor-bg, #fff0f5);
 }
 
-.blocknote-editor .bn-container {
+.blocknote-editor-wrapper {
   min-height: 100%;
   padding: 40px 20px;
-  background-color: transparent;
 }
 
-.blocknote-editor .bn-editor {
+.blocknote-editor-wrapper > [data-content-editable-root] {
   max-width: 800px;
   margin: 0 auto;
   background-color: #ffffff;
@@ -31,11 +30,11 @@
 }
 
 @media (max-width: 768px) {
-  .blocknote-editor .bn-container {
+  .blocknote-editor-wrapper {
     padding: 20px 16px;
   }
 
-  .blocknote-editor .bn-editor {
+  .blocknote-editor-wrapper > [data-content-editable-root] {
     max-width: 100%;
     padding: 24px;
   }
