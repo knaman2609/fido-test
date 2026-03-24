@@ -13,6 +13,7 @@ interface SidebarProps {
   onSelectNote: (id: string) => void;
   onDeleteNote: (id: string) => void;
   onAddNote: () => void;
+  onTogglePin: (id: string) => void;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
