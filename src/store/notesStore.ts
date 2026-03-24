@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import type { Note } from '@/types/note';
 
 const DAYS_IN_MS = 24 * 60 * 60 * 1000;
+const HOURS_IN_MS = 60 * 60 * 1000;
 
 interface NotesState {
   notes: Note[];
