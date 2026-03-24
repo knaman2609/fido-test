@@ -41,6 +41,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           selectedNoteId={selectedNoteId}
           onSelectNote={onSelectNote}
           onDeleteNote={onDeleteNote}
+          onTogglePin={onTogglePin}
         />
       </div>
       <div className="sidebar__footer">
