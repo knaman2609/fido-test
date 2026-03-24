@@ -155,6 +155,7 @@ export const useNotesStore = create<NotesState>()(
     }),
     {
       name: 'notes-app-storage',
+      storage: customStorage,
       partialize: (state): PersistedState => ({
         notes: state.notes,
         selectedNoteId: state.selectedNoteId,
