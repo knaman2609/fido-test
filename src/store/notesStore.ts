@@ -11,6 +11,7 @@ interface NotesState {
   deleteNote: (id: string) => void;
   selectNote: (id: string | null) => void;
   setSearchQuery: (query: string) => void;
+  togglePinNote: (id: string) => void;
   getFilteredNotes: () => Note[];
   getSelectedNote: () => Note | null;
 }
@@ -30,6 +31,7 @@ const createDefaultNote = (): Note => {
     content: '',
     createdAt: now,
     updatedAt: now,
+    isPinned: false,
   };
 };
 
@@ -40,6 +42,7 @@ const sampleNotes: Note[] = [
     content: '# Welcome to Notes\n\nThis is a simple, Apple Notes-inspired markdown editor.\n\n## Features\n\n- **Markdown support** with live preview\n- **Clean, minimal interface**\n- **Fast search** through your notes\n- **Auto-save** to local state\n\nStart typing to create your first note!',
     createdAt: new Date(Date.now() - 86400000),
     updatedAt: new Date(Date.now() - 3600000),
+    isPinned: false,
   },
   {
     id: uuidv4(),
@@ -47,6 +50,7 @@ const sampleNotes: Note[] = [
     content: '# Shopping List\n\n- [x] Milk\n- [x] Eggs\n- [ ] Bread\n- [ ] Butter\n- [ ] Coffee',
     createdAt: new Date(Date.now() - 172800000),
     updatedAt: new Date(Date.now() - 86400000),
+    isPinned: false,
   },
   {
     id: uuidv4(),
@@ -54,6 +58,7 @@ const sampleNotes: Note[] = [
     content: '# Project Ideas\n\n1. Personal website redesign\n2. Mobile app for tracking habits\n3. Browser extension for productivity\n4. Open source contribution to React\n\n## Notes\n\nFocus on projects that solve real problems.',
     createdAt: new Date(Date.now() - 259200000),
     updatedAt: new Date(Date.now() - 172800000),
+    isPinned: false,
   },
 ];
 
@@ -108,15 +113,32 @@ export const useNotesStore = create<NotesState>((set, get) => ({
     set({ searchQuery: query });
   },
 
+  togglePinNote: (id) => {
+    set(state => ({
+      notes: state.notes.map(note =>
+        note.id === id
+          ? { ...note, isPinned: !note.isPinned, updatedAt: new Date() }
+          : note
+      ),
+    }));
+  },
+
   getFilteredNotes: () => {
     const { notes, searchQuery } = get();
-    if (!searchQuery.trim()) return notes;
-    const query = searchQuery.toLowerCase();
-    return notes.filter(
-      note =>
-        note.title.toLowerCase().includes(query) ||
-        note.content.toLowerCase().includes(query)
-    );
+    let filtered = notes;
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      filtered = notes.filter(
+        note =>
+          note.title.toLowerCase().includes(query) ||
+          note.content.toLowerCase().includes(query)
+      );
+    }
+    return filtered.sort((a, b) => {
+      if (a.isPinned && !b.isPinned) return -1;
+      if (!a.isPinned && b.isPinned) return 1;
+      return b.updatedAt.getTime() - a.updatedAt.getTime();
+    });
   },
 
   getSelectedNote: () => {
