@@ -143,6 +143,7 @@ export const useNotesStore = create<NotesState>((set, get) => ({
         note.id === id
           ? {
               ...note,
+              isTicket: true,
               ticketStatus: status,
               updatedAt: new Date(),
             }
