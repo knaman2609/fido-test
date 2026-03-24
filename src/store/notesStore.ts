@@ -134,7 +134,7 @@ export const useNotesStore = create<NotesState>((set, get) => ({
           note.content.toLowerCase().includes(query)
       );
     }
-    return filtered.sort((a, b) => {
+    return [...filtered].sort((a, b) => {
       if (a.isPinned && !b.isPinned) return -1;
       if (!a.isPinned && b.isPinned) return 1;
       return b.updatedAt.getTime() - a.updatedAt.getTime();
