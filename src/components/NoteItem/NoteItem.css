@@ -29,6 +29,13 @@
   gap: 4px;
 }
 
+.note-item__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
 .note-item__title {
   margin: 0;
   font-size: 15px;

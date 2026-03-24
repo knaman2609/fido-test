@@ -1,16 +1,20 @@
 import { create } from 'zustand';
 import { v4 as uuidv4 } from 'uuid';
-import type { Note } from '@/types/note';
+import type { Note, TicketStatus } from '@/types/note';
 
 interface NotesState {
   notes: Note[];
   selectedNoteId: string | null;
   searchQuery: string;
+  ticketFilter: TicketStatus | 'all';
   addNote: () => string;
   updateNote: (id: string, content: string) => void;
   deleteNote: (id: string) => void;
   selectNote: (id: string | null) => void;
   setSearchQuery: (query: string) => void;
+  toggleTicketStatus: (id: string) => void;
+  setTicketStatus: (id: string, status: TicketStatus) => void;
+  setTicketFilter: (filter: TicketStatus | 'all') => void;
   getFilteredNotes: () => Note[];
   getSelectedNote: () => Note | null;
 }
@@ -55,12 +59,22 @@ const sampleNotes: Note[] = [
     createdAt: new Date(Date.now() - 259200000),
     updatedAt: new Date(Date.now() - 172800000),
   },
+  {
+    id: uuidv4(),
+    title: 'Fix: Navigation Bug',
+    content: '# Fix: Navigation Bug\n\n## Issue\nThe sidebar navigation does not collapse properly on mobile devices.\n\n## Steps to Reproduce\n1. Open app on mobile\n2. Click menu button\n3. Try to close sidebar\n\n## Status\nInvestigating root cause.',
+    createdAt: new Date(Date.now() - 432000000),
+    updatedAt: new Date(Date.now() - 432000000),
+    isTicket: true,
+    ticketStatus: 'open',
+  },
 ];
 
 export const useNotesStore = create<NotesState>((set, get) => ({
   notes: sampleNotes,
   selectedNoteId: sampleNotes[0]?.id || null,
   searchQuery: '',
+  ticketFilter: 'all',
 
   addNote: () => {
     const newNote = createDefaultNote();
@@ -108,11 +122,53 @@ export const useNotesStore = create<NotesState>((set, get) => ({
     set({ searchQuery: query });
   },
 
+  toggleTicketStatus: (id) => {
+    set(state => ({
+      notes: state.notes.map(note =>
+        note.id === id
+          ? {
+              ...note,
+              isTicket: !note.isTicket,
+              ticketStatus: !note.isTicket ? 'open' : undefined,
+              updatedAt: new Date(),
+            }
+          : note
+      ),
+    }));
+  },
+
+  setTicketStatus: (id, status) => {
+    set(state => ({
+      notes: state.notes.map(note =>
+        note.id === id
+          ? {
+              ...note,
+              isTicket: true,
+              ticketStatus: status,
+              updatedAt: new Date(),
+            }
+          : note
+      ),
+    }));
+  },
+
+  setTicketFilter: (filter) => {
+    set({ ticketFilter: filter });
+  },
+
   getFilteredNotes: () => {
-    const { notes, searchQuery } = get();
-    if (!searchQuery.trim()) return notes;
+    const { notes, searchQuery, ticketFilter } = get();
+    let filtered = notes;
+
+    if (ticketFilter !== 'all') {
+      filtered = filtered.filter(
+        note => note.isTicket && note.ticketStatus === ticketFilter
+      );
+    }
+
+    if (!searchQuery.trim()) return filtered;
     const query = searchQuery.toLowerCase();
-    return notes.filter(
+    return filtered.filter(
       note =>
         note.title.toLowerCase().includes(query) ||
         note.content.toLowerCase().includes(query)
