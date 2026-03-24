@@ -22,10 +22,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
   notes,
   selectedNoteId,
   searchQuery,
+  ticketFilter,
   onSearchChange,
   onSelectNote,
   onDeleteNote,
   onAddNote,
+  onTicketFilterChange,
 }) => {
   return (
     <aside className="sidebar">
@@ -36,6 +38,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </button>
         <SearchBar value={searchQuery} onChange={onSearchChange} />
       </div>
+      <TicketFilter currentFilter={ticketFilter} onFilterChange={onTicketFilterChange} />
       <div className="sidebar__content">
         <NoteList
           notes={notes}
