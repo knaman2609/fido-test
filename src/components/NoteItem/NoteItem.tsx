@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import { Trash2 } from 'lucide-react';
 import type { Note } from '@/types/note';
 import { formatDate } from '@/utils/date';
+import { TicketBadge } from '@/components/TicketBadge/TicketBadge';
 import './NoteItem.css';
 
 interface NoteItemProps {
