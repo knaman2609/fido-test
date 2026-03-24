@@ -29,6 +29,7 @@ const App: FC = () => {
         onSelectNote={selectNote}
         onDeleteNote={deleteNote}
         onAddNote={addNote}
+        onTogglePin={togglePinNote}
       />
       <main className="app__main">
         {selectedNote ? (
