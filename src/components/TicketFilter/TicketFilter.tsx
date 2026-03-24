@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tag, Circle, Clock, CheckCircle2 } from 'lucide-react';
+import { Tag } from 'lucide-react';
 import type { TicketStatus } from '@/types/note';
 import { ticketStatusConfig } from '@/types/note';
 import './TicketFilter.css';
@@ -11,9 +11,9 @@ interface TicketFilterProps {
 
 const filters: { value: TicketStatus | 'all'; label: string; icon: React.ElementType }[] = [
   { value: 'all', label: 'All', icon: Tag },
-  { value: 'open', label: ticketStatusConfig['open'].label, icon: Circle },
-  { value: 'in-progress', label: ticketStatusConfig['in-progress'].label, icon: Clock },
-  { value: 'closed', label: ticketStatusConfig['closed'].label, icon: CheckCircle2 },
+  { value: 'open', label: ticketStatusConfig['open'].label, icon: ticketStatusConfig['open'].icon },
+  { value: 'in-progress', label: ticketStatusConfig['in-progress'].label, icon: ticketStatusConfig['in-progress'].icon },
+  { value: 'closed', label: ticketStatusConfig['closed'].label, icon: ticketStatusConfig['closed'].icon },
 ];
 
 export const TicketFilter: React.FC<TicketFilterProps> = ({
