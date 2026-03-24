@@ -1,6 +1,5 @@
 import { useCallback, useRef } from 'react';
 import { useNotesStore } from '@/store/notesStore';
-import type { TicketStatus } from '@/types/note';
 
 export const useNotes = () => {
   const store = useNotesStore();
