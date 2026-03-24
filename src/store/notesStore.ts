@@ -59,6 +59,15 @@ const sampleNotes: Note[] = [
     createdAt: new Date(Date.now() - 259200000),
     updatedAt: new Date(Date.now() - 172800000),
   },
+  {
+    id: uuidv4(),
+    title: 'Fix: Navigation Bug',
+    content: '# Fix: Navigation Bug\n\n## Issue\nThe sidebar navigation does not collapse properly on mobile devices.\n\n## Steps to Reproduce\n1. Open app on mobile\n2. Click menu button\n3. Try to close sidebar\n\n## Status\nInvestigating root cause.',
+    createdAt: new Date(Date.now() - 432000000),
+    updatedAt: new Date(Date.now() - 432000000),
+    isTicket: true,
+    ticketStatus: 'open',
+  },
 ];
 
 export const useNotesStore = create<NotesState>((set, get) => ({
