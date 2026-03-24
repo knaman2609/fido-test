@@ -16,6 +16,7 @@ const App: FC = () => {
     deleteNote,
     selectNote,
     setSearchQuery,
+    togglePinNote,
   } = useNotes();
 
   return (
