@@ -8,6 +8,7 @@ interface NoteListProps {
   selectedNoteId: string | null;
   onSelectNote: (id: string) => void;
   onDeleteNote: (id: string) => void;
+  onTogglePin: (id: string) => void;
 }
 
 export const NoteList: React.FC<NoteListProps> = ({
@@ -15,6 +16,7 @@ export const NoteList: React.FC<NoteListProps> = ({
   selectedNoteId,
   onSelectNote,
   onDeleteNote,
+  onTogglePin,
 }) => {
   if (notes.length === 0) {
     return (
@@ -33,6 +35,7 @@ export const NoteList: React.FC<NoteListProps> = ({
           isSelected={note.id === selectedNoteId}
           onSelect={onSelectNote}
           onDelete={onDeleteNote}
+          onTogglePin={onTogglePin}
         />
       ))}
     </div>
