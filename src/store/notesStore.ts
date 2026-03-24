@@ -116,14 +116,14 @@ export const useNotesStore = create<NotesState>((set, get) => ({
   togglePinNote: (id) => {
     set(state => ({
       notes: state.notes.map(note =>
-        note.id === id ? { ...note, pinned: !note.pinned, updatedAt: new Date() } : note
+        note.id === id ? { ...note, pinned: !note.pinned } : note
       ),
     }));
   },
 
   getFilteredNotes: () => {
     const { notes, searchQuery } = get();
-    let filtered = [...notes];
+    let filtered = notes;
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
       filtered = notes.filter(
@@ -132,7 +132,7 @@ export const useNotesStore = create<NotesState>((set, get) => ({
           note.content.toLowerCase().includes(query)
       );
     }
-    return filtered.sort((a, b) => {
+    return [...filtered].sort((a, b) => {
       if (a.pinned && !b.pinned) return -1;
       if (!a.pinned && b.pinned) return 1;
       return b.updatedAt.getTime() - a.updatedAt.getTime();
