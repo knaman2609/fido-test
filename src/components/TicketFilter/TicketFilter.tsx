@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tag, Circle, Clock, CheckCircle2, X } from 'lucide-react';
+import { Tag, Circle, Clock, CheckCircle2 } from 'lucide-react';
 import type { TicketStatus } from '@/types/note';
 import './TicketFilter.css';
 
