@@ -1,5 +1,6 @@
 import { useCallback, useRef } from 'react';
 import { useNotesStore } from '@/store/notesStore';
+import type { TicketStatus } from '@/types/note';
 
 export const useNotes = () => {
   const store = useNotesStore();
@@ -23,10 +24,14 @@ export const useNotes = () => {
     selectedNote: store.getSelectedNote(),
     selectedNoteId: store.selectedNoteId,
     searchQuery: store.searchQuery,
+    ticketFilter: store.ticketFilter,
     addNote: store.addNote,
     updateNote: updateNoteWithDebounce,
     deleteNote: store.deleteNote,
     selectNote: store.selectNote,
     setSearchQuery: store.setSearchQuery,
+    toggleTicketStatus: store.toggleTicketStatus,
+    setTicketStatus: store.setTicketStatus,
+    setTicketFilter: store.setTicketFilter,
   };
 };
