@@ -1,6 +1,8 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 import { v4 as uuidv4 } from 'uuid';
 import type { Note } from '@/types/note';
+import { loadNotes, saveNotes, clearNotes, STORAGE_KEY } from '@/utils/storage';
 
 interface NotesState {
   notes: Note[];
@@ -57,70 +59,115 @@ const sampleNotes: Note[] = [
   },
 ];
 
-export const useNotesStore = create<NotesState>((set, get) => ({
-  notes: sampleNotes,
-  selectedNoteId: sampleNotes[0]?.id || null,
-  searchQuery: '',
+interface PersistedState {
+  notes: Note[];
+  selectedNoteId: string | null;
+}
 
-  addNote: () => {
-    const newNote = createDefaultNote();
-    set(state => ({
-      notes: [newNote, ...state.notes],
-      selectedNoteId: newNote.id,
-    }));
-    return newNote.id;
-  },
-
-  updateNote: (id, content) => {
-    set(state => ({
-      notes: state.notes.map(note =>
-        note.id === id
-          ? {
-              ...note,
-              content,
-              title: extractTitle(content),
-              updatedAt: new Date(),
-            }
-          : note
-      ),
-    }));
-  },
-
-  deleteNote: (id) => {
-    set(state => {
-      const newNotes = state.notes.filter(note => note.id !== id);
-      const newSelectedId =
-        state.selectedNoteId === id
-          ? newNotes[0]?.id || null
-          : state.selectedNoteId;
+// Custom storage that uses our storage utility with proper Date handling
+const customStorage = {
+  getItem: (_name: string): StorageValue | null => {
+    const data = loadNotes();
+    if (data) {
       return {
-        notes: newNotes,
-        selectedNoteId: newSelectedId,
+        state: {
+          notes: data.notes,
+          selectedNoteId: data.selectedNoteId,
+        },
+        version: 0,
       };
-    });
+    }
+    return null;
   },
+  setItem: (_name: string, value: StorageValue): void => {
+    saveNotes(value.state.notes, value.state.selectedNoteId);
+  },
+  removeItem: (_name: string): void => {
+    clearNotes();
+  },
+};
 
-  selectNote: (id) => {
-    set({ selectedNoteId: id });
-  },
+interface StorageValue {
+  state: PersistedState;
+  version?: number;
+}
 
-  setSearchQuery: (query) => {
-    set({ searchQuery: query });
-  },
+export const useNotesStore = create<NotesState>()(
+  persist(
+    (set, get) => ({
+      notes: sampleNotes,
+      selectedNoteId: sampleNotes[0]?.id || null,
+      searchQuery: '',
 
-  getFilteredNotes: () => {
-    const { notes, searchQuery } = get();
-    if (!searchQuery.trim()) return notes;
-    const query = searchQuery.toLowerCase();
-    return notes.filter(
-      note =>
-        note.title.toLowerCase().includes(query) ||
-        note.content.toLowerCase().includes(query)
-    );
-  },
+      addNote: () => {
+        const newNote = createDefaultNote();
+        set(state => ({
+          notes: [newNote, ...state.notes],
+          selectedNoteId: newNote.id,
+        }));
+        return newNote.id;
+      },
 
-  getSelectedNote: () => {
-    const { notes, selectedNoteId } = get();
-    return notes.find(note => note.id === selectedNoteId) || null;
-  },
-}));
+      updateNote: (id, content) => {
+        set(state => ({
+          notes: state.notes.map(note =>
+            note.id === id
+              ? {
+                  ...note,
+                  content,
+                  title: extractTitle(content),
+                  updatedAt: new Date(),
+                }
+              : note
+          ),
+        }));
+      },
+
+      deleteNote: (id) => {
+        set(state => {
+          const newNotes = state.notes.filter(note => note.id !== id);
+          const newSelectedId =
+            state.selectedNoteId === id
+              ? newNotes[0]?.id || null
+              : state.selectedNoteId;
+          return {
+            notes: newNotes,
+            selectedNoteId: newSelectedId,
+          };
+        });
+      },
+
+      selectNote: (id) => {
+        set({ selectedNoteId: id });
+      },
+
+      setSearchQuery: (query) => {
+        set({ searchQuery: query });
+      },
+
+      getFilteredNotes: () => {
+        const { notes, searchQuery } = get();
+        if (!searchQuery.trim()) return notes;
+        const query = searchQuery.toLowerCase();
+        return notes.filter(
+          note =>
+            note.title.toLowerCase().includes(query) ||
+            note.content.toLowerCase().includes(query)
+        );
+      },
+
+      getSelectedNote: () => {
+        const { notes, selectedNoteId } = get();
+        return notes.find(note => note.id === selectedNoteId) || null;
+      },
+    }),
+    {
+      name: STORAGE_KEY,
+      storage: customStorage,
+      partialize: (state): PersistedState => ({
+        notes: state.notes,
+        selectedNoteId: state.selectedNoteId,
+      }),
+    }
+  )
+);
