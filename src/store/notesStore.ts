@@ -2,6 +2,9 @@ import { create } from 'zustand';
 import { v4 as uuidv4 } from 'uuid';
 import type { Note } from '@/types/note';
 
+const DAYS_IN_MS = 24 * 60 * 60 * 1000;
+const HOURS_IN_MS = 60 * 60 * 1000;
+
 interface NotesState {
   notes: Note[];
   selectedNoteId: string | null;
@@ -38,22 +41,29 @@ const sampleNotes: Note[] = [
     id: uuidv4(),
     title: 'Welcome to Notes',
     content: '# Welcome to Notes\n\nThis is a simple, Apple Notes-inspired markdown editor.\n\n## Features\n\n- **Markdown support** with live preview\n- **Clean, minimal interface**\n- **Fast search** through your notes\n- **Auto-save** to local state\n\nStart typing to create your first note!',
-    createdAt: new Date(Date.now() - 86400000),
-    updatedAt: new Date(Date.now() - 3600000),
+    createdAt: new Date(Date.now() - 1 * DAYS_IN_MS),
+    updatedAt: new Date(Date.now() - 1 * HOURS_IN_MS),
   },
   {
     id: uuidv4(),
     title: 'Shopping List',
     content: '# Shopping List\n\n- [x] Milk\n- [x] Eggs\n- [ ] Bread\n- [ ] Butter\n- [ ] Coffee',
-    createdAt: new Date(Date.now() - 172800000),
-    updatedAt: new Date(Date.now() - 86400000),
+    createdAt: new Date(Date.now() - 2 * DAYS_IN_MS),
+    updatedAt: new Date(Date.now() - 1 * DAYS_IN_MS),
   },
   {
     id: uuidv4(),
     title: 'Project Ideas',
     content: '# Project Ideas\n\n1. Personal website redesign\n2. Mobile app for tracking habits\n3. Browser extension for productivity\n4. Open source contribution to React\n\n## Notes\n\nFocus on projects that solve real problems.',
-    createdAt: new Date(Date.now() - 259200000),
-    updatedAt: new Date(Date.now() - 172800000),
+    createdAt: new Date(Date.now() - 3 * DAYS_IN_MS),
+    updatedAt: new Date(Date.now() - 2 * DAYS_IN_MS),
+  },
+  {
+    id: uuidv4(),
+    title: 'Test Document',
+    content: '# Test Document\n\nThis is a test document demonstrating various markdown features.\n\n## Formatting\n\n- **Bold text** for emphasis\n- *Italic text* for style\n- `inline code` for snippets\n\n## Code Block\n\n```typescript\nconst greeting = "Hello, World!";\nconsole.log(greeting);\n```\n\n## Lists\n\n### Ordered\n1. First item\n2. Second item\n3. Third item\n\n### Unordered\n- Bullet point\n- Another point\n- Nested item\n\n> This is a blockquote for highlighting important information.',
+    createdAt: new Date(Date.now() - 4 * DAYS_IN_MS),
+    updatedAt: new Date(Date.now() - 3 * DAYS_IN_MS),
   },
 ];
 
