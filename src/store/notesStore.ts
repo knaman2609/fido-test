@@ -74,6 +74,7 @@ export const useNotesStore = create<NotesState>((set, get) => ({
   notes: sampleNotes,
   selectedNoteId: sampleNotes[0]?.id || null,
   searchQuery: '',
+  ticketFilter: 'all',
 
   addNote: () => {
     const newNote = createDefaultNote();
@@ -121,11 +122,52 @@ export const useNotesStore = create<NotesState>((set, get) => ({
     set({ searchQuery: query });
   },
 
+  toggleTicketStatus: (id) => {
+    set(state => ({
+      notes: state.notes.map(note =>
+        note.id === id
+          ? {
+              ...note,
+              isTicket: !note.isTicket,
+              ticketStatus: !note.isTicket ? 'open' : undefined,
+              updatedAt: new Date(),
+            }
+          : note
+      ),
+    }));
+  },
+
+  setTicketStatus: (id, status) => {
+    set(state => ({
+      notes: state.notes.map(note =>
+        note.id === id
+          ? {
+              ...note,
+              ticketStatus: status,
+              updatedAt: new Date(),
+            }
+          : note
+      ),
+    }));
+  },
+
+  setTicketFilter: (filter) => {
+    set({ ticketFilter: filter });
+  },
+
   getFilteredNotes: () => {
-    const { notes, searchQuery } = get();
-    if (!searchQuery.trim()) return notes;
+    const { notes, searchQuery, ticketFilter } = get();
+    let filtered = notes;
+
+    if (ticketFilter !== 'all') {
+      filtered = filtered.filter(
+        note => note.isTicket && note.ticketStatus === ticketFilter
+      );
+    }
+
+    if (!searchQuery.trim()) return filtered;
     const query = searchQuery.toLowerCase();
-    return notes.filter(
+    return filtered.filter(
       note =>
         note.title.toLowerCase().includes(query) ||
         note.content.toLowerCase().includes(query)
