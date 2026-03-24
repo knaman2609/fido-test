@@ -1,0 +1,32 @@
+.ticket-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  background-color: rgba(0, 0, 0, 0.05);
+  white-space: nowrap;
+}
+
+.ticket-badge--small {
+  padding: 1px 6px;
+  font-size: 11px;
+}
+
+.ticket-badge__label {
+  color: var(--text-secondary);
+}
+
+.ticket-badge--open {
+  background-color: rgba(245, 158, 11, 0.1);
+}
+
+.ticket-badge--in-progress {
+  background-color: rgba(59, 130, 246, 0.1);
+}
+
+.ticket-badge--closed {
+  background-color: rgba(34, 197, 94, 0.1);
+}
