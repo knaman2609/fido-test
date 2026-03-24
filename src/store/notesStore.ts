@@ -58,70 +58,86 @@ const sampleNotes: Note[] = [
   },
 ];
 
-export const useNotesStore = create<NotesState>((set, get) => ({
-  notes: sampleNotes,
-  selectedNoteId: sampleNotes[0]?.id || null,
-  searchQuery: '',
+interface PersistedState {
+  notes: Note[];
+  selectedNoteId: string | null;
+}
 
-  addNote: () => {
-    const newNote = createDefaultNote();
-    set(state => ({
-      notes: [newNote, ...state.notes],
-      selectedNoteId: newNote.id,
-    }));
-    return newNote.id;
-  },
+export const useNotesStore = create<NotesState>()(
+  persist(
+    (set, get) => ({
+      notes: sampleNotes,
+      selectedNoteId: sampleNotes[0]?.id || null,
+      searchQuery: '',
 
-  updateNote: (id, content) => {
-    set(state => ({
-      notes: state.notes.map(note =>
-        note.id === id
-          ? {
-              ...note,
-              content,
-              title: extractTitle(content),
-              updatedAt: new Date(),
-            }
-          : note
-      ),
-    }));
-  },
+      addNote: () => {
+        const newNote = createDefaultNote();
+        set(state => ({
+          notes: [newNote, ...state.notes],
+          selectedNoteId: newNote.id,
+        }));
+        return newNote.id;
+      },
 
-  deleteNote: (id) => {
-    set(state => {
-      const newNotes = state.notes.filter(note => note.id !== id);
-      const newSelectedId =
-        state.selectedNoteId === id
-          ? newNotes[0]?.id || null
-          : state.selectedNoteId;
-      return {
-        notes: newNotes,
-        selectedNoteId: newSelectedId,
-      };
-    });
-  },
+      updateNote: (id, content) => {
+        set(state => ({
+          notes: state.notes.map(note =>
+            note.id === id
+              ? {
+                  ...note,
+                  content,
+                  title: extractTitle(content),
+                  updatedAt: new Date(),
+                }
+              : note
+          ),
+        }));
+      },
 
-  selectNote: (id) => {
-    set({ selectedNoteId: id });
-  },
+      deleteNote: (id) => {
+        set(state => {
+          const newNotes = state.notes.filter(note => note.id !== id);
+          const newSelectedId =
+            state.selectedNoteId === id
+              ? newNotes[0]?.id || null
+              : state.selectedNoteId;
+          return {
+            notes: newNotes,
+            selectedNoteId: newSelectedId,
+          };
+        });
+      },
 
-  setSearchQuery: (query) => {
-    set({ searchQuery: query });
-  },
+      selectNote: (id) => {
+        set({ selectedNoteId: id });
+      },
 
-  getFilteredNotes: () => {
-    const { notes, searchQuery } = get();
-    if (!searchQuery.trim()) return notes;
-    const query = searchQuery.toLowerCase();
-    return notes.filter(
-      note =>
-        note.title.toLowerCase().includes(query) ||
-        note.content.toLowerCase().includes(query)
-    );
-  },
+      setSearchQuery: (query) => {
+        set({ searchQuery: query });
+      },
 
-  getSelectedNote: () => {
-    const { notes, selectedNoteId } = get();
-    return notes.find(note => note.id === selectedNoteId) || null;
-  },
-}));
+      getFilteredNotes: () => {
+        const { notes, searchQuery } = get();
+        if (!searchQuery.trim()) return notes;
+        const query = searchQuery.toLowerCase();
+        return notes.filter(
+          note =>
+            note.title.toLowerCase().includes(query) ||
+            note.content.toLowerCase().includes(query)
+        );
+      },
+
+      getSelectedNote: () => {
+        const { notes, selectedNoteId } = get();
+        return notes.find(note => note.id === selectedNoteId) || null;
+      },
+    }),
+    {
+      name: 'notes-app-storage',
+      partialize: (state): PersistedState => ({
+        notes: state.notes,
+        selectedNoteId: state.selectedNoteId,
+      }),
+    }
+  )
+);
