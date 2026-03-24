@@ -64,6 +64,26 @@ interface PersistedState {
   selectedNoteId: string | null;
 }
 
+// Custom storage that uses our storage utility with proper Date handling
+const customStorage = {
+  getItem: (name: string): PersistedState | null => {
+    const data = loadNotes();
+    if (data) {
+      return {
+        notes: data.notes,
+        selectedNoteId: data.selectedNoteId,
+      };
+    }
+    return null;
+  },
+  setItem: (name: string, value: PersistedState): void => {
+    saveNotes(value.notes, value.selectedNoteId);
+  },
+  removeItem: (name: string): void => {
+    localStorage.removeItem('notes-app-data');
+  },
+};
+
 export const useNotesStore = create<NotesState>()(
   persist(
     (set, get) => ({
