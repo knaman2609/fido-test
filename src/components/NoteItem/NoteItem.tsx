@@ -49,7 +49,12 @@ export const NoteItem: React.FC<NoteItemProps> = memo(({
       onClick={handleClick}
     >
       <div className="note-item__content">
-        <h3 className="note-item__title">{note.title}</h3>
+        <div className="note-item__header">
+          <h3 className="note-item__title">{note.title}</h3>
+          {note.isTicket && note.ticketStatus && (
+            <TicketBadge status={note.ticketStatus} size="small" />
+          )}
+        </div>
         <div className="note-item__meta">
           <span className="note-item__date">{formatDate(note.updatedAt)}</span>
           <span className="note-item__preview">{getPreview(note.content)}</span>
