@@ -50,8 +50,8 @@ const sampleNotes: Note[] = [
   },
   {
     id: uuidv4(),
-    title: 'Project Ideas',
-    content: '# Project Ideas\n\n1. Personal website redesign\n2. Mobile app for tracking habits\n3. Browser extension for productivity\n4. Open source contribution to React\n\n## Notes\n\nFocus on projects that solve real problems.',
+    title: 'Test Doc',
+    content: '# Test Doc\n\nThis is a test document to demonstrate the editor capabilities.\n\n## Formatting Examples\n\n**Bold text** and *italic text* work seamlessly.\n\n### Code Blocks\n\n```typescript\nconst greeting = "Hello, World!";\nconsole.log(greeting);\n```\n\n### Lists\n\n- Bullet point one\n- Bullet point two\n  - Nested bullet\n  - Another nested item\n\n### Blockquotes\n\n> This is a blockquote for testing purposes.\n\n---\n\nFeel free to edit this document to test the editor features!',
     createdAt: new Date(Date.now() - 259200000),
     updatedAt: new Date(Date.now() - 172800000),
   },
