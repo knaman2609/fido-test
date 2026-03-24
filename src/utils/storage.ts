@@ -1,6 +1,6 @@
 import type { Note } from '@/types/note';
 
-const STORAGE_KEY = 'notes-app-data';
+export const STORAGE_KEY = 'notes-app-data';
 
 interface StoredNote {
   id: string;
@@ -47,11 +47,26 @@ export const loadNotes = (): { notes: Note[]; selectedNoteId: string | null } | 
       return null;
     }
 
-    const deserialized: Note[] = parsed.notes.map(note => ({
-      ...note,
-      createdAt: new Date(note.createdAt),
-      updatedAt: new Date(note.updatedAt),
-    }));
+    const deserialized: Note[] = parsed.notes
+      .filter((note): note is StoredNote => {
+        const isValid =
+          typeof note.id === 'string' &&
+          typeof note.title === 'string' &&
+          typeof note.content === 'string' &&
+          typeof note.createdAt === 'string' &&
+          typeof note.updatedAt === 'string';
+        if (!isValid) {
+          console.warn('Invalid note structure found in localStorage, skipping:', note);
+        }
+        return isValid;
+      })
+      .map(note => ({
+        id: note.id,
+        title: note.title,
+        content: note.content,
+        createdAt: new Date(note.createdAt),
+        updatedAt: new Date(note.updatedAt),
+      }));
 
     return {
       notes: deserialized,

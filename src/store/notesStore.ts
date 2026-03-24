@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { v4 as uuidv4 } from 'uuid';
 import type { Note } from '@/types/note';
-import { loadNotes, saveNotes, clearNotes } from '@/utils/storage';
+import { loadNotes, saveNotes, clearNotes, STORAGE_KEY } from '@/utils/storage';
 
 interface NotesState {
   notes: Note[];
@@ -162,7 +162,7 @@ export const useNotesStore = create<NotesState>()(
       },
     }),
     {
-      name: 'notes-app-storage',
+      name: STORAGE_KEY,
       storage: customStorage,
       partialize: (state): PersistedState => ({
         notes: state.notes,
