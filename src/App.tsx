@@ -16,6 +16,7 @@ const App: FC = () => {
     deleteNote,
     selectNote,
     setSearchQuery,
+    togglePinNote,
   } = useNotes();
 
   return (
@@ -27,6 +28,7 @@ const App: FC = () => {
         onSearchChange={setSearchQuery}
         onSelectNote={selectNote}
         onDeleteNote={deleteNote}
+        onTogglePin={togglePinNote}
         onAddNote={addNote}
       />
       <main className="app__main">
