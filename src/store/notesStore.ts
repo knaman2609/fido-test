@@ -116,14 +116,14 @@ export const useNotesStore = create<NotesState>((set, get) => ({
   togglePinNote: (id) => {
     set(state => ({
       notes: state.notes.map(note =>
-        note.id === id ? { ...note, pinned: !note.pinned } : note
+        note.id === id ? { ...note, pinned: !note.pinned, updatedAt: new Date() } : note
       ),
     }));
   },
 
   getFilteredNotes: () => {
     const { notes, searchQuery } = get();
-    let filtered = notes;
+    let filtered = [...notes];
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
       filtered = notes.filter(
