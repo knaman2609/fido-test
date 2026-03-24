@@ -15,6 +15,68 @@ interface NotesState {
   getSelectedNote: () => Note | null;
 }
 
+const WELCOME_NOTE_CONTENT = `# Welcome to Notes
+
+This is a simple, Apple Notes-inspired markdown editor.
+
+## Features
+
+- **Markdown support** with live preview
+- **Clean, minimal interface**
+- **Fast search** through your notes
+- **Auto-save** to local state
+
+Start typing to create your first note!`;
+
+const SHOPPING_LIST_CONTENT = `# Shopping List
+
+- [x] Milk
+- [x] Eggs
+- [ ] Bread
+- [ ] Butter
+- [ ] Coffee`;
+
+const PROJECT_IDEAS_CONTENT = `# Project Ideas
+
+1. Personal website redesign
+2. Mobile app for tracking habits
+3. Browser extension for productivity
+4. Open source contribution to React
+
+## Notes
+
+Focus on projects that solve real problems.`;
+
+const TEST_DOCUMENT_CONTENT = `# Test Document
+
+This is a **test document** to demonstrate various markdown features.
+
+## Formatting Examples
+
+- **Bold text** for emphasis
+- *Italic text* for style
+- \`inline code\` for technical terms
+
+## Lists
+
+### Ordered List
+1. First item
+2. Second item
+3. Third item
+
+### Unordered List
+- Bullet point one
+- Bullet point two
+- Bullet point three
+
+## Blockquote
+
+> This is a blockquote to test the styling.
+
+---
+
+*Created for testing purposes*`;
+
 const extractTitle = (content: string): string => {
   const lines = content.split('\n');
   const firstLine = lines.find(line => line.trim().length > 0);
@@ -33,36 +95,43 @@ const createDefaultNote = (): Note => {
   };
 };
 
-const sampleNotes: Note[] = [
+const createSampleNotes = (): Note[] => [
   {
     id: uuidv4(),
     title: 'Welcome to Notes',
-    content: '# Welcome to Notes\n\nThis is a simple, Apple Notes-inspired markdown editor.\n\n## Features\n\n- **Markdown support** with live preview\n- **Clean, minimal interface**\n- **Fast search** through your notes\n- **Auto-save** to local state\n\nStart typing to create your first note!',
+    content: WELCOME_NOTE_CONTENT,
     createdAt: new Date(Date.now() - 86400000),
     updatedAt: new Date(Date.now() - 3600000),
   },
   {
     id: uuidv4(),
     title: 'Shopping List',
-    content: '# Shopping List\n\n- [x] Milk\n- [x] Eggs\n- [ ] Bread\n- [ ] Butter\n- [ ] Coffee',
+    content: SHOPPING_LIST_CONTENT,
     createdAt: new Date(Date.now() - 172800000),
     updatedAt: new Date(Date.now() - 86400000),
   },
   {
     id: uuidv4(),
     title: 'Project Ideas',
-    content: '# Project Ideas\n\n1. Personal website redesign\n2. Mobile app for tracking habits\n3. Browser extension for productivity\n4. Open source contribution to React\n\n## Notes\n\nFocus on projects that solve real problems.',
+    content: PROJECT_IDEAS_CONTENT,
     createdAt: new Date(Date.now() - 259200000),
     updatedAt: new Date(Date.now() - 172800000),
   },
   {
     id: uuidv4(),
     title: 'Test Document',
-    content: '# Test Document\n\nThis is a **test document** to demonstrate various markdown features.\n\n## Formatting Examples\n\n- **Bold text** for emphasis\n- *Italic text* for style\n- `inline code` for technical terms\n\n## Lists\n\n### Ordered List\n1. First item\n2. Second item\n3. Third item\n\n### Unordered List\n- Bullet point one\n- Bullet point two\n- Bullet point three\n\n## Blockquote\n\n> This is a blockquote to test the styling.\n\n---\n\n*Created for testing purposes*',
+    content: TEST_DOCUMENT_CONTENT,
     createdAt: new Date(Date.now() - 345600000),
     updatedAt: new Date(Date.now() - 259200000),
   },
 ];
+
+const getInitialNotes = (): Note[] => {
+  if (import.meta.env.DEV) {
+    return createSampleNotes();
+  }
+  return [];
+};
 
 export const useNotesStore = create<NotesState>((set, get) => ({
   notes: sampleNotes,
