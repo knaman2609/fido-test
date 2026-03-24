@@ -12,6 +12,7 @@ interface SidebarProps {
   onSearchChange: (query: string) => void;
   onSelectNote: (id: string) => void;
   onDeleteNote: (id: string) => void;
+  onTogglePin: (id: string) => void;
   onAddNote: () => void;
 }
 
@@ -22,6 +23,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onSearchChange,
   onSelectNote,
   onDeleteNote,
+  onTogglePin,
   onAddNote,
 }) => {
   return (
@@ -39,6 +41,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           selectedNoteId={selectedNoteId}
           onSelectNote={onSelectNote}
           onDeleteNote={onDeleteNote}
+          onTogglePin={onTogglePin}
         />
       </div>
       <div className="sidebar__footer">

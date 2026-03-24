@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { Trash2 } from 'lucide-react';
+import { Trash2, Pin } from 'lucide-react';
 import type { Note } from '@/types/note';
 import { formatDate } from '@/utils/date';
 import './NoteItem.css';
@@ -9,6 +9,7 @@ interface NoteItemProps {
   isSelected: boolean;
   onSelect: (id: string) => void;
   onDelete: (id: string) => void;
+  onTogglePin: (id: string) => void;
 }
 
 const getPreview = (content: string): string => {
@@ -32,6 +33,7 @@ export const NoteItem: React.FC<NoteItemProps> = memo(({
   isSelected,
   onSelect,
   onDelete,
+  onTogglePin,
 }) => {
   const handleClick = () => {
     onSelect(note.id);
@@ -42,9 +44,14 @@ export const NoteItem: React.FC<NoteItemProps> = memo(({
     onDelete(note.id);
   };
 
+  const handleTogglePin = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onTogglePin(note.id);
+  };
+
   return (
     <div
-      className={`note-item ${isSelected ? 'note-item--selected' : ''}`}
+      className={`note-item ${isSelected ? 'note-item--selected' : ''} ${note.pinned ? 'note-item--pinned' : ''}`}
       onClick={handleClick}
     >
       <div className="note-item__content">
@@ -54,6 +61,13 @@ export const NoteItem: React.FC<NoteItemProps> = memo(({
           <span className="note-item__preview">{getPreview(note.content)}</span>
         </div>
       </div>
+      <button
+        className={`note-item__pin ${note.pinned ? 'note-item__pin--pinned' : ''}`}
+        onClick={handleTogglePin}
+        aria-label={note.pinned ? 'Unpin note' : 'Pin note'}
+      >
+        <Pin size={16} />
+      </button>
       <button
         className="note-item__delete"
         onClick={handleDelete}

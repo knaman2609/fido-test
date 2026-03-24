@@ -87,3 +87,40 @@
   background-color: rgba(255, 59, 48, 0.1);
   color: #ff3b30;
 }
+
+.note-item__pin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--text-secondary);
+  opacity: 0;
+  transition: all 0.15s ease;
+}
+
+.note-item:hover .note-item__pin {
+  opacity: 1;
+}
+
+.note-item__pin:hover {
+  background-color: var(--note-hover);
+  color: var(--accent-blue);
+}
+
+.note-item__pin--pinned {
+  opacity: 1;
+  color: var(--accent-blue);
+}
+
+.note-item__pin--pinned:hover {
+  background-color: rgba(0, 122, 255, 0.1);
+  color: var(--accent-blue);
+}
+
+.note-item--pinned {
+  border-left: 3px solid var(--accent-blue);
+}

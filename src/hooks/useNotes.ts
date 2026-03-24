@@ -28,5 +28,6 @@ export const useNotes = () => {
     deleteNote: store.deleteNote,
     selectNote: store.selectNote,
     setSearchQuery: store.setSearchQuery,
+    togglePinNote: store.togglePinNote,
   };
 };
