@@ -55,6 +55,13 @@ const sampleNotes: Note[] = [
     createdAt: new Date(Date.now() - 259200000),
     updatedAt: new Date(Date.now() - 172800000),
   },
+  {
+    id: uuidv4(),
+    title: 'Test Document',
+    content: '# Test Document\n\nThis is a **test document** to demonstrate various markdown features.\n\n## Formatting Examples\n\n- **Bold text** for emphasis\n- *Italic text* for style\n- `inline code` for technical terms\n\n## Lists\n\n### Ordered List\n1. First item\n2. Second item\n3. Third item\n\n### Unordered List\n- Bullet point one\n- Bullet point two\n- Bullet point three\n\n## Blockquote\n\n> This is a blockquote to test the styling.\n\n---\n\n*Created for testing purposes*',
+    createdAt: new Date(Date.now() - 345600000),
+    updatedAt: new Date(Date.now() - 259200000),
+  },
 ];
 
 export const useNotesStore = create<NotesState>((set, get) => ({
