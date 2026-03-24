@@ -89,7 +89,7 @@ const customStorage = {
 
 interface StorageValue {
   state: PersistedState;
-  version: number;
+  version?: number;
 }
 
 export const useNotesStore = create<NotesState>()(
