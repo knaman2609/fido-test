@@ -2,7 +2,8 @@ import React from 'react';
 import { Plus } from 'lucide-react';
 import { SearchBar } from '@/components/SearchBar/SearchBar';
 import { NoteList } from '@/components/NoteList/NoteList';
-import type { Note } from '@/types/note';
+import { TicketFilter } from '@/components/TicketFilter/TicketFilter';
+import type { Note, TicketStatus } from '@/types/note';
 import './Sidebar.css';
 
 interface SidebarProps {
