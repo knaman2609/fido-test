@@ -1,6 +1,7 @@
 import React from 'react';
 import { Trash2, Tag, Circle, Clock, CheckCircle2 } from 'lucide-react';
 import type { Note, TicketStatus } from '@/types/note';
+import { ticketStatusConfig } from '@/types/note';
 import { formatFullDate } from '@/utils/date';
 import { MilkdownEditor } from './MilkdownEditor';
 import { TicketBadge } from '@/components/TicketBadge/TicketBadge';
@@ -14,10 +15,16 @@ interface EditorProps {
   onSetTicketStatus: (id: string, status: TicketStatus) => void;
 }
 
+const iconMap = {
+  open: Circle,
+  'in-progress': Clock,
+  closed: CheckCircle2,
+};
+
 const statusOptions: { value: TicketStatus; label: string; icon: React.ElementType }[] = [
-  { value: 'open', label: 'Open', icon: Circle },
-  { value: 'in-progress', label: 'In Progress', icon: Clock },
-  { value: 'closed', label: 'Closed', icon: CheckCircle2 },
+  { value: 'open', label: ticketStatusConfig['open'].label, icon: Circle },
+  { value: 'in-progress', label: ticketStatusConfig['in-progress'].label, icon: Clock },
+  { value: 'closed', label: ticketStatusConfig['closed'].label, icon: CheckCircle2 },
 ];
 
 export const Editor: React.FC<EditorProps> = ({
