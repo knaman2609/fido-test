@@ -133,9 +133,11 @@ const getInitialNotes = (): Note[] => {
   return [];
 };
 
+const initialNotes = getInitialNotes();
+
 export const useNotesStore = create<NotesState>((set, get) => ({
-  notes: sampleNotes,
-  selectedNoteId: sampleNotes[0]?.id || null,
+  notes: initialNotes,
+  selectedNoteId: initialNotes[0]?.id || null,
   searchQuery: '',
 
   addNote: () => {
