@@ -1,6 +1,7 @@
 import React from 'react';
 import { Circle, Clock, CheckCircle2 } from 'lucide-react';
 import type { TicketStatus } from '@/types/note';
+import { ticketStatusConfig } from '@/types/note';
 import './TicketBadge.css';
 
 interface TicketBadgeProps {
@@ -8,30 +9,18 @@ interface TicketBadgeProps {
   size?: 'small' | 'medium';
 }
 
-const statusConfig = {
-  open: {
-    icon: Circle,
-    label: 'Open',
-    color: '#f59e0b',
-  },
-  'in-progress': {
-    icon: Clock,
-    label: 'In Progress',
-    color: '#3b82f6',
-  },
-  closed: {
-    icon: CheckCircle2,
-    label: 'Closed',
-    color: '#22c55e',
-  },
+const iconMap = {
+  open: Circle,
+  'in-progress': Clock,
+  closed: CheckCircle2,
 };
 
 export const TicketBadge: React.FC<TicketBadgeProps> = ({
   status,
   size = 'medium',
 }) => {
-  const config = statusConfig[status];
-  const Icon = config.icon;
+  const config = ticketStatusConfig[status];
+  const Icon = iconMap[status];
 
   return (
     <span
