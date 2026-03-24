@@ -11,11 +11,15 @@ const App: FC = () => {
     selectedNote,
     selectedNoteId,
     searchQuery,
+    ticketFilter,
     addNote,
     updateNote,
     deleteNote,
     selectNote,
     setSearchQuery,
+    toggleTicketStatus,
+    setTicketStatus,
+    setTicketFilter,
   } = useNotes();
 
   return (
@@ -24,10 +28,12 @@ const App: FC = () => {
         notes={filteredNotes}
         selectedNoteId={selectedNoteId}
         searchQuery={searchQuery}
+        ticketFilter={ticketFilter}
         onSearchChange={setSearchQuery}
         onSelectNote={selectNote}
         onDeleteNote={deleteNote}
         onAddNote={addNote}
+        onTicketFilterChange={setTicketFilter}
       />
       <main className="app__main">
         {selectedNote ? (
@@ -36,6 +42,8 @@ const App: FC = () => {
             note={selectedNote}
             onUpdateNote={updateNote}
             onDeleteNote={deleteNote}
+            onToggleTicket={toggleTicketStatus}
+            onSetTicketStatus={setTicketStatus}
           />
         ) : (
           <EmptyState onCreateNote={addNote} />
