@@ -6,11 +6,15 @@ interface NotesState {
   notes: Note[];
   selectedNoteId: string | null;
   searchQuery: string;
+  ticketFilter: TicketStatus | 'all';
   addNote: () => string;
   updateNote: (id: string, content: string) => void;
   deleteNote: (id: string) => void;
   selectNote: (id: string | null) => void;
   setSearchQuery: (query: string) => void;
+  toggleTicketStatus: (id: string) => void;
+  setTicketStatus: (id: string, status: TicketStatus) => void;
+  setTicketFilter: (filter: TicketStatus | 'all') => void;
   getFilteredNotes: () => Note[];
   getSelectedNote: () => Note | null;
 }
