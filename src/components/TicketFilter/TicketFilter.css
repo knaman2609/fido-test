@@ -1,0 +1,41 @@
+.ticket-filter {
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--sidebar-border);
+}
+
+.ticket-filter__buttons {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.ticket-filter__btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border: 1px solid var(--sidebar-border);
+  background-color: transparent;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.ticket-filter__btn:hover {
+  background-color: var(--note-hover);
+  color: var(--text-primary);
+}
+
+.ticket-filter__btn--active {
+  background-color: var(--accent-blue);
+  border-color: var(--accent-blue);
+  color: white;
+}
+
+.ticket-filter__btn--active:hover {
+  background-color: #0056d6;
+  color: white;
+}
