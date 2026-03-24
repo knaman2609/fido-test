@@ -10,10 +10,12 @@ interface SidebarProps {
   notes: Note[];
   selectedNoteId: string | null;
   searchQuery: string;
+  ticketFilter: TicketStatus | 'all';
   onSearchChange: (query: string) => void;
   onSelectNote: (id: string) => void;
   onDeleteNote: (id: string) => void;
   onAddNote: () => void;
+  onTicketFilterChange: (filter: TicketStatus | 'all') => void;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
