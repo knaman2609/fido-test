@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { v4 as uuidv4 } from 'uuid';
 import type { Note } from '@/types/note';
-import { loadNotes, saveNotes } from '@/utils/storage';
+import { loadNotes, saveNotes, clearNotes } from '@/utils/storage';
 
 interface NotesState {
   notes: Note[];
@@ -83,7 +83,7 @@ const customStorage = {
     saveNotes(value.state.notes, value.state.selectedNoteId);
   },
   removeItem: (_name: string): void => {
-    localStorage.removeItem('notes-app-data');
+    clearNotes();
   },
 };
 

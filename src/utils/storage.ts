@@ -41,6 +41,12 @@ export const loadNotes = (): { notes: Note[]; selectedNoteId: string | null } | 
     if (!stored) return null;
 
     const parsed: StoredData = JSON.parse(stored);
+
+    if (!parsed.notes || !Array.isArray(parsed.notes)) {
+      console.error('Invalid data structure in localStorage: notes array missing');
+      return null;
+    }
+
     const deserialized: Note[] = parsed.notes.map(note => ({
       ...note,
       createdAt: new Date(note.createdAt),
