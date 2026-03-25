@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
-import { Trash2 } from 'lucide-react';
-import type { Note } from '@/types/note';
+import { Trash2, Ticket } from 'lucide-react';
+import type { Note, TicketStatus } from '@/types/note';
 import { formatDate } from '@/utils/date';
 import './NoteItem.css';
 
