@@ -9,7 +9,34 @@ interface NoteItemProps {
   isSelected: boolean;
   onSelect: (id: string) => void;
   onDelete: (id: string) => void;
+  onToggleTicket: (id: string) => void;
 }
+
+const getTicketStatusColor = (status: TicketStatus): string => {
+  switch (status) {
+    case 'open':
+      return '#34c759';
+    case 'in-progress':
+      return '#ff9500';
+    case 'closed':
+      return '#8e8e93';
+    default:
+      return '#8e8e93';
+  }
+};
+
+const getTicketStatusLabel = (status: TicketStatus): string => {
+  switch (status) {
+    case 'open':
+      return 'Open';
+    case 'in-progress':
+      return 'In Progress';
+    case 'closed':
+      return 'Closed';
+    default:
+      return '';
+  }
+};
 
 const getPreview = (content: string): string => {
   const plainText = content
