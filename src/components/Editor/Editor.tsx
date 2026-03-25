@@ -9,6 +9,8 @@ interface EditorProps {
   note: Note;
   onUpdateNote: (id: string, content: string) => void;
   onDeleteNote: (id: string) => void;
+  onToggleTicket: (id: string) => void;
+  onUpdateTicketStatus: (id: string, status: TicketStatus | undefined) => void;
 }
 
 export const Editor: React.FC<EditorProps> = ({
