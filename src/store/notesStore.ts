@@ -111,6 +111,34 @@ export const useNotesStore = create<NotesState>((set, get) => ({
     set({ searchQuery: query });
   },
 
+  toggleTicketStatus: (id) => {
+    set(state => ({
+      notes: state.notes.map(note =>
+        note.id === id
+          ? {
+              ...note,
+              ticketStatus: note.ticketStatus ? undefined : 'open',
+              updatedAt: new Date(),
+            }
+          : note
+      ),
+    }));
+  },
+
+  updateTicketStatus: (id, status) => {
+    set(state => ({
+      notes: state.notes.map(note =>
+        note.id === id
+          ? {
+              ...note,
+              ticketStatus: status,
+              updatedAt: new Date(),
+            }
+          : note
+      ),
+    }));
+  },
+
   getFilteredNotes: () => {
     const { notes, searchQuery } = get();
     if (!searchQuery.trim()) return notes;
