@@ -26,19 +26,6 @@ const getTicketStatusColor = (status: TicketStatus | undefined): string => {
   }
 };
 
-const getTicketStatusLabel = (status: TicketStatus | undefined): string => {
-  switch (status) {
-    case 'open':
-      return 'Open';
-    case 'in-progress':
-      return 'In Progress';
-    case 'closed':
-      return 'Closed';
-    default:
-      return 'Not a Ticket';
-  }
-};
-
 export const Editor: React.FC<EditorProps> = ({
   note,
   onUpdateNote,
