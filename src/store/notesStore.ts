@@ -11,8 +11,11 @@ interface NotesState {
   deleteNote: (id: string) => void;
   selectNote: (id: string | null) => void;
   setSearchQuery: (query: string) => void;
+  toggleTicketStatus: (id: string) => void;
+  updateTicketStatus: (id: string, status: TicketStatus | undefined) => void;
   getFilteredNotes: () => Note[];
   getSelectedNote: () => Note | null;
+  getTicketNotes: () => Note[];
 }
 
 const extractTitle = (content: string): string => {
