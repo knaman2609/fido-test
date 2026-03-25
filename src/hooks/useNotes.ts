@@ -28,5 +28,8 @@ export const useNotes = () => {
     deleteNote: store.deleteNote,
     selectNote: store.selectNote,
     setSearchQuery: store.setSearchQuery,
+    toggleTicketStatus: store.toggleTicketStatus,
+    updateTicketStatus: store.updateTicketStatus,
+    ticketNotes: store.getTicketNotes(),
   };
 };

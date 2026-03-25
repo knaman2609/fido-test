@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { v4 as uuidv4 } from 'uuid';
-import type { Note } from '@/types/note';
+import type { Note, TicketStatus } from '@/types/note';
 
 interface NotesState {
   notes: Note[];
@@ -11,8 +11,11 @@ interface NotesState {
   deleteNote: (id: string) => void;
   selectNote: (id: string | null) => void;
   setSearchQuery: (query: string) => void;
+  toggleTicketStatus: (id: string) => void;
+  updateTicketStatus: (id: string, status: TicketStatus | undefined) => void;
   getFilteredNotes: () => Note[];
   getSelectedNote: () => Note | null;
+  getTicketNotes: () => Note[];
 }
 
 const extractTitle = (content: string): string => {
@@ -108,6 +111,34 @@ export const useNotesStore = create<NotesState>((set, get) => ({
     set({ searchQuery: query });
   },
 
+  toggleTicketStatus: (id) => {
+    set(state => ({
+      notes: state.notes.map(note =>
+        note.id === id
+          ? {
+              ...note,
+              ticketStatus: note.ticketStatus ? undefined : 'open',
+              updatedAt: new Date(),
+            }
+          : note
+      ),
+    }));
+  },
+
+  updateTicketStatus: (id, status) => {
+    set(state => ({
+      notes: state.notes.map(note =>
+        note.id === id
+          ? {
+              ...note,
+              ticketStatus: status,
+              updatedAt: new Date(),
+            }
+          : note
+      ),
+    }));
+  },
+
   getFilteredNotes: () => {
     const { notes, searchQuery } = get();
     if (!searchQuery.trim()) return notes;
@@ -122,5 +153,10 @@ export const useNotesStore = create<NotesState>((set, get) => ({
   getSelectedNote: () => {
     const { notes, selectedNoteId } = get();
     return notes.find(note => note.id === selectedNoteId) || null;
+  },
+
+  getTicketNotes: () => {
+    const { notes } = get();
+    return notes.filter(note => note.ticketStatus !== undefined);
   },
 }));

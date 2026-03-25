@@ -13,6 +13,7 @@ interface SidebarProps {
   onSelectNote: (id: string) => void;
   onDeleteNote: (id: string) => void;
   onAddNote: () => void;
+  onToggleTicket: (id: string) => void;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -23,6 +24,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onSelectNote,
   onDeleteNote,
   onAddNote,
+  onToggleTicket,
 }) => {
   return (
     <aside className="sidebar">
@@ -39,6 +41,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           selectedNoteId={selectedNoteId}
           onSelectNote={onSelectNote}
           onDeleteNote={onDeleteNote}
+          onToggleTicket={onToggleTicket}
         />
       </div>
       <div className="sidebar__footer">

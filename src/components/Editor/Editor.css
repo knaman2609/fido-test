@@ -20,6 +20,75 @@
   gap: 12px;
 }
 
+.editor__ticket-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--accent-blue);
+  padding: 4px 10px;
+  background-color: rgba(0, 122, 255, 0.1);
+  border-radius: 12px;
+}
+
+.editor__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.editor__ticket-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.editor__ticket-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+}
+
+.editor__ticket-btn:hover {
+  background-color: rgba(0, 122, 255, 0.1);
+  color: var(--accent-blue);
+}
+
+.editor__ticket-btn--active {
+  color: var(--accent-blue);
+  background-color: rgba(0, 122, 255, 0.1);
+}
+
+.editor__ticket-status {
+  padding: 6px 10px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+  background-color: var(--editor-bg);
+  border: 1.5px solid var(--border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.editor__ticket-status:hover {
+  border-color: var(--accent-blue);
+}
+
+.editor__ticket-status:focus {
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
+}
+
 .editor__date {
   font-size: 13px;
   color: var(--text-secondary);
