@@ -24,6 +24,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onSelectNote,
   onDeleteNote,
   onAddNote,
+  onToggleTicket,
 }) => {
   return (
     <aside className="sidebar">
