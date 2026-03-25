@@ -8,6 +8,7 @@ interface NoteListProps {
   selectedNoteId: string | null;
   onSelectNote: (id: string) => void;
   onDeleteNote: (id: string) => void;
+  onToggleTicket: (id: string) => void;
 }
 
 export const NoteList: React.FC<NoteListProps> = ({
