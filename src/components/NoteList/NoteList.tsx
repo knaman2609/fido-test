@@ -16,6 +16,7 @@ export const NoteList: React.FC<NoteListProps> = ({
   selectedNoteId,
   onSelectNote,
   onDeleteNote,
+  onToggleTicket,
 }) => {
   if (notes.length === 0) {
     return (
