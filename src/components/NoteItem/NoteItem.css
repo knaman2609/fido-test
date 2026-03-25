@@ -85,6 +85,40 @@
   color: var(--text-secondary);
 }
 
+.note-item__actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.note-item:hover .note-item__actions {
+  opacity: 1;
+}
+
+.note-item__ticket-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: all 0.15s ease;
+}
+
+.note-item__ticket-toggle:hover {
+  background-color: rgba(0, 122, 255, 0.1);
+  color: var(--accent-blue);
+}
+
+.note-item__ticket-toggle--active {
+  color: var(--accent-blue);
+}
+
 .note-item__delete {
   display: flex;
   align-items: center;
@@ -95,12 +129,7 @@
   border-radius: 6px;
   cursor: pointer;
   color: var(--text-secondary);
-  opacity: 0;
   transition: all 0.15s ease;
-}
-
-.note-item:hover .note-item__delete {
-  opacity: 1;
 }
 
 .note-item__delete:hover {
