@@ -59,6 +59,7 @@ export const NoteItem: React.FC<NoteItemProps> = memo(({
   isSelected,
   onSelect,
   onDelete,
+  onToggleTicket,
 }) => {
   const handleClick = () => {
     onSelect(note.id);
@@ -69,25 +70,49 @@ export const NoteItem: React.FC<NoteItemProps> = memo(({
     onDelete(note.id);
   };
 
+  const handleToggleTicket = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onToggleTicket(note.id);
+  };
+
   return (
     <div
       className={`note-item ${isSelected ? 'note-item--selected' : ''}`}
       onClick={handleClick}
     >
       <div className="note-item__content">
-        <h3 className="note-item__title">{note.title}</h3>
+        <div className="note-item__header">
+          <h3 className="note-item__title">{note.title}</h3>
+          {note.ticketStatus && (
+            <span
+              className="note-item__ticket-badge"
+              style={{ backgroundColor: getTicketStatusColor(note.ticketStatus) }}
+            >
+              {getTicketStatusLabel(note.ticketStatus)}
+            </span>
+          )}
+        </div>
         <div className="note-item__meta">
           <span className="note-item__date">{formatDate(note.updatedAt)}</span>
           <span className="note-item__preview">{getPreview(note.content)}</span>
         </div>
       </div>
-      <button
-        className="note-item__delete"
-        onClick={handleDelete}
-        aria-label="Delete note"
-      >
-        <Trash2 size={16} />
-      </button>
+      <div className="note-item__actions">
+        <button
+          className={`note-item__ticket-toggle ${note.ticketStatus ? 'note-item__ticket-toggle--active' : ''}`}
+          onClick={handleToggleTicket}
+          aria-label={note.ticketStatus ? 'Remove ticket' : 'Mark as ticket'}
+        >
+          <Ticket size={16} />
+        </button>
+        <button
+          className="note-item__delete"
+          onClick={handleDelete}
+          aria-label="Delete note"
+        >
+          <Trash2 size={16} />
+        </button>
+      </div>
     </div>
   );
 });
