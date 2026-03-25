@@ -41,6 +41,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           selectedNoteId={selectedNoteId}
           onSelectNote={onSelectNote}
           onDeleteNote={onDeleteNote}
+          onToggleTicket={onToggleTicket}
         />
       </div>
       <div className="sidebar__footer">
