@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { v4 as uuidv4 } from 'uuid';
-import type { Note } from '@/types/note';
+import type { Note, TicketStatus } from '@/types/note';
 
 interface NotesState {
   notes: Note[];
