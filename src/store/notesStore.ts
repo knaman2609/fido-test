@@ -154,4 +154,9 @@ export const useNotesStore = create<NotesState>((set, get) => ({
     const { notes, selectedNoteId } = get();
     return notes.find(note => note.id === selectedNoteId) || null;
   },
+
+  getTicketNotes: () => {
+    const { notes } = get();
+    return notes.filter(note => note.ticketStatus !== undefined);
+  },
 }));
