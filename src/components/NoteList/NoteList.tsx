@@ -35,6 +35,7 @@ export const NoteList: React.FC<NoteListProps> = ({
           isSelected={note.id === selectedNoteId}
           onSelect={onSelectNote}
           onDelete={onDeleteNote}
+          onToggleTicket={onToggleTicket}
         />
       ))}
     </div>
