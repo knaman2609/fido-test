@@ -1,6 +1,6 @@
 import React from 'react';
-import { Trash2 } from 'lucide-react';
-import type { Note } from '@/types/note';
+import { Trash2, Ticket } from 'lucide-react';
+import type { Note, TicketStatus } from '@/types/note';
 import { formatFullDate } from '@/utils/date';
 import { MilkdownEditor } from './MilkdownEditor';
 import './Editor.css';
