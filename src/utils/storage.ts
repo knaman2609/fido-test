@@ -39,7 +39,15 @@ export function loadFromLocalStorage(key: string): PartialBlock[] | null {
       if (parsed && parsed.version === CURRENT_VERSION && isValidPartialBlockArray(parsed.content)) {
         return parsed.content;
       }
-      // Version mismatch or invalid data format - clear incompatible data
+      // Version mismatch or invalid data format - backup data before clearing
+      if (parsed) {
+        const backupKey = `${key}-backup-${Date.now()}`;
+        try {
+          window.localStorage.setItem(backupKey, item);
+        } catch (backupError) {
+          console.warn('Failed to create backup for incompatible data:', backupError);
+        }
+      }
       window.localStorage.removeItem(key);
     }
   } catch (error) {
