@@ -26,6 +26,8 @@ function isValidPartialBlockArray(content: unknown): content is PartialBlock[] {
   return content.every(isValidPartialBlock);
 }
 
+const CURRENT_VERSION = 1;
+
 export function loadFromLocalStorage(key: string): PartialBlock[] | null {
   try {
     if (typeof window === 'undefined' || !window.localStorage) {
@@ -34,7 +36,7 @@ export function loadFromLocalStorage(key: string): PartialBlock[] | null {
     const item = window.localStorage.getItem(key);
     if (item) {
       const parsed: StoredDocument = JSON.parse(item);
-      if (parsed && isValidPartialBlockArray(parsed.content)) {
+      if (parsed && parsed.version === CURRENT_VERSION && isValidPartialBlockArray(parsed.content)) {
         return parsed.content;
       }
     }
