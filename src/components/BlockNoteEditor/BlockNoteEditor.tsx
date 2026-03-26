@@ -28,7 +28,6 @@ interface BlockNoteEditorProps {
 export function BlockNoteEditor({ storageKey = DEFAULT_STORAGE_KEY }: BlockNoteEditorProps) {
   const initialContent = useMemo(() => loadFromLocalStorage(storageKey) || DEFAULT_CONTENT, [storageKey]);
   const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const loadedStorageKeyRef = useRef<string | null>(null);
 
   const editor = useCreateBlockNote({
     initialContent,
