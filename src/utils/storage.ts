@@ -39,6 +39,8 @@ export function loadFromLocalStorage(key: string): PartialBlock[] | null {
       if (parsed && parsed.version === CURRENT_VERSION && isValidPartialBlockArray(parsed.content)) {
         return parsed.content;
       }
+      // Version mismatch or invalid data format - clear incompatible data
+      window.localStorage.removeItem(key);
     }
   } catch (error) {
     console.warn('Error loading from localStorage:', error);
