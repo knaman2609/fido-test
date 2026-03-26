@@ -5,6 +5,8 @@
   --accent-pink: #ff69b4;
   --accent-pink-dark: #ff1493;
   --border-color: #ffb6c1;
+  --card-bg: #ffffff;
+  --card-shadow: rgba(255, 105, 180, 0.15);
 }
 
 [data-theme="dark"] {
@@ -14,6 +16,8 @@
   --accent-pink: #ff85c0;
   --accent-pink-dark: #ff69b4;
   --border-color: #5c4048;
+  --card-bg: #3d2a30;
+  --card-shadow: rgba(0, 0, 0, 0.3);
 }
 
 * {
