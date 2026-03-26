@@ -61,8 +61,6 @@ export function BlockNoteEditor({ storageKey = DEFAULT_STORAGE_KEY }: BlockNoteE
     };
   }, [editor, handleChange]);
 
-
-
   if (!editor) {
     return <div className="blocknote-loading" role="status" aria-live="polite">Loading editor...</div>;
   }
