@@ -64,6 +64,12 @@ export function BlockNoteEditor({ storageKey = DEFAULT_STORAGE_KEY }: BlockNoteE
   useEffect(() => {
     if (!editor) return;
 
+    // Clear any pending save to prevent saving old content to the new key
+    if (saveTimeoutRef.current) {
+      clearTimeout(saveTimeoutRef.current);
+      saveTimeoutRef.current = null;
+    }
+
     const newContent = loadFromLocalStorage(storageKey);
     if (newContent) {
       editor.replaceBlocks(editor.document, newContent);
