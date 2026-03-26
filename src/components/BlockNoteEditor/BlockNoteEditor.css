@@ -13,9 +13,9 @@
 .blocknote-editor-wrapper .bn-editor {
   max-width: 800px;
   margin: 0 auto;
-  background-color: #ffffff;
+  background-color: var(--card-bg);
   border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(255, 105, 180, 0.15);
+  box-shadow: 0 2px 12px var(--card-shadow);
   padding: 40px;
 }
 
