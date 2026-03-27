@@ -61,23 +61,6 @@ export function BlockNoteEditor({ storageKey = DEFAULT_STORAGE_KEY }: BlockNoteE
     };
   }, [editor, handleChange, storageKey]);
 
-  useEffect(() => {
-    if (!editor) return;
-
-    // Clear any pending save to prevent saving old content to the new key
-    if (saveTimeoutRef.current) {
-      clearTimeout(saveTimeoutRef.current);
-      saveTimeoutRef.current = null;
-    }
-
-    const newContent = loadFromLocalStorage(storageKey);
-    if (newContent) {
-      editor.replaceBlocks(editor.document, newContent);
-    } else {
-      editor.replaceBlocks(editor.document, DEFAULT_CONTENT);
-    }
-  }, [storageKey, editor]);
-
   if (!editor) {
     return <div className="blocknote-loading" role="status" aria-live="polite">Loading editor...</div>;
   }
