@@ -27,6 +27,7 @@ function isValidPartialBlockArray(content: unknown): content is PartialBlock[] {
 }
 
 const CURRENT_VERSION = 1;
+const MAX_BACKUPS_PER_KEY = 5;
 
 export function loadFromLocalStorage(key: string): PartialBlock[] | null {
   try {
@@ -44,6 +45,8 @@ export function loadFromLocalStorage(key: string): PartialBlock[] | null {
         const backupKey = `${key}-backup-${Date.now()}`;
         try {
           window.localStorage.setItem(backupKey, item);
+          // Cleanup old backups to prevent quota issues
+          cleanupOldBackups(key);
         } catch (backupError) {
           console.warn('Failed to create backup for incompatible data:', backupError);
         }
@@ -56,10 +59,33 @@ export function loadFromLocalStorage(key: string): PartialBlock[] | null {
   return null;
 }
 
-export function saveToLocalStorage(key: string, content: PartialBlock[]) {
+function cleanupOldBackups(key: string) {
+  try {
+    const backupPrefix = `${key}-backup-`;
+    const backups: string[] = [];
+    for (let i = 0; i < window.localStorage.length; i++) {
+      const storageKey = window.localStorage.key(i);
+      if (storageKey && storageKey.startsWith(backupPrefix)) {
+        backups.push(storageKey);
+      }
+    }
+    // Sort by timestamp (newest first) and remove oldest if exceeding limit
+    backups.sort().reverse();
+    while (backups.length > MAX_BACKUPS_PER_KEY) {
+      const oldestBackup = backups.pop();
+      if (oldestBackup) {
+        window.localStorage.removeItem(oldestBackup);
+      }
+    }
+  } catch (error) {
+    console.warn('Error cleaning up old backups:', error);
+  }
+}
+
+export function saveToLocalStorage(key: string, content: PartialBlock[]): boolean {
   try {
     if (typeof window === 'undefined' || !window.localStorage) {
-      return;
+      return false;
     }
     const data: StoredDocument = {
       version: 1,
@@ -67,7 +93,9 @@ export function saveToLocalStorage(key: string, content: PartialBlock[]) {
       lastModified: new Date().toISOString(),
     };
     window.localStorage.setItem(key, JSON.stringify(data));
+    return true;
   } catch (error) {
     console.warn('Error saving to localStorage:', error);
+    return false;
   }
 }
