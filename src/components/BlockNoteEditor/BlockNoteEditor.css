@@ -1,0 +1,53 @@
+.blocknote-editor {
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
+  background-color: var(--editor-bg, #fff0f5);
+}
+
+.blocknote-editor-wrapper {
+  min-height: 100%;
+  padding: 40px 20px;
+}
+
+.blocknote-editor-wrapper .bn-editor {
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: var(--card-bg);
+  border-radius: 12px;
+  box-shadow: 0 2px 12px var(--card-shadow);
+  padding: 40px;
+}
+
+.blocknote-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  color: var(--accent-pink, #ff69b4);
+  font-size: 16px;
+}
+
+.blocknote-save-error {
+  background-color: #fee2e2;
+  border: 1px solid #ef4444;
+  color: #dc2626;
+  padding: 12px 16px;
+  margin: 8px auto;
+  max-width: 800px;
+  border-radius: 8px;
+  font-size: 14px;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .blocknote-editor-wrapper {
+    padding: 20px 16px;
+  }
+
+  .blocknote-editor-wrapper .bn-editor {
+    max-width: 100%;
+    padding: 24px;
+  }
+}

@@ -1,0 +1,65 @@
+---
+title: "Test Quarto Document"
+author: "Test Author"
+date: today
+format: html
+---
+
+# Introduction
+
+This is a **test Quarto document** demonstrating the key features of Quarto for scientific and technical publishing.
+
+## What is Quarto?
+
+Quarto is an *open-source* scientific and technical publishing system that enables you to create dynamic documents with executable code. It supports multiple programming languages including:
+
+- Python
+- R
+- Julia
+- Observable JS
+
+## Features Demonstrated
+
+This document showcases:
+
+1. **YAML frontmatter** with metadata
+2. *Markdown formatting* including bold and italic text
+3. [Links to external resources](https://quarto.org)
+4. Executable code blocks
+5. Data visualization
+
+# Code Example
+
+Below is an executable Python code block that generates a simple visualization:
+
+```{python}
+#| echo: true
+#| fig-cap: "A simple line plot demonstrating matplotlib integration"
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Generate sample data
+x = np.linspace(0, 10, 100)
+y = np.sin(x)
+
+# Create the plot
+plt.figure(figsize=(8, 5))
+plt.plot(x, y, 'b-', linewidth=2, label='sin(x)')
+plt.xlabel('x')
+plt.ylabel('y')
+plt.title('Simple Sine Wave')
+plt.legend()
+plt.grid(True, alpha=0.3)
+plt.show()
+```
+
+# Conclusion
+
+This document demonstrates how Quarto combines:
+
+- **Markdown** for narrative content
+- **Executable code** for analysis and visualization
+- **YAML frontmatter** for document configuration
+
+Quarto makes it easy to create reproducible documents that combine code, output, and narrative in a single source file.
