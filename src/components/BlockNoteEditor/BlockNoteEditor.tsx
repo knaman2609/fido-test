@@ -9,7 +9,7 @@ import './BlockNoteEditor.css';
 const DEFAULT_STORAGE_KEY = 'blocknote-doc';
 const SAVE_DEBOUNCE_MS = 500;
 
-const DEFAULT_CONTENT = [
+const DEFAULT_CONTENT: readonly PartialBlock[] = [
   {
     type: 'heading',
     props: { level: 1 },
@@ -19,7 +19,7 @@ const DEFAULT_CONTENT = [
     type: 'paragraph',
     content: 'Start typing to create your document. Your content is automatically saved to localStorage.',
   },
-] as const;
+];
 
 interface BlockNoteEditorProps {
   storageKey?: string;
