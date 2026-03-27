@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useRef, useMemo } from 'react';
+import { useEffect, useCallback, useRef, useMemo, useState } from 'react';
 import { PartialBlock } from '@blocknote/core';
 import { useCreateBlockNote } from '@blocknote/react';
 import { BlockNoteView } from '@blocknote/mantine';
@@ -28,6 +28,7 @@ interface BlockNoteEditorProps {
 export function BlockNoteEditor({ storageKey = DEFAULT_STORAGE_KEY }: BlockNoteEditorProps) {
   const initialContent = useMemo(() => loadFromLocalStorage(storageKey) || JSON.parse(JSON.stringify(DEFAULT_CONTENT)), [storageKey]);
   const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [saveError, setSaveError] = useState<string | null>(null);
 
   const editor = useCreateBlockNote({
     initialContent,
@@ -41,7 +42,12 @@ export function BlockNoteEditor({ storageKey = DEFAULT_STORAGE_KEY }: BlockNoteE
     }
 
     saveTimeoutRef.current = setTimeout(() => {
-      saveToLocalStorage(storageKey, editor.document);
+      const success = saveToLocalStorage(storageKey, editor.document);
+      if (!success) {
+        setSaveError('Failed to save document. Storage may be full.');
+      } else {
+        setSaveError(null);
+      }
     }, SAVE_DEBOUNCE_MS);
   }, [editor, storageKey]);
 
@@ -57,7 +63,10 @@ export function BlockNoteEditor({ storageKey = DEFAULT_STORAGE_KEY }: BlockNoteE
         clearTimeout(saveTimeoutRef.current);
         saveTimeoutRef.current = null;
       }
-      saveToLocalStorage(storageKey, editor.document);
+      const success = saveToLocalStorage(storageKey, editor.document);
+      if (!success) {
+        setSaveError('Failed to save document. Storage may be full.');
+      }
     };
   }, [editor, handleChange, storageKey]);
 
@@ -67,6 +76,11 @@ export function BlockNoteEditor({ storageKey = DEFAULT_STORAGE_KEY }: BlockNoteE
 
   return (
     <div className="blocknote-editor">
+      {saveError && (
+        <div className="blocknote-save-error" role="alert">
+          {saveError}
+        </div>
+      )}
       <div className="blocknote-editor-wrapper">
         <BlockNoteView editor={editor} theme="light" />
       </div>
