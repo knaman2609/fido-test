@@ -37,7 +37,95 @@ const sampleNotes: Note[] = [
   {
     id: uuidv4(),
     title: 'Markdown Test Document',
-    content: '# Markdown Test Document\n\nThis document showcases all the markdown features supported by the editor.\n\n## Text Formatting\n\n**Bold text** and *italic text* and ~~strikethrough~~.\n\nYou can also use __bold__ and _italic_ with underscores.\n\n## Headings\n\n# H1 Heading\n## H2 Heading\n### H3 Heading\n#### H4 Heading\n##### H5 Heading\n###### H6 Heading\n\n## Lists\n\n### Unordered Lists\n\n- First item\n- Second item\n  - Nested item 1\n  - Nested item 2\n- Third item\n\n### Ordered Lists\n\n1. First step\n2. Second step\n   1. Sub-step A\n   2. Sub-step B\n3. Third step\n\n### Task Lists\n\n- [x] Completed task\n- [ ] Pending task\n- [ ] Another pending task\n\n## Code\n\nInline code: `const x = 42`\n\n### Code Block\n\n```typescript\nfunction greet(name: string): string {\n  return `Hello, ${name}!`;\n}\n\nconsole.log(greet("World"));\n```\n\n## Blockquotes\n\n> This is a blockquote.\n> It can span multiple lines.\n>\n> > Nested blockquotes are also supported.\n\n## Tables\n\n| Feature | Supported | Notes |\n|---------|-----------|-------|\n| Headers | Yes | H1-H6 |\n| Lists | Yes | Ordered, unordered, tasks |\n| Tables | Yes | GFM style |\n| Code | Yes | Inline and blocks |\n\n## Links\n\n[OpenAI](https://openai.com)\n\n## Horizontal Rules\n\n---\n\n## Mixed Content\n\n> **Note:** This blockquote contains *formatted* text and a [link](https://example.com).\n\n- List item with **bold** text\n- List item with `inline code`\n- List item with a [link](https://example.com)',
+    content: `# Markdown Test Document
+
+This document showcases all the markdown features supported by the editor.
+
+## Text Formatting
+
+**Bold text** and *italic text* and ~~strikethrough~~.
+
+You can also use __bold__ and _italic_ with underscores.
+
+## Headings
+
+# H1 Heading
+## H2 Heading
+### H3 Heading
+#### H4 Heading
+##### H5 Heading
+###### H6 Heading
+
+## Lists
+
+### Unordered Lists
+
+- First item
+- Second item
+  - Nested item 1
+  - Nested item 2
+- Third item
+
+### Ordered Lists
+
+1. First step
+2. Second step
+   1. Sub-step A
+   2. Sub-step B
+3. Third step
+
+### Task Lists
+
+- [x] Completed task
+- [ ] Pending task
+- [ ] Another pending task
+
+## Code
+
+Inline code: \`const x = 42\`
+
+### Code Block
+
+\`\`\`typescript
+function greet(name: string): string {
+  return \`Hello, \${name}!\`;
+}
+
+console.log(greet("World"));
+\`\`\`
+
+## Blockquotes
+
+> This is a blockquote.
+> It can span multiple lines.
+>
+> > Nested blockquotes are also supported.
+
+## Tables
+
+| Feature | Supported | Notes |
+|---------|-----------|-------|
+| Headers | Yes | H1-H6 |
+| Lists | Yes | Ordered, unordered, tasks |
+| Tables | Yes | GFM style |
+| Code | Yes | Inline and blocks |
+
+## Links
+
+[OpenAI](https://openai.com)
+
+## Horizontal Rules
+
+---
+
+## Mixed Content
+
+> **Note:** This blockquote contains *formatted* text and a [link](https://example.com).
+
+- List item with **bold** text
+- List item with \`inline code\`
+- List item with a [link](https://example.com)`,
+  },
     createdAt: new Date(Date.now() - 345600000),
     updatedAt: new Date(Date.now() - 259200000),
   },
