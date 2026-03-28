@@ -46,6 +46,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         <span className="sidebar__count">
           {notes.length} {notes.length === 1 ? 'note' : 'notes'}
         </span>
+        <ThemeToggle />
       </div>
     </aside>
   );
