@@ -36,7 +36,7 @@
   justify-content: center;
   padding: 2px;
   border: none;
-  background: var(--button-hover-bg);
+  background: var(--button-secondary-bg);
   border-radius: 50%;
   cursor: pointer;
   color: var(--text-secondary);
