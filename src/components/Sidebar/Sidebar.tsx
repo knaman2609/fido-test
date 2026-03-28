@@ -32,6 +32,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <Plus size={18} />
           <span>New Note</span>
         </button>
+        <TestDocGenerator />
         <SearchBar value={searchQuery} onChange={onSearchChange} />
       </div>
       <div className="sidebar__content">
