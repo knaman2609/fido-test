@@ -1,0 +1,22 @@
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+}
+
+.theme-toggle:hover {
+  background-color: var(--button-hover-bg);
+  color: var(--text-primary);
+}
+
+.theme-toggle:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--accent-blue);
+}
