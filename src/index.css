@@ -72,7 +72,6 @@ input {
   background-color: rgba(0, 122, 255, 0.3);
 }
 
-/* Milkdown Editor Theme Overrides */
 .milkdown-editor {
   height: 100%;
 }
@@ -83,18 +82,15 @@ input {
   color: var(--text-primary);
 }
 
-/* Ensure Milkdown content uses theme colors */
 .milkdown-editor .editor {
   background-color: var(--editor-bg);
   color: var(--text-primary);
 }
 
-/* Override Milkdown selection color to match theme */
 .milkdown-editor .ProseMirror ::selection {
   background-color: rgba(0, 122, 255, 0.3);
 }
 
-/* Dark mode specific overrides for Milkdown */
 [data-theme="dark"] .milkdown-editor .milkdown {
   background-color: var(--editor-bg);
   color: var(--text-primary);
@@ -105,7 +101,6 @@ input {
   color: var(--text-primary);
 }
 
-/* Scrollbar styling for the editor */
 .milkdown-editor ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
