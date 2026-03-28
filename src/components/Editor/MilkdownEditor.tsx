@@ -50,7 +50,7 @@ const MilkdownEditorInner: React.FC<MilkdownEditorProps> = ({
   }, []);
 
   return (
-    <div className={`milkdown-editor milkdown-theme-${theme}`}>
+    <div className="milkdown-editor">
       <Milkdown />
     </div>
   );
