@@ -28,6 +28,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ value, onChange }) => {
       />
       {value && (
         <button
+          type="button"
           className="search-bar__clear"
           onClick={handleClear}
           aria-label="Clear search"
