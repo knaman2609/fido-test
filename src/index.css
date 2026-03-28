@@ -8,6 +8,28 @@
   --text-secondary: #8e8e93;
   --accent-blue: #007aff;
   --border-color: #c6c6c8;
+  --scrollbar-thumb: rgba(0, 0, 0, 0.15);
+  --scrollbar-thumb-hover: rgba(0, 0, 0, 0.25);
+  --button-hover-bg: rgba(120, 120, 128, 0.2);
+  --search-bg: rgba(120, 120, 128, 0.12);
+  --search-bg-focus: rgba(120, 120, 128, 0.2);
+}
+
+[data-theme="dark"] {
+  --sidebar-bg: #1c1c1e;
+  --sidebar-border: #38383a;
+  --note-selected: #2c2c2e;
+  --note-hover: #3a3a3c;
+  --editor-bg: #000000;
+  --text-primary: #ffffff;
+  --text-secondary: #8e8e93;
+  --accent-blue: #0a84ff;
+  --border-color: #38383a;
+  --scrollbar-thumb: rgba(255, 255, 255, 0.15);
+  --scrollbar-thumb-hover: rgba(255, 255, 255, 0.25);
+  --button-hover-bg: rgba(120, 120, 128, 0.24);
+  --search-bg: rgba(120, 120, 128, 0.24);
+  --search-bg-focus: rgba(120, 120, 128, 0.32);
 }
 
 * {
