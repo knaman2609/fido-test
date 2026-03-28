@@ -23,11 +23,9 @@ export const useThemeStore = create<ThemeState>()(
       toggleTheme: () => {
         const newTheme = get().theme === 'light' ? 'dark' : 'light';
         set({ theme: newTheme });
-        document.documentElement.setAttribute('data-theme', newTheme);
       },
       setTheme: (theme) => {
         set({ theme });
-        document.documentElement.setAttribute('data-theme', theme);
       },
     }),
     {
@@ -40,3 +38,7 @@ export const useThemeStore = create<ThemeState>()(
     }
   )
 );
+
+useThemeStore.subscribe((state) => {
+  document.documentElement.setAttribute('data-theme', state.theme);
+});
