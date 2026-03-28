@@ -5,6 +5,15 @@
   background-color: var(--editor-bg);
 }
 
+/* Milkdown editor base styles for theme integration */
+.milkdown-editor {
+  width: 100%;
+}
+
+.milkdown-editor .milkdown {
+  background: transparent;
+}
+
 .editor__header {
   display: flex;
   align-items: center;
