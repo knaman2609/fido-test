@@ -31,6 +31,7 @@ export const Editor: React.FC<EditorProps> = ({
           <span className="editor__date">{formatFullDate(note.updatedAt)}</span>
         </div>
         <button
+          type="button"
           className="editor__delete-btn"
           onClick={handleDelete}
           aria-label="Delete note"
