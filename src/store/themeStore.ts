@@ -32,7 +32,7 @@ export const useThemeStore = create<ThemeState>()(
     }),
     {
       name: 'fido-theme',
-      onRehydrateStorage: () => (state) => {
+      onRehydrateStorage: (state) => {
         if (state) {
           document.documentElement.setAttribute('data-theme', state.theme);
         }
