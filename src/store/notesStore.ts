@@ -36,6 +36,100 @@ const createDefaultNote = (): Note => {
 const sampleNotes: Note[] = [
   {
     id: uuidv4(),
+    title: 'Markdown Test Document',
+    content: `# Markdown Test Document
+
+This document showcases all the markdown features supported by the editor.
+
+## Text Formatting
+
+**Bold text** and *italic text* and ~~strikethrough~~.
+
+You can also use __bold__ and _italic_ with underscores.
+
+## Headings
+
+# H1 Heading
+## H2 Heading
+### H3 Heading
+#### H4 Heading
+##### H5 Heading
+###### H6 Heading
+
+## Lists
+
+### Unordered Lists
+
+- First item
+- Second item
+  - Nested item 1
+  - Nested item 2
+- Third item
+
+### Ordered Lists
+
+1. First step
+2. Second step
+   1. Sub-step A
+   2. Sub-step B
+3. Third step
+
+### Task Lists
+
+- [x] Completed task
+- [ ] Pending task
+- [ ] Another pending task
+
+## Code
+
+Inline code: \`const x = 42\`
+
+### Code Block
+
+\`\`\`typescript
+function greet(name: string): string {
+  return \`Hello, \${name}!\`;
+}
+
+console.log(greet("World"));
+\`\`\`
+
+## Blockquotes
+
+> This is a blockquote.
+> It can span multiple lines.
+>
+> > Nested blockquotes are also supported.
+
+## Tables
+
+| Feature | Supported | Notes |
+|---------|-----------|-------|
+| Headers | Yes | H1-H6 |
+| Lists | Yes | Ordered, unordered, tasks |
+| Tables | Yes | GFM style |
+| Code | Yes | Inline and blocks |
+
+## Links
+
+[OpenAI](https://openai.com)
+
+## Horizontal Rules
+
+---
+
+## Mixed Content
+
+> **Note:** This blockquote contains *formatted* text and a [link](https://example.com).
+
+- List item with **bold** text
+- List item with \`inline code\`
+- List item with a [link](https://example.com)`,
+    createdAt: new Date(Date.now() - 345600000),
+    updatedAt: new Date(Date.now() - 259200000),
+  },
+  {
+    id: uuidv4(),
     title: 'Welcome to Notes',
     content: '# Welcome to Notes\n\nThis is a simple, Apple Notes-inspired markdown editor.\n\n## Features\n\n- **Markdown support** with live preview\n- **Clean, minimal interface**\n- **Fast search** through your notes\n- **Auto-save** to local state\n\nStart typing to create your first note!',
     createdAt: new Date(Date.now() - 86400000),
