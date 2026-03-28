@@ -5,7 +5,6 @@
   background-color: var(--editor-bg);
 }
 
-/* Milkdown editor base styles for theme integration */
 .milkdown-editor {
   width: 100%;
 }
