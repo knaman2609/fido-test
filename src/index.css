@@ -11,6 +11,8 @@
   --scrollbar-thumb: rgba(0, 0, 0, 0.15);
   --scrollbar-thumb-hover: rgba(0, 0, 0, 0.25);
   --button-hover-bg: rgba(120, 120, 128, 0.2);
+  --button-secondary-bg: rgba(120, 120, 128, 0.16);
+  --search-clear-hover-bg: rgba(120, 120, 128, 0.32);
   --search-bg: rgba(120, 120, 128, 0.12);
   --search-bg-focus: rgba(120, 120, 128, 0.2);
 }
