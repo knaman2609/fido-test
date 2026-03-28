@@ -30,6 +30,8 @@
   --scrollbar-thumb: rgba(255, 255, 255, 0.15);
   --scrollbar-thumb-hover: rgba(255, 255, 255, 0.25);
   --button-hover-bg: rgba(120, 120, 128, 0.24);
+  --button-secondary-bg: rgba(120, 120, 128, 0.20);
+  --search-clear-hover-bg: rgba(120, 120, 128, 0.36);
   --search-bg: rgba(120, 120, 128, 0.24);
   --search-bg-focus: rgba(120, 120, 128, 0.32);
 }
