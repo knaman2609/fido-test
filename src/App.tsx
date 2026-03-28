@@ -1,19 +1,11 @@
 import type { FC } from 'react';
-import { useEffect } from 'react';
 import { Sidebar } from '@/components/Sidebar/Sidebar';
 import { Editor } from '@/components/Editor/Editor';
 import { EmptyState } from '@/components/EmptyState/EmptyState';
 import { useNotes } from '@/hooks/useNotes';
-import { useThemeStore } from '@/store/themeStore';
 import './App.css';
 
 const App: FC = () => {
-  const { theme } = useThemeStore();
-
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-  }, [theme]);
-
   const {
     filteredNotes,
     selectedNote,
