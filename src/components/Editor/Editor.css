@@ -181,6 +181,10 @@
   background-color: rgba(120, 120, 128, 0.04);
 }
 
+[data-theme="dark"] .editor__content .milkdown tr:nth-child(even) {
+  background-color: rgba(120, 120, 128, 0.12);
+}
+
 .editor__content .milkdown .task-list-item {
   list-style: none;
   position: relative;
