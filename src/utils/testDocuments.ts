@@ -379,6 +379,10 @@ export const testDocumentTemplates: TestDocumentTemplate[] = [
   }
 ];
 
+const extractTitleFromContent = (content: string): string => {
+  return content.split('\n')[0].replace(/^#+\s*/, '').trim() || 'Untitled';
+};
+
 export const generateTestDocument = (): Note => {
   const template = testDocumentTemplates[Math.floor(Math.random() * testDocumentTemplates.length)];
   const content = template.generateContent();
@@ -386,7 +390,7 @@ export const generateTestDocument = (): Note => {
 
   return {
     id: uuidv4(),
-    title: content.split('\n')[0].replace(/^#+\s*/, '').trim() || 'Untitled',
+    title: extractTitleFromContent(content),
     content,
     createdAt: now,
     updatedAt: now
