@@ -2,6 +2,7 @@ import React from 'react';
 import { Plus } from 'lucide-react';
 import { SearchBar } from '@/components/SearchBar/SearchBar';
 import { NoteList } from '@/components/NoteList/NoteList';
+import { TestDocGenerator } from '@/components/TestDocGenerator/TestDocGenerator';
 import type { Note } from '@/types/note';
 import './Sidebar.css';
 
@@ -31,6 +32,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <Plus size={18} />
           <span>New Note</span>
         </button>
+        <TestDocGenerator />
         <SearchBar value={searchQuery} onChange={onSearchChange} />
       </div>
       <div className="sidebar__content">

@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { v4 as uuidv4 } from 'uuid';
 import type { Note } from '@/types/note';
+import { generateTestDocument, generateMultipleTestDocuments } from '@/utils/testDocuments';
 
 interface NotesState {
   notes: Note[];
@@ -13,6 +14,8 @@ interface NotesState {
   setSearchQuery: (query: string) => void;
   getFilteredNotes: () => Note[];
   getSelectedNote: () => Note | null;
+  addTestNote: () => string;
+  addMultipleTestNotes: (count: number) => string[];
 }
 
 const extractTitle = (content: string): string => {
@@ -122,5 +125,23 @@ export const useNotesStore = create<NotesState>((set, get) => ({
   getSelectedNote: () => {
     const { notes, selectedNoteId } = get();
     return notes.find(note => note.id === selectedNoteId) || null;
+  },
+
+  addTestNote: () => {
+    const newNote = generateTestDocument();
+    set(state => ({
+      notes: [newNote, ...state.notes],
+      selectedNoteId: newNote.id,
+    }));
+    return newNote.id;
+  },
+
+  addMultipleTestNotes: (count: number) => {
+    const newNotes = generateMultipleTestDocuments(count);
+    set(state => ({
+      notes: [...newNotes, ...state.notes],
+      selectedNoteId: newNotes[0]?.id || null,
+    }));
+    return newNotes.map(note => note.id);
   },
 }));

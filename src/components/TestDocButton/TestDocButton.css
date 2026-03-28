@@ -1,0 +1,31 @@
+.test-doc-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background-color: var(--note-hover);
+  color: var(--text-primary);
+  border: 1px solid var(--sidebar-border);
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+  width: 100%;
+}
+
+.test-doc-button:hover {
+  background-color: var(--note-selected);
+  border-color: var(--text-secondary);
+}
+
+.test-doc-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.test-doc-button:focus-visible {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: 2px;
+}
