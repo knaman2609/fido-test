@@ -40,22 +40,3 @@ export const useThemeStore = create<ThemeState>()(
     }
   )
 );
-
-export const initializeTheme = () => {
-  const storedTheme = localStorage.getItem('fido-theme');
-  let theme: Theme;
-
-  if (storedTheme) {
-    try {
-      const parsed = JSON.parse(storedTheme);
-      theme = parsed.state?.theme || getSystemTheme();
-    } catch {
-      theme = getSystemTheme();
-    }
-  } else {
-    theme = getSystemTheme();
-  }
-
-  document.documentElement.setAttribute('data-theme', theme);
-  return theme;
-};
