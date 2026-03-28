@@ -43,7 +43,7 @@ const MilkdownEditorInner: React.FC<MilkdownEditorProps> = ({
       .use(listener);
   }, []);
 
-  return <Milkdown />;
+  return <div className="milkdown-editor"><Milkdown /></div>;
 };
 
 export const MilkdownEditor: React.FC<MilkdownEditorProps> = (props) => {
