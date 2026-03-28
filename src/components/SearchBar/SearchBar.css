@@ -3,13 +3,13 @@
   align-items: center;
   gap: 8px;
   padding: 8px 12px;
-  background-color: rgba(120, 120, 128, 0.12);
+  background-color: var(--search-bg);
   border-radius: 10px;
   transition: background-color 0.2s ease;
 }
 
 .search-bar:focus-within {
-  background-color: rgba(120, 120, 128, 0.2);
+  background-color: var(--search-bg-focus);
 }
 
 .search-bar__icon {
