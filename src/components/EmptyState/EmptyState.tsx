@@ -16,7 +16,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({ onCreateNote }) => {
       <p className="empty-state__description">
         Choose a note from the sidebar or create a new one to get started.
       </p>
-      <button className="empty-state__button" onClick={onCreateNote}>
+      <button type="button" className="empty-state__button" onClick={onCreateNote}>
         <Plus size={18} />
         <span>Create New Note</span>
       </button>
