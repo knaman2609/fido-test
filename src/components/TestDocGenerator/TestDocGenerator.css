@@ -60,6 +60,17 @@
   animation: fadeIn 0.2s ease;
 }
 
+.test-doc-generator__error {
+  padding: 8px 12px;
+  background-color: rgba(255, 59, 48, 0.1);
+  border: 1px solid var(--accent-red, #ff3b30);
+  border-radius: 6px;
+  font-size: 13px;
+  color: var(--accent-red, #ff3b30);
+  text-align: center;
+  animation: fadeIn 0.2s ease;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
