@@ -1,17 +1,16 @@
 # Test Markdown File
 
-This is a comprehensive test file for the Apple Notes Editor. It demonstrates various markdown features supported by Milkdown with GFM (GitHub Flavored Markdown).
+This is a test markdown file for the Apple Notes Editor. It demonstrates various markdown features supported by the Milkdown editor with GFM (GitHub Flavored Markdown).
 
 ---
 
 ## Headers
 
+# H1 Header
+## H2 Header
 ### H3 Header
-
 #### H4 Header
-
 ##### H5 Header
-
 ###### H6 Header
 
 ---
@@ -20,15 +19,15 @@ This is a comprehensive test file for the Apple Notes Editor. It demonstrates va
 
 This is a paragraph with **bold text**, *italic text*, and ***bold italic text***.
 
-You can also use ~~strikethrough~~ for deleted text.
+You can also use __underscores__ for _emphasis_ and ~~strikethrough~~ for deleted text.
 
-Here is some `inline code` within a sentence.
+This is `inline code` within a paragraph.
 
 ---
 
 ## Lists
 
-### Unordered List
+### Unordered Lists
 
 - First item
 - Second item
@@ -37,7 +36,7 @@ Here is some `inline code` within a sentence.
     - Deeply nested item
 - Third item
 
-### Ordered List
+### Ordered Lists
 
 1. First step
 2. Second step
@@ -45,7 +44,7 @@ Here is some `inline code` within a sentence.
    2. Sub-step B
 3. Third step
 
-### Task List (GFM)
+### Task Lists (GFM)
 
 - [x] Completed task
 - [ ] Incomplete task
@@ -59,16 +58,17 @@ Here is some `inline code` within a sentence.
 
 ### Inline Code
 
-Use `console.log('Hello World')` to print to the console.
+Use `console.log()` to print to the console.
 
-### Fenced Code Block
+### Fenced Code Blocks
 
 ```javascript
 function greet(name) {
-  return `Hello, ${name}!`;
+  console.log(`Hello, ${name}!`);
+  return `Welcome, ${name}`;
 }
 
-console.log(greet('World'));
+greet('World');
 ```
 
 ```python
@@ -77,7 +77,7 @@ def fibonacci(n):
         return n
     return fibonacci(n - 1) + fibonacci(n - 2)
 
-print(f"Fibonacci(10) = {fibonacci(10)}")
+print(fibonacci(10))
 ```
 
 ```css
@@ -93,60 +93,40 @@ print(f"Fibonacci(10) = {fibonacci(10)}")
 
 ## Blockquotes
 
-> This is a simple blockquote.
-
-> Blockquotes can contain multiple paragraphs.
+> This is a blockquote. It can span multiple lines and contain other markdown elements.
 >
-> Like this one, which continues the quote above.
-
-> Nested blockquotes:
->> This is a nested quote.
->>
->> It can also have multiple paragraphs.
-
-> Blockquotes can also contain other elements:
-> - List item 1
-> - List item 2
+> > Nested blockquotes are also supported.
 >
-> And **formatted text** too!
-
----
-
-## Tables (GFM)
-
-### Simple Table
-
-| Feature | Supported | Notes |
-|---------|-----------|-------|
-| Headers | ✅ Yes | H1-H6 supported |
-| Lists | ✅ Yes | Ordered, unordered, and task lists |
-| Code | ✅ Yes | Inline and fenced blocks |
-| Tables | ✅ Yes | GFM style tables |
-
-### Aligned Table
-
-| Left Aligned | Center Aligned | Right Aligned |
-|:-------------|:--------------:|--------------:|
-| Left text    | Center text    | Right text    |
-| Another left | Another center | Another right |
-| Lorem ipsum  | Dolor sit      | Amet consect  |
+> - Lists inside blockquotes
+> - **Bold text** and *italic text*
 
 ---
 
 ## Links
 
-### External Links
+[Apple](https://www.apple.com) - External link
 
-- [Milkdown Documentation](https://milkdown.dev)
-- [GitHub](https://github.com)
-- [Markdown Guide](https://www.markdownguide.org)
+[Internal Link](#headers) - Link to a section in this document
 
-### Reference Links
+<https://www.example.com> - Autolink
 
-Here's a [reference link][ref1] and another [reference link][ref2].
+---
 
-[ref1]: https://milkdown.dev "Milkdown"
-[ref2]: https://github.com "GitHub"
+## Tables (GFM)
+
+| Feature | Supported | Notes |
+|---------|-----------|-------|
+| Headers | ✅ Yes | All 6 levels |
+| Lists | ✅ Yes | Ordered, unordered, and task lists |
+| Code Blocks | ✅ Yes | With syntax highlighting |
+| Tables | ✅ Yes | GFM style |
+| Blockquotes | ✅ Yes | Nested supported |
+| Links | ✅ Yes | Internal and external |
+
+| Left Aligned | Center Aligned | Right Aligned |
+|:-------------|:--------------:|--------------:|
+| Left text    | Center text    | Right text    |
+| Another left | Another center | Another right |
 
 ---
 
@@ -160,7 +140,7 @@ Below the rule.
 
 ***
 
-Another style of rule.
+Another style of horizontal rule.
 
 ___
 
@@ -170,78 +150,30 @@ Yet another style.
 
 ## Mixed Content Example
 
-### Meeting Notes Template
-
-**Date:** 2024-01-15  
-**Attendees:** Alice, Bob, Charlie
-
-#### Agenda
-
-1. Review last week's action items
-2. Discuss new features
-3. Plan next sprint
-
-#### Notes
-
-> Alice mentioned that the **performance improvements** are showing great results.
-
-Action items for next week:
-
-| Task | Owner | Due Date | Status |
-|------|-------|----------|--------|
-| Optimize database queries | Bob | 2024-01-22 | 🟡 In Progress |
-| Update documentation | Charlie | 2024-01-20 | 🟢 Done |
-| Fix UI bugs | Alice | 2024-01-25 | 🔴 Not Started |
-
-#### Code Snippet from Discussion
-
-```typescript
-interface Task {
-  id: string;
-  title: string;
-  owner: string;
-  dueDate: Date;
-  status: 'todo' | 'in-progress' | 'done';
-}
-
-const tasks: Task[] = [
-  {
-    id: '1',
-    title: 'Optimize database queries',
-    owner: 'Bob',
-    dueDate: new Date('2024-01-22'),
-    status: 'in-progress'
-  }
-];
-```
+> ### Quote with a Header
+>
+> This blockquote contains:
+> - A list item
+> - **Bold text** for emphasis
+> - A [link to Apple](https://www.apple.com)
+>
+> ```javascript
+> // And even a code block
+> const example = "Hello from a blockquote!";
+> ```
 
 ---
 
-## Edge Cases
+## Emoji Support (if enabled)
 
-### Empty Elements
-
-Empty line below:
-
-
-Empty line above.
-
-### Special Characters
-
-Here are some special characters: < > & " ' ` * _ ~ [ ] ( ) { } # + - . !
-
-### Escaped Characters
-
-\*Not italic\*  
-\`Not code\`  
-\[Not a link\](url)
-
-### Long Lines
-
-This is a very long line that goes on and on to test how the editor handles wrapping and overflow. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+🎉 Party popper
+🚀 Rocket
+💡 Light bulb
+✅ Check mark
+❌ Cross mark
 
 ---
 
 ## End of Test File
 
-This concludes the test markdown file. It should provide comprehensive coverage of the markdown features available in Milkdown with GFM support.
+This concludes the test markdown file. It should provide a comprehensive test of the editor's rendering capabilities.
