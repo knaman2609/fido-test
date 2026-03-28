@@ -37,7 +37,6 @@ const MilkdownEditorInner: React.FC<MilkdownEditorProps> = ({
           }
         });
       })
-      .config(nord)
       .use(commonmark)
       .use(gfm)
       .use(history)
