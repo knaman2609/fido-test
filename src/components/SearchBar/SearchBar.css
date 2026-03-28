@@ -44,5 +44,5 @@
 }
 
 .search-bar__clear:hover {
-  background: var(--scrollbar-thumb-hover);
+  background: var(--search-clear-hover-bg);
 }
