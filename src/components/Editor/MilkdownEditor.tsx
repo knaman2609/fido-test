@@ -2,9 +2,13 @@ import React, { useEffect, useRef } from 'react';
 import { Editor, rootCtx, defaultValueCtx } from '@milkdown/core';
 import { commonmark } from '@milkdown/preset-commonmark';
 import { gfm } from '@milkdown/preset-gfm';
+import { nord } from '@milkdown/theme-nord';
 import { history } from '@milkdown/plugin-history';
 import { listener, listenerCtx } from '@milkdown/plugin-listener';
 import { MilkdownProvider, Milkdown, useEditor } from '@milkdown/react';
+import { useThemeStore } from '@/store/themeStore';
+
+import '@milkdown/theme-nord/style.css';
 
 interface MilkdownEditorProps {
   content: string;
@@ -15,6 +19,7 @@ const MilkdownEditorInner: React.FC<MilkdownEditorProps> = ({
   content,
   onChange,
 }) => {
+  const { theme } = useThemeStore();
   const onChangeRef = useRef(onChange);
   const contentRef = useRef(content);
 
@@ -37,13 +42,18 @@ const MilkdownEditorInner: React.FC<MilkdownEditorProps> = ({
           }
         });
       })
+      .config(nord)
       .use(commonmark)
       .use(gfm)
       .use(history)
       .use(listener);
   }, []);
 
-  return <div className="milkdown-editor"><Milkdown /></div>;
+  return (
+    <div className={`milkdown-editor milkdown-theme-${theme}`}>
+      <Milkdown />
+    </div>
+  );
 };
 
 export const MilkdownEditor: React.FC<MilkdownEditorProps> = (props) => {
