@@ -126,4 +126,22 @@ export const useNotesStore = create<NotesState>((set, get) => ({
     const { notes, selectedNoteId } = get();
     return notes.find(note => note.id === selectedNoteId) || null;
   },
+
+  addTestNote: () => {
+    const newNote = generateTestDocument();
+    set(state => ({
+      notes: [newNote, ...state.notes],
+      selectedNoteId: newNote.id,
+    }));
+    return newNote.id;
+  },
+
+  addMultipleTestNotes: (count: number) => {
+    const newNotes = generateMultipleTestDocuments(count);
+    set(state => ({
+      notes: [...newNotes, ...state.notes],
+      selectedNoteId: newNotes[0]?.id || null,
+    }));
+    return newNotes.map(note => note.id);
+  },
 }));
