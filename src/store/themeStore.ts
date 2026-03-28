@@ -31,11 +31,6 @@ export const useThemeStore = create<ThemeState>()(
     {
       name: 'fido-theme',
       storage: createJSONStorage(() => localStorage),
-      onRehydrateStorage: () => (state) => {
-        if (state) {
-          document.documentElement.setAttribute('data-theme', state.theme);
-        }
-      },
     }
   )
 );
