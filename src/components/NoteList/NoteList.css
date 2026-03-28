@@ -26,10 +26,10 @@
 }
 
 .note-list::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.15);
+  background-color: var(--scrollbar-thumb);
   border-radius: 4px;
 }
 
 .note-list::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(0, 0, 0, 0.25);
+  background-color: var(--scrollbar-thumb-hover);
 }
