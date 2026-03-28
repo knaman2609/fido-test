@@ -400,6 +400,7 @@ export const generateTestDocument = (): Note => {
 export const generateMultipleTestDocuments = (count: number): Note[] => {
   const notes: Note[] = [];
   const usedTemplates = new Set<number>();
+  const baseDate = new Date();
 
   for (let i = 0; i < count; i++) {
     let templateIndex: number;
@@ -415,12 +416,11 @@ export const generateMultipleTestDocuments = (count: number): Note[] => {
 
     const template = testDocumentTemplates[templateIndex];
     const content = template.generateContent();
-    const now = new Date();
-    now.setMilliseconds(now.getMilliseconds() + i);
+    const now = new Date(baseDate.getTime() + i);
 
     notes.push({
       id: uuidv4(),
-      title: content.split('\n')[0].replace(/^#+\s*/, '').trim() || 'Untitled',
+      title: extractTitleFromContent(content),
       content,
       createdAt: now,
       updatedAt: now
