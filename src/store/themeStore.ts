@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, createJSONStorage } from 'zustand/middleware';
 
 type Theme = 'light' | 'dark';
 
@@ -16,10 +16,28 @@ const getSystemTheme = (): Theme => {
   return 'light';
 };
 
+// Initialize theme from localStorage or system preference before store creation
+const getInitialTheme = (): Theme => {
+  try {
+    const stored = localStorage.getItem('fido-theme');
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      return parsed.state?.theme || parsed.theme || getSystemTheme();
+    }
+  } catch {
+    // localStorage not available or parse error
+  }
+  return getSystemTheme();
+};
+
+// Set initial theme attribute immediately
+const initialTheme = getInitialTheme();
+document.documentElement.setAttribute('data-theme', initialTheme);
+
 export const useThemeStore = create<ThemeState>()(
   persist(
     (set, get) => ({
-      theme: getSystemTheme(),
+      theme: initialTheme,
       toggleTheme: () => {
         const newTheme = get().theme === 'light' ? 'dark' : 'light';
         set({ theme: newTheme });
@@ -30,7 +48,8 @@ export const useThemeStore = create<ThemeState>()(
     }),
     {
       name: 'fido-theme',
-      onRehydrateStorage: (state) => {
+      storage: createJSONStorage(() => localStorage),
+      onRehydrateStorage: () => (state) => {
         if (state) {
           document.documentElement.setAttribute('data-theme', state.theme);
         }
@@ -39,6 +58,7 @@ export const useThemeStore = create<ThemeState>()(
   )
 );
 
+// Subscribe to theme changes and update DOM
 useThemeStore.subscribe((state) => {
   document.documentElement.setAttribute('data-theme', state.theme);
 });
