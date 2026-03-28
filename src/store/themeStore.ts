@@ -31,6 +31,11 @@ export const useThemeStore = create<ThemeState>()(
     {
       name: 'fido-theme',
       storage: createJSONStorage(() => localStorage),
+      onRehydrateStorage: () => (state) => {
+        if (state && state.theme !== 'light' && state.theme !== 'dark') {
+          state.theme = getSystemTheme();
+        }
+      },
     }
   )
 );
