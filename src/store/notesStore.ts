@@ -125,7 +125,6 @@ console.log(greet("World"));
 - List item with **bold** text
 - List item with \`inline code\`
 - List item with a [link](https://example.com)`,
-  },
     createdAt: new Date(Date.now() - 345600000),
     updatedAt: new Date(Date.now() - 259200000),
   },
