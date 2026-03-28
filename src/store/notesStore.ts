@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { v4 as uuidv4 } from 'uuid';
 import type { Note } from '@/types/note';
+import { generateTestDocument, generateMultipleTestDocuments } from '@/utils/testDocuments';
 
 interface NotesState {
   notes: Note[];
@@ -13,6 +14,8 @@ interface NotesState {
   setSearchQuery: (query: string) => void;
   getFilteredNotes: () => Note[];
   getSelectedNote: () => Note | null;
+  addTestNote: () => string;
+  addMultipleTestNotes: (count: number) => string[];
 }
 
 const extractTitle = (content: string): string => {
