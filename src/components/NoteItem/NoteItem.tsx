@@ -55,6 +55,7 @@ export const NoteItem: React.FC<NoteItemProps> = memo(({
         </div>
       </div>
       <button
+        type="button"
         className="note-item__delete"
         onClick={handleDelete}
         aria-label="Delete note"
