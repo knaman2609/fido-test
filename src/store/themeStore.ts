@@ -16,28 +16,10 @@ const getSystemTheme = (): Theme => {
   return 'light';
 };
 
-// Initialize theme from localStorage or system preference before store creation
-const getInitialTheme = (): Theme => {
-  try {
-    const stored = localStorage.getItem('fido-theme');
-    if (stored) {
-      const parsed = JSON.parse(stored);
-      return parsed.state?.theme || parsed.theme || getSystemTheme();
-    }
-  } catch {
-    // localStorage not available or parse error
-  }
-  return getSystemTheme();
-};
-
-// Set initial theme attribute immediately
-const initialTheme = getInitialTheme();
-document.documentElement.setAttribute('data-theme', initialTheme);
-
 export const useThemeStore = create<ThemeState>()(
   persist(
     (set, get) => ({
-      theme: initialTheme,
+      theme: getSystemTheme(),
       toggleTheme: () => {
         const newTheme = get().theme === 'light' ? 'dark' : 'light';
         set({ theme: newTheme });
