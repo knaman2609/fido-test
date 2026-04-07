@@ -18,8 +18,8 @@ export const formatFullDate = (date: Date): string => {
   return format(date, 'MMM d, yyyy h:mm a');
 };
 
-export const getGreeting = (): string => {
-  const hour = new Date().getHours();
+export const getGreeting = (date: Date = new Date()): string => {
+  const hour = date.getHours();
   if (hour >= 5 && hour < 12) return 'Good morning';
   if (hour >= 12 && hour < 18) return 'Good afternoon';
   return 'Good evening';
