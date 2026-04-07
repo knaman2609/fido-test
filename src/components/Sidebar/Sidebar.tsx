@@ -2,6 +2,7 @@ import React from 'react';
 import { Plus } from 'lucide-react';
 import { SearchBar } from '@/components/SearchBar/SearchBar';
 import { NoteList } from '@/components/NoteList/NoteList';
+import { Greeting } from '@/components/Greeting/Greeting';
 import type { Note } from '@/types/note';
 import './Sidebar.css';
 
@@ -27,6 +28,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   return (
     <aside className="sidebar">
       <div className="sidebar__header">
+        <Greeting />
         <button className="sidebar__new-btn" onClick={onAddNote}>
           <Plus size={18} />
           <span>New Note</span>
