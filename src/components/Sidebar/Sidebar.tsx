@@ -22,10 +22,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
   notes,
   selectedNoteId,
   searchQuery,
+  showFavoritesOnly,
   onSearchChange,
   onSelectNote,
   onDeleteNote,
   onAddNote,
+  onToggleFavorites,
+  onToggleFavorite,
 }) => {
   return (
     <aside className="sidebar">
