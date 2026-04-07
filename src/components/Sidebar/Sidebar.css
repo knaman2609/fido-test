@@ -16,6 +16,14 @@
   border-bottom: 1px solid var(--sidebar-border);
 }
 
+.sidebar__greeting {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 4px 0;
+  padding: 0 4px;
+}
+
 .sidebar__new-btn {
   display: flex;
   align-items: center;
