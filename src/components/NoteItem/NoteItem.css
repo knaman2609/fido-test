@@ -65,6 +65,43 @@
   color: var(--text-secondary);
 }
 
+.note-item__favorite {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--text-secondary);
+  opacity: 0;
+  transition: all 0.15s ease;
+}
+
+.note-item:hover .note-item__favorite {
+  opacity: 1;
+}
+
+.note-item__favorite:hover {
+  background-color: rgba(255, 204, 0, 0.1);
+  color: #ffcc00;
+}
+
+.note-item__favorite--active {
+  opacity: 1;
+  color: #ffcc00;
+}
+
+.note-item__favorite--active:hover {
+  background-color: rgba(255, 204, 0, 0.15);
+  color: #e6b800;
+}
+
+.note-item--favorited {
+  border-left: 3px solid #ffcc00;
+}
+
 .note-item__delete {
   display: flex;
   align-items: center;

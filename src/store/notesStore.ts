@@ -6,11 +6,14 @@ interface NotesState {
   notes: Note[];
   selectedNoteId: string | null;
   searchQuery: string;
+  showFavoritesOnly: boolean;
   addNote: () => string;
   updateNote: (id: string, content: string) => void;
   deleteNote: (id: string) => void;
   selectNote: (id: string | null) => void;
   setSearchQuery: (query: string) => void;
+  toggleFavorite: (id: string) => void;
+  setShowFavoritesOnly: (value: boolean) => void;
   getFilteredNotes: () => Note[];
   getSelectedNote: () => Note | null;
 }
@@ -30,6 +33,7 @@ const createDefaultNote = (): Note => {
     content: '',
     createdAt: now,
     updatedAt: now,
+    isFavorite: false,
   };
 };
 
@@ -40,6 +44,7 @@ const sampleNotes: Note[] = [
     content: '# Welcome to Notes\n\nThis is a simple, Apple Notes-inspired markdown editor.\n\n## Features\n\n- **Markdown support** with live preview\n- **Clean, minimal interface**\n- **Fast search** through your notes\n- **Auto-save** to local state\n\nStart typing to create your first note!',
     createdAt: new Date(Date.now() - 86400000),
     updatedAt: new Date(Date.now() - 3600000),
+    isFavorite: true,
   },
   {
     id: uuidv4(),
@@ -47,6 +52,7 @@ const sampleNotes: Note[] = [
     content: '# Shopping List\n\n- [x] Milk\n- [x] Eggs\n- [ ] Bread\n- [ ] Butter\n- [ ] Coffee',
     createdAt: new Date(Date.now() - 172800000),
     updatedAt: new Date(Date.now() - 86400000),
+    isFavorite: false,
   },
   {
     id: uuidv4(),
@@ -54,6 +60,7 @@ const sampleNotes: Note[] = [
     content: '# Project Ideas\n\n1. Personal website redesign\n2. Mobile app for tracking habits\n3. Browser extension for productivity\n4. Open source contribution to React\n\n## Notes\n\nFocus on projects that solve real problems.',
     createdAt: new Date(Date.now() - 259200000),
     updatedAt: new Date(Date.now() - 172800000),
+    isFavorite: false,
   },
 ];
 
@@ -61,6 +68,7 @@ export const useNotesStore = create<NotesState>((set, get) => ({
   notes: sampleNotes,
   selectedNoteId: sampleNotes[0]?.id || null,
   searchQuery: '',
+  showFavoritesOnly: false,
 
   addNote: () => {
     const newNote = createDefaultNote();
@@ -108,15 +116,36 @@ export const useNotesStore = create<NotesState>((set, get) => ({
     set({ searchQuery: query });
   },
 
+  toggleFavorite: (id) => {
+    set(state => ({
+      notes: state.notes.map(note =>
+        note.id === id ? { ...note, isFavorite: !note.isFavorite } : note
+      ),
+    }));
+  },
+
+  setShowFavoritesOnly: (value) => {
+    set({ showFavoritesOnly: value });
+  },
+
   getFilteredNotes: () => {
-    const { notes, searchQuery } = get();
-    if (!searchQuery.trim()) return notes;
-    const query = searchQuery.toLowerCase();
-    return notes.filter(
-      note =>
-        note.title.toLowerCase().includes(query) ||
-        note.content.toLowerCase().includes(query)
-    );
+    const { notes, searchQuery, showFavoritesOnly } = get();
+    let filtered = notes;
+
+    if (showFavoritesOnly) {
+      filtered = filtered.filter(note => note.isFavorite);
+    }
+
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(
+        note =>
+          note.title.toLowerCase().includes(query) ||
+          note.content.toLowerCase().includes(query)
+      );
+    }
+
+    return filtered;
   },
 
   getSelectedNote: () => {

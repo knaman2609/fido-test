@@ -23,10 +23,13 @@ export const useNotes = () => {
     selectedNote: store.getSelectedNote(),
     selectedNoteId: store.selectedNoteId,
     searchQuery: store.searchQuery,
+    showFavoritesOnly: store.showFavoritesOnly,
     addNote: store.addNote,
     updateNote: updateNoteWithDebounce,
     deleteNote: store.deleteNote,
     selectNote: store.selectNote,
     setSearchQuery: store.setSearchQuery,
+    toggleFavorite: store.toggleFavorite,
+    setShowFavoritesOnly: store.setShowFavoritesOnly,
   };
 };
