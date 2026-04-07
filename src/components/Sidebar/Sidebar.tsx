@@ -33,10 +33,20 @@ export const Sidebar: React.FC<SidebarProps> = ({
   return (
     <aside className="sidebar">
       <div className="sidebar__header">
-        <button className="sidebar__new-btn" onClick={onAddNote}>
-          <Plus size={18} />
-          <span>New Note</span>
-        </button>
+        <div className="sidebar__header-row">
+          <button className="sidebar__new-btn" onClick={onAddNote}>
+            <Plus size={18} />
+            <span>New Note</span>
+          </button>
+          <button
+            className={`sidebar__favorites-btn ${showFavoritesOnly ? 'sidebar__favorites-btn--active' : ''}`}
+            onClick={onToggleFavorites}
+            aria-label={showFavoritesOnly ? 'Show all notes' : 'Show favorites only'}
+            title={showFavoritesOnly ? 'Show all notes' : 'Show favorites only'}
+          >
+            <Star size={18} fill={showFavoritesOnly ? 'currentColor' : 'none'} />
+          </button>
+        </div>
         <SearchBar value={searchQuery} onChange={onSearchChange} />
       </div>
       <div className="sidebar__content">
@@ -45,6 +55,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           selectedNoteId={selectedNoteId}
           onSelectNote={onSelectNote}
           onDeleteNote={onDeleteNote}
+          onToggleFavorite={onToggleFavorite}
         />
       </div>
       <div className="sidebar__footer">
