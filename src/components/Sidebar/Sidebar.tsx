@@ -1,5 +1,5 @@
 import React from 'react';
-import { Plus } from 'lucide-react';
+import { Plus, Star } from 'lucide-react';
 import { SearchBar } from '@/components/SearchBar/SearchBar';
 import { NoteList } from '@/components/NoteList/NoteList';
 import type { Note } from '@/types/note';
@@ -9,10 +9,13 @@ interface SidebarProps {
   notes: Note[];
   selectedNoteId: string | null;
   searchQuery: string;
+  showFavoritesOnly: boolean;
   onSearchChange: (query: string) => void;
   onSelectNote: (id: string) => void;
   onDeleteNote: (id: string) => void;
   onAddNote: () => void;
+  onToggleFavorites: () => void;
+  onToggleFavorite: (id: string) => void;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
