@@ -16,6 +16,10 @@
   border-bottom: 1px solid var(--sidebar-border);
 }
 
+.sidebar__header .greeting {
+  margin-bottom: 4px;
+}
+
 .sidebar__new-btn {
   display: flex;
   align-items: center;
