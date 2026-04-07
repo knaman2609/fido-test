@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { Trash2 } from 'lucide-react';
+import { Trash2, Star } from 'lucide-react';
 import type { Note } from '@/types/note';
 import { formatDate } from '@/utils/date';
 import './NoteItem.css';
@@ -9,6 +9,7 @@ interface NoteItemProps {
   isSelected: boolean;
   onSelect: (id: string) => void;
   onDelete: (id: string) => void;
+  onToggleFavorite: (id: string) => void;
 }
 
 const getPreview = (content: string): string => {
@@ -32,6 +33,7 @@ export const NoteItem: React.FC<NoteItemProps> = memo(({
   isSelected,
   onSelect,
   onDelete,
+  onToggleFavorite,
 }) => {
   const handleClick = () => {
     onSelect(note.id);
@@ -42,9 +44,14 @@ export const NoteItem: React.FC<NoteItemProps> = memo(({
     onDelete(note.id);
   };
 
+  const handleToggleFavorite = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onToggleFavorite(note.id);
+  };
+
   return (
     <div
-      className={`note-item ${isSelected ? 'note-item--selected' : ''}`}
+      className={`note-item ${isSelected ? 'note-item--selected' : ''} ${note.isFavorite ? 'note-item--favorited' : ''}`}
       onClick={handleClick}
     >
       <div className="note-item__content">
@@ -54,6 +61,13 @@ export const NoteItem: React.FC<NoteItemProps> = memo(({
           <span className="note-item__preview">{getPreview(note.content)}</span>
         </div>
       </div>
+      <button
+        className={`note-item__favorite ${note.isFavorite ? 'note-item__favorite--active' : ''}`}
+        onClick={handleToggleFavorite}
+        aria-label={note.isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+      >
+        <Star size={16} fill={note.isFavorite ? 'currentColor' : 'none'} />
+      </button>
       <button
         className="note-item__delete"
         onClick={handleDelete}
