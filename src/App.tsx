@@ -11,11 +11,14 @@ const App: FC = () => {
     selectedNote,
     selectedNoteId,
     searchQuery,
+    showFavoritesOnly,
     addNote,
     updateNote,
     deleteNote,
     selectNote,
     setSearchQuery,
+    toggleFavorite,
+    setShowFavoritesOnly,
   } = useNotes();
 
   return (
@@ -24,10 +27,13 @@ const App: FC = () => {
         notes={filteredNotes}
         selectedNoteId={selectedNoteId}
         searchQuery={searchQuery}
+        showFavoritesOnly={showFavoritesOnly}
         onSearchChange={setSearchQuery}
         onSelectNote={selectNote}
         onDeleteNote={deleteNote}
         onAddNote={addNote}
+        onToggleFavorites={() => setShowFavoritesOnly(!showFavoritesOnly)}
+        onToggleFavorite={toggleFavorite}
       />
       <main className="app__main">
         {selectedNote ? (
