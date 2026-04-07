@@ -24,7 +24,7 @@ const App: FC = () => {
 
   return (
     <div className="app">
-      <WelcomeModal isOpen={isFirstTime} onClose={markVisited} />
+      {isFirstTime && <WelcomeModal onClose={markVisited} />}
       <Sidebar
         notes={filteredNotes}
         selectedNoteId={selectedNoteId}
