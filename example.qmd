@@ -1,0 +1,63 @@
+---
+title: "Sample Quarto Document"
+author: "Your Name"
+date: "2026-04-07"
+format:
+  html:
+    toc: true
+    code-fold: true
+---
+
+# Introduction
+
+This is a sample Quarto Markdown document. Quarto allows you to combine narrative text with executable code blocks for reproducible research and scientific publishing.
+
+## Key Features
+
+Quarto documents support:
+
+- **YAML frontmatter** for document metadata and configuration
+- **Standard markdown** for narrative content
+- **Executable code cells** in multiple languages (Python, R, Julia, JavaScript, etc.)
+- **Multiple output formats** (HTML, PDF, Word, presentations, etc.)
+
+# Data Analysis Example
+
+Here's a simple example of an executable code cell:
+
+```{python}
+#| echo: true
+#| fig-cap: "A sample plot"
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Generate sample data
+x = np.linspace(0, 10, 100)
+y = np.sin(x)
+
+# Create a simple plot
+plt.figure(figsize=(8, 4))
+plt.plot(x, y, 'b-', linewidth=2)
+plt.xlabel('x')
+plt.ylabel('sin(x)')
+plt.title('Sample Sine Wave')
+plt.grid(True, alpha=0.3)
+plt.show()
+```
+
+# Conclusion
+
+This dummy file demonstrates the basic structure of a `.qmd` file:
+
+1. YAML frontmatter between `---` delimiters
+2. Markdown content with headers and formatting
+3. Executable code cells with language-specific tags
+
+You can render this document using the Quarto CLI:
+
+```bash
+quarto render example.qmd
+```
+
+This will generate the output in your specified format (HTML by default).
