@@ -28,6 +28,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   return (
     <aside className="sidebar">
       <div className="sidebar__header">
+        <Greeting />
         <button className="sidebar__new-btn" onClick={onAddNote}>
           <Plus size={18} />
           <span>New Note</span>
