@@ -1,16 +1,20 @@
 import React, { useEffect, useRef } from 'react';
-import { X, FileText, Search, Trash2, Plus } from 'lucide-react';
+import { useGreeting } from '@/hooks/useGreeting';
 import './WelcomeModal.css';
 
 interface WelcomeModalProps {
+  isOpen: boolean;
   onClose: () => void;
 }
 
-export const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
+export const WelcomeModal: React.FC<WelcomeModalProps> = ({ isOpen, onClose }) => {
+  const { greeting } = useGreeting();
   const modalRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
+    if (!isOpen) return;
+
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         onClose();
@@ -32,66 +36,39 @@ export const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
       document.removeEventListener('keydown', handleEscape);
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [onClose]);
+  }, [isOpen, onClose]);
 
-  const features = [
-    {
-      icon: <Plus size={20} />,
-      title: 'Create Notes',
-      description: 'Click "New Note" to start writing with markdown support',
-    },
-    {
-      icon: <Search size={20} />,
-      title: 'Search Instantly',
-      description: 'Find your notes quickly with real-time search',
-    },
-    {
-      icon: <FileText size={20} />,
-      title: 'Markdown Editor',
-      description: 'Write with a clean, distraction-free markdown editor',
-    },
-    {
-      icon: <Trash2 size={20} />,
-      title: 'Easy Management',
-      description: 'Delete notes with a simple click when you no longer need them',
-    },
-  ];
+  if (!isOpen) return null;
 
   return (
     <div className="welcome-modal__overlay" role="dialog" aria-modal="true" aria-labelledby="welcome-title">
       <div className="welcome-modal" ref={modalRef}>
-        <button
-          ref={closeButtonRef}
-          className="welcome-modal__close"
-          onClick={onClose}
-          aria-label="Close welcome modal"
-        >
-          <X size={20} />
-        </button>
-
         <div className="welcome-modal__content">
-          <div className="welcome-modal__header">
-            <h2 id="welcome-title" className="welcome-modal__title">
-              Welcome to Notes
-            </h2>
-            <p className="welcome-modal__subtitle">
-              Your personal space for thoughts, ideas, and everything in between.
-            </p>
-          </div>
-
+          <h2 id="welcome-title" className="welcome-modal__title">
+            {greeting}!
+          </h2>
+          <p className="welcome-modal__subtitle">Welcome to your personal notes</p>
+          
           <div className="welcome-modal__features">
-            {features.map((feature, index) => (
-              <div key={index} className="welcome-modal__feature">
-                <div className="welcome-modal__feature-icon">{feature.icon}</div>
-                <div className="welcome-modal__feature-text">
-                  <h3 className="welcome-modal__feature-title">{feature.title}</h3>
-                  <p className="welcome-modal__feature-description">{feature.description}</p>
-                </div>
-              </div>
-            ))}
+            <div className="welcome-modal__feature">
+              <span className="welcome-modal__feature-icon">📝</span>
+              <span className="welcome-modal__feature-text">Create and edit notes with markdown</span>
+            </div>
+            <div className="welcome-modal__feature">
+              <span className="welcome-modal__feature-icon">🔍</span>
+              <span className="welcome-modal__feature-text">Search through all your notes instantly</span>
+            </div>
+            <div className="welcome-modal__feature">
+              <span className="welcome-modal__feature-icon">☁️</span>
+              <span className="welcome-modal__feature-text">Your notes are saved automatically</span>
+            </div>
           </div>
 
-          <button className="welcome-modal__button" onClick={onClose}>
+          <button
+            ref={closeButtonRef}
+            className="welcome-modal__button"
+            onClick={onClose}
+          >
             Get Started
           </button>
         </div>
