@@ -2,7 +2,9 @@ import type { FC } from 'react';
 import { Sidebar } from '@/components/Sidebar/Sidebar';
 import { Editor } from '@/components/Editor/Editor';
 import { EmptyState } from '@/components/EmptyState/EmptyState';
+import { WelcomeModal } from '@/components/WelcomeModal/WelcomeModal';
 import { useNotes } from '@/hooks/useNotes';
+import { useFirstTime } from '@/hooks/useFirstTime';
 import './App.css';
 
 const App: FC = () => {
@@ -18,8 +20,11 @@ const App: FC = () => {
     setSearchQuery,
   } = useNotes();
 
+  const { isFirstTime, markVisited } = useFirstTime();
+
   return (
     <div className="app">
+      {isFirstTime && <WelcomeModal onClose={markVisited} />}
       <Sidebar
         notes={filteredNotes}
         selectedNoteId={selectedNoteId}
