@@ -9,7 +9,7 @@ format:
 
 # Introduction
 
-This is the second dummy Quarto document for testing and demonstration purposes. It contains different sample content to showcase additional Quarto Markdown features.
+This is the second dummy Quarto document for testing and demonstration purposes. It contains different sample content to showcase additional Quarto Markdown features and variations.
 
 ## Section 1
 
@@ -20,12 +20,13 @@ Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu 
 Here is a JavaScript code example:
 
 ```javascript
-function greetUser(name) {
-    console.log(`Welcome, ${name}!`);
-    return { message: "Success", timestamp: Date.now() };
+function calculateSum(a, b) {
+    const result = a + b;
+    console.log(`The sum of ${a} and ${b} is ${result}`);
+    return result;
 }
 
-const response = greetUser("Developer");
+const total = calculateSum(10, 20);
 ```
 
 ### Subsection
@@ -33,7 +34,8 @@ const response = greetUser("Developer");
 - Alpha item in the list
 - Beta item in the list
 - Gamma item in the list
+- Delta item in the list
 
 ## Conclusion
 
-This concludes the second dummy document. It demonstrates basic Quarto Markdown features including YAML frontmatter, headings, code blocks, and lists with different content from the first document.
+This concludes the second dummy document. It demonstrates basic Quarto Markdown features including YAML frontmatter, headings, code blocks, and lists with content distinct from the first dummy document.
