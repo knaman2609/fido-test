@@ -1,0 +1,41 @@
+---
+title: "Dummy Document 2"
+author: "Author Name"
+date: today
+format:
+  html:
+    code-fold: true
+---
+
+# Introduction
+
+This is the second dummy Quarto document, created as an additional sample for testing and demonstration. It follows a similar structure but contains distinct content from the first document.
+
+## Section 1
+
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+## Section 2
+
+Here is a JavaScript code example:
+
+```javascript
+function greetUser(name) {
+    const greeting = `Hello, ${name}!`;
+    console.log(greeting);
+    return greeting;
+}
+
+greetUser("Quarto");
+```
+
+### Subsection
+
+- Alpha item in the list
+- Beta item in the list
+- Gamma item in the list
+- Delta item in the list
+
+## Conclusion
+
+This concludes the second dummy document. Like the first, it demonstrates Quarto Markdown features but with different content to provide variety in testing scenarios.

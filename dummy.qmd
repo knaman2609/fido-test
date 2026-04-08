@@ -1,0 +1,38 @@
+---
+title: "Dummy Document"
+author: "Author Name"
+date: today
+format:
+  html:
+    code-fold: true
+---
+
+# Introduction
+
+This is the first dummy Quarto document for testing and demonstration purposes. It contains sample content to showcase various Quarto Markdown features.
+
+## Section 1
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+
+## Section 2
+
+Here is a Python code example:
+
+```python
+def hello_world():
+    print("Hello, World!")
+    return 42
+
+result = hello_world()
+```
+
+### Subsection
+
+- First item in the list
+- Second item in the list
+- Third item in the list
+
+## Conclusion
+
+This concludes the first dummy document. It demonstrates basic Quarto Markdown features including YAML frontmatter, headings, code blocks, and lists.
