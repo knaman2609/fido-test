@@ -1,6 +1,6 @@
 ---
 title: "Dummy Document"
-author: "Author Name"
+author: "Demo User"
 date: today
 format:
   html:
