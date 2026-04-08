@@ -1,6 +1,6 @@
 ---
 title: "Dummy Document"
-author: "Demo User"
+author: "Repository Maintainer"
 date: today
 format:
   html:
