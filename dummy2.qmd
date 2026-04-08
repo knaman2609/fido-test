@@ -1,6 +1,6 @@
 ---
 title: "Dummy Document 2"
-author: "Demo User"
+author: "Repository Maintainer"
 date: today
 format:
   html:
@@ -9,7 +9,7 @@ format:
 
 # Introduction
 
-This is the second dummy Quarto document for testing and demonstration purposes. It contains different sample content to showcase additional Quarto Markdown features and variations.
+This is the second dummy Quarto document for testing and demonstration purposes. It contains different sample content to showcase additional Quarto Markdown features.
 
 ## Section 1
 
@@ -20,13 +20,15 @@ Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu 
 Here is a JavaScript code example:
 
 ```javascript
-function calculateSum(a, b) {
-    const result = a + b;
-    console.log(`The sum of ${a} and ${b} is ${result}`);
-    return result;
+function greetUser(name) {
+    console.log(`Hello, ${name}!`);
+    return {
+        message: `Welcome, ${name}`,
+        timestamp: new Date().toISOString()
+    };
 }
 
-const total = calculateSum(10, 20);
+const result = greetUser("Developer");
 ```
 
 ### Subsection
@@ -34,8 +36,7 @@ const total = calculateSum(10, 20);
 - Alpha item in the list
 - Beta item in the list
 - Gamma item in the list
-- Delta item in the list
 
 ## Conclusion
 
-This concludes the second dummy document. It demonstrates basic Quarto Markdown features including YAML frontmatter, headings, code blocks, and lists with content distinct from the first dummy document.
+This concludes the second dummy document. It demonstrates additional Quarto Markdown features with different content from the first document.
