@@ -9,7 +9,7 @@ format:
 
 # Introduction
 
-This is the second dummy Quarto document for testing and demonstration purposes. It contains sample content to showcase various Quarto Markdown features with different examples from the first document.
+This is the second dummy Quarto document for testing and demonstration purposes. It contains different sample content to showcase additional Quarto Markdown features.
 
 ## Section 1
 
@@ -17,16 +17,15 @@ Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu 
 
 ## Section 2
 
-Here is an R code example:
+Here is a JavaScript code example:
 
-```r
-# Calculate mean and standard deviation
-data <- c(23, 45, 67, 89, 12, 34, 56)
-mean_value <- mean(data)
-sd_value <- sd(data)
+```javascript
+function greetUser(name) {
+    console.log(`Welcome, ${name}!`);
+    return { message: "Success", timestamp: Date.now() };
+}
 
-cat("Mean:", mean_value, "\n")
-cat("Standard Deviation:", sd_value, "\n")
+const response = greetUser("Developer");
 ```
 
 ### Subsection
@@ -34,8 +33,7 @@ cat("Standard Deviation:", sd_value, "\n")
 - Alpha item in the list
 - Beta item in the list
 - Gamma item in the list
-- Delta item in the list
 
 ## Conclusion
 
-This concludes the second dummy document. It demonstrates basic Quarto Markdown features including YAML frontmatter, headings, code blocks, and lists with content distinct from the first dummy document.
+This concludes the second dummy document. It demonstrates basic Quarto Markdown features including YAML frontmatter, headings, code blocks, and lists with different content from the first document.
